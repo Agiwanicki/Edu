@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blog dydaktyczny – Arkadiusz Iwanicki</title>
+  <meta name="description" content="Ćwiczenia, zaliczenia i kontakt – blog dydaktyczny dla studentów." />
+
+  <style>
+    :root{
+      --bg: #f3f4f6;      /* jasna szarość tła */
+      --card: #ffffff;    /* biel kart/sekcji */
+      --text: #1f2937;    /* ciemnoszary tekst */
+      --muted:#6b7280;    /* opis/sekundarny */
+      --line: #e5e7eb;    /* linie/obramowania */
+      --link:#374151;     /* linki */
+      --link-hover:#111827;
+      --accent:#9ca3af;   /* delikatny akcent */
+      --shadow: 0 6px 18px rgba(0,0,0,.06);
+      --radius: 16px;
+    }
+
+    *{ box-sizing: border-box }
+    html, body { height: 100% }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
+      line-height:1.6;
+      color:var(--text);
+      background:linear-gradient(180deg, #fafafa, var(--bg));
+    }
+
+    /* Layout */
+    header{
+      position:sticky; top:0; z-index:50;
+      background:#fffcc0 0 0/0 0 no-repeat; /* tiny trick for better text rendering */
+      background-color: var(--card);
+      border-bottom:1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+    .wrap{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .brand{
+      display:flex; align-items:center; justify-content:space-between;
+      padding: 18px 0 10px;
+      gap: 12px;
+    }
+    .brand h1{
+      font-size: clamp(20px, 2.4vw, 28px);
+      margin:0;
+      letter-spacing:.4px;
+      font-weight: 700;
+    }
+    nav ul{
+      display:flex; gap: 10px; list-style:none; padding:0; margin:0;
+      flex-wrap:wrap;
+    }
+    nav a{
+      display:inline-block;
+      padding:10px 14px;
+      border:1px solid var(--line);
+      border-radius: 999px;
+      color:var(--link);
+      text-decoration:none;
+      transition:.2s ease;
+      background: #fff;
+    }
+    nav a:hover{ color:var(--link-hover); transform: translateY(-1px) }
+    nav a.active{ border-color: var(--accent); background: #f8f9fa }
+
+    main{ padding: 28px 0 60px }
+    section.page{
+      display:none;
+      background: var(--card);
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      padding: clamp(16px, 1.8vw, 28px);
+      box-shadow: var(--shadow);
+    }
+    section.page.active{ display:block }
+
+    /* Typo */
+    h2{ margin: 0 0 .5rem; font-size: clamp(22px, 2.2vw, 26px) }
+    p.lead{ color:var(--muted); margin:.25rem 0 1rem }
+
+    /* Lists */
+    .category{
+      border:1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px;
+      margin: 10px 0 14px;
+      background: linear-gradient(180deg,#fff, #fafafa);
+    }
+    .category h3{
+      margin:0 0 8px; font-size: 18px;
+    }
+    .posts{ margin:0; padding:0; list-style:none }
+    .posts li{
+      padding:10px 12px;
+      border:1px dashed var(--line);
+      border-radius:10px;
+      background:#fff;
+      margin: 6px 0;
+      color:var(--muted);
+    }
+    .hint{
+      font-size: 14px; color:var(--muted);
+      border-left:4px solid var(--line);
+      padding-left:10px; margin: .6rem 0 0;
+    }
+
+    footer{
+      margin-top: 30px;
+      border-top:1px solid var(--line);
+      color:var(--muted);
+      padding: 18px 0 40px;
+      text-align:center;
+    }
+
+    /* Small helper for code-like boxes */
+    .box{
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:12px;
+      background:#fcfcfc;
+    }
+
+    @media (max-width:680px){
+      .brand{ flex-direction:column; align-items:flex-start }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <h1>Blog dydaktyczny – Arkadiusz Iwanicki</h1>
+      <nav aria-label="Główna nawigacja">
+        <ul>
+          <li><a href="#/cwiczenia" id="nav-cwiczenia">Ćwiczenia</a></li>
+          <li><a href="#/zaliczenia" id="nav-zaliczenia">Zaliczenia</a></li>
+          <li><a href="#/kontakt" id="nav-kontakt">Kontakt</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- ĆWICZENIA -->
+    <section id="page-cwiczenia" class="page" aria-labelledby="h-cwiczenia">
+      <h2 id="h-cwiczenia">Ćwiczenia</h2>
+      <p class="lead">Wybierz kategorię przedmiotu. Pod każdą kategorią znajdziesz listę postów do konkretnych zajęć (uzupełnimy je później).</p>
+
+      <div class="category">
+        <h3>Bazy danych i SQL</h3>
+        <ul class="posts">
+          <li>Posty do zajęć pojawią się tutaj…</li>
+        </ul>
+        <div class="hint">Przykład docelowej struktury URL posta: <code>/category/bazy-danych-i-sql/cwiczenia-1</code></div>
+      </div>
+
+      <div class="category">
+        <h3>Programowanie VBA</h3>
+        <ul class="posts">
+          <li>Posty do zajęć pojawią się tutaj…</li>
+        </ul>
+      </div>
+
+      <div class="category">
+        <h3>Programowanie serwera baz danych (T‑SQL)</h3>
+        <ul class="posts">
+          <li>Posty do zajęć pojawią się tutaj…</li>
+        </ul>
+      </div>
+
+      <div class="category">
+        <h3>Eksploracja danych</h3>
+        <ul class="posts">
+          <li>Posty do zajęć pojawią się tutaj…</li>
+        </ul>
+      </div>
+
+      <div class="category">
+        <h3>Modelowanie procesów biznesowych</h3>
+        <ul class="posts">
+          <li>Posty do zajęć pojawią się tutaj…</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ZALICZENIA -->
+    <section id="page-zaliczenia" class="page" aria-labelledby="h-zaliczenia">
+      <h2 id="h-zaliczenia">Zaliczenia</h2>
+      <p class="lead">Wytyczne, terminy i kryteria oceny.</p>
+      <div class="box">
+        <ul>
+          <li><strong>Terminy:</strong> (tu wstawisz konkretne daty i grupy)</li>
+          <li><strong>Kryteria:</strong> (np. poprawność merytoryczna, czytelność kodu, dokumentacja)</li>
+          <li><strong>Forma oddania:</strong> (np. repozytorium GitHub / plik ZIP / Teams)</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- KONTAKT -->
+    <section id="page-kontakt" class="page" aria-labelledby="h-kontakt">
+      <h2 id="h-kontakt">Kontakt</h2>
+      <p class="lead">Najlepszy sposób kontaktu w sprawach zajęć.</p>
+      <div class="box">
+        <p><strong>E‑mail:</strong> <a href="mailto:arkadiusz.iwanicki@example.com">arkadiusz.iwanicki@example.com</a></p>
+        <p><strong>Konsultacje:</strong> Sala E118 (czwartek 18:30–20:00) – lub online po umówieniu.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      © <span id="year"></span> Arkadiusz Iwanicki • Minimalny motyw w odcieniach szarości
+    </div>
+  </footer>
+
+  <script>
+    // Prosty router oparty o hash: #/cwiczenia, #/zaliczenia, #/kontakt
+    const routes = {
+      "/cwiczenia": "page-cwiczenia",
+      "/zaliczenia": "page-zaliczenia",
+      "/kontakt": "page-kontakt",
+    };
+
+    function setActiveLink(hashPath){
+      document.querySelectorAll("nav a").forEach(a => a.classList.remove("active"));
+      const id = {
+        "/cwiczenia":"nav-cwiczenia",
+        "/zaliczenia":"nav-zaliczenia",
+        "/kontakt":"nav-kontakt"
+      }[hashPath];
+      if(id){ const el = document.getElementById(id); if(el) el.classList.add("active"); }
+    }
+
+    function render(){
+      const hash = location.hash || "#/cwiczenia";
+      const path = hash.replace("#","");
+      const showId = routes[path] || routes["/cwiczenia"];
+
+      // Switch sections
+      document.querySelectorAll("section.page").forEach(s => s.classList.remove("active"));
+      const page = document.getElementById(showId);
+      if(page) page.classList.add("active");
+
+      setActiveLink(path);
+    }
+
+    window.addEventListener("hashchange", render);
+    window.addEventListener("DOMContentLoaded", () => {
+      // Domyślnie przejdź na ćwiczenia
+      if(!location.hash) location.hash = "#/cwiczenia";
+      render();
+      document.getElementById("year").textContent = new Date().getFullYear();
+    });
+  </script>
+</body>
+</html>
