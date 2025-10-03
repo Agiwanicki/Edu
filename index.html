@@ -13,16 +13,16 @@
       <h1>Blog dydaktyczny – Arkadiusz Iwanicki</h1>
       <nav aria-label="Główna nawigacja">
         <ul>
-          <li><a href="#/cwiczenia" id="nav-cwiczenia">Ćwiczenia</a></li>
-          <li><a href="#/zaliczenia" id="nav-zaliczenia">Zaliczenia</a></li>
-          <li><a href="#/kontakt" id="nav-kontakt">Kontakt</a></li>
+          <li><a href="index.html">Ćwiczenia</a></li>
+          <li><a href="zaliczenia.html">Zaliczenia</a></li>
+          <li><a href="kontakt.html">Kontakt</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
   <main class="wrap">
-    <section id="page-cwiczenia" class="page" aria-labelledby="h-cwiczenia">
+    <section class="page" aria-labelledby="h-cwiczenia">
       <h2 id="h-cwiczenia">Ćwiczenia</h2>
       <p class="lead">Kliknij w post, aby przejść do podstrony z materiałami i zadaniami.</p>
 
@@ -36,26 +36,10 @@
       <div class="category">
         <h3>Bazy danych i SQL</h3>
         <ul class="posts">
-          <li><a href="category/bazy-danych-i-sql/cwiczenia-1/">Ćwiczenia 1 – SELECT: podstawy</a></li>
-          <li><a href="category/bazy-danych-i-sql/cwiczenia-2/">Ćwiczenia 2 – JOIN i GROUP BY</a></li>
+          <li><a href="#">Ćwiczenia 1 – SELECT: podstawy</a></li>
+          <li><a href="#">Ćwiczenia 2 – JOIN i GROUP BY</a></li>
         </ul>
       </div>
-    </section>
-
-    <section id="page-zaliczenia" class="page" aria-labelledby="h-zaliczenia">
-      <h2 id="h-zaliczenia">Zaliczenia</h2>
-      <p class="lead">Wytyczne, terminy i kryteria oceny.</p>
-      <ul>
-        <li><strong>Terminy:</strong> (tu wstawisz konkretne daty i grupy)</li>
-        <li><strong>Kryteria:</strong> (poprawność merytoryczna, czytelność kodu, dokumentacja)</li>
-        <li><strong>Forma oddania:</strong> (repo GitHub / ZIP / Teams)</li>
-      </ul>
-    </section>
-
-    <section id="page-kontakt" class="page" aria-labelledby="h-kontakt">
-      <h2 id="h-kontakt">Kontakt</h2>
-      <p class="lead">Najlepszy sposób kontaktu w sprawach zajęć.</p>
-      <p><strong>E-mail:</strong> <a href="mailto:arkadiusz.iwanicki@example.com">arkadiusz.iwanicki@example.com</a></p>
     </section>
   </main>
 
@@ -64,26 +48,7 @@
   </footer>
 
   <script>
-    const routes = {"/cwiczenia":"page-cwiczenia","/zaliczenia":"page-zaliczenia","/kontakt":"page-kontakt"};
-    function setActiveLink(hashPath){
-      document.querySelectorAll("nav a").forEach(a=>a.classList.remove("active"));
-      const id={"/cwiczenia":"nav-cwiczenia","/zaliczenia":"nav-zaliczenia","/kontakt":"nav-kontakt"}[hashPath];
-      if(id){const el=document.getElementById(id); if(el) el.classList.add("active");}
-    }
-    function render(){
-      const hash=location.hash||"#/cwiczenia";
-      const path=hash.replace("#","");
-      const showId=routes[path]||routes["/cwiczenia"];
-      document.querySelectorAll("section.page").forEach(s=>s.classList.remove("active"));
-      const page=document.getElementById(showId); if(page) page.classList.add("active");
-      setActiveLink(path);
-    }
-    window.addEventListener("hashchange", render);
-    window.addEventListener("DOMContentLoaded", ()=>{
-      if(!location.hash) location.hash="#/cwiczenia";
-      render();
-      document.getElementById("year").textContent=new Date().getFullYear();
-    });
+    document.getElementById("year").textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
