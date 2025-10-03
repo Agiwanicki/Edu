@@ -1,0 +1,100 @@
+
+/* Minimalist gray theme — shared across all pages */
+:root{
+  --bg:#f3f4f6;      /* background */
+  --card:#ffffff;    /* cards/sections */
+  --text:#1f2937;    /* primary text */
+  --muted:#6b7280;   /* secondary text */
+  --line:#e5e7eb;    /* borders */
+  --link:#374151;    /* link color */
+  --link-hover:#111827;
+  --accent:#9ca3af;  /* subtle accents */
+  --shadow:0 6px 18px rgba(0,0,0,.06);
+  --radius:16px;
+}
+
+*{ box-sizing:border-box }
+html, body { height: 100% }
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial;
+  line-height:1.6;
+  color:var(--text);
+  background:linear-gradient(180deg, #fafafa, var(--bg));
+}
+
+/* Layout */
+.wrap{ max-width:1100px; margin:0 auto; padding:0 20px }
+header{
+  position:sticky; top:0; z-index:50;
+  background-color: var(--card);
+  border-bottom:1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+.brand{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px 0 10px; gap:12px;
+}
+.brand h1{ font-size:clamp(20px,2.4vw,28px); margin:0; letter-spacing:.4px; font-weight:700 }
+
+nav ul{ display:flex; gap:10px; list-style:none; padding:0; margin:0; flex-wrap:wrap }
+nav a{
+  display:inline-block; padding:10px 14px;
+  border:1px solid var(--line); border-radius:999px;
+  color:var(--link); text-decoration:none;
+  transition:.2s ease; background:#fff;
+}
+nav a:hover{ color:var(--link-hover); transform: translateY(-1px) }
+nav a.active{ border-color: var(--accent); background:#f8f9fa }
+
+main{ padding:28px 0 60px }
+section.page{
+  display:none;
+  background: var(--card);
+  border:1px solid var(--line);
+  border-radius: var(--radius);
+  padding: clamp(16px, 1.8vw, 28px);
+  box-shadow: var(--shadow);
+}
+section.page.active{ display:block }
+
+/* Typo */
+h2{ margin: 0 0 .5rem; font-size: clamp(22px, 2.2vw, 26px) }
+p.lead{ color:var(--muted); margin:.25rem 0 1rem }
+
+/* Category lists */
+.category{
+  border:1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px;
+  margin: 10px 0 14px;
+  background: linear-gradient(180deg,#fff, #fafafa);
+}
+.category h3{ margin:0 0 8px; font-size:18px }
+.posts{ margin:0; padding:0; list-style:none }
+.posts li{
+  padding:10px 12px;
+  border:1px dashed var(--line);
+  border-radius:10px;
+  background:#fff;
+  margin: 6px 0;
+}
+.posts a{ color:var(--link); text-decoration:none }
+.posts a:hover{ text-decoration:underline }
+
+/* Helpers */
+.hint{ font-size: 14px; color:var(--muted); border-left:4px solid var(--line); padding-left:10px; margin:.6rem 0 0 }
+footer{ margin-top:30px; border-top:1px solid var(--line); color:var(--muted); padding:18px 0 40px; text-align:center }
+
+/* Post (exercise) pages */
+.box{ border:1px solid var(--line); border-radius:12px; padding:14px; background:#fcfcfc; margin:10px 0 }
+.breadcrumbs{ font-size:14px; color:var(--muted) }
+.breadcrumbs a{ color:var(--link); text-decoration:none }
+.button{ display:inline-block; padding:10px 14px; border:1px solid var(--line); border-radius:10px; background:#fff; text-decoration:none; color:var(--link) }
+.callout{ border-left:4px solid var(--accent); padding-left:10px }
+code,kbd{ background:#f7f7f7; border:1px solid var(--line); border-radius:6px; padding:.1rem .3rem }
+s{ color:#6b7280 }
+
+@media (max-width:680px){
+  .brand{ flex-direction:column; align-items:flex-start }
+}
