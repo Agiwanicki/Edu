@@ -4,44 +4,91 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ćwiczenia 1 – Programowanie VBA</title>
-  <meta name="description" content="Ćwiczenia 1 z programowania VBA.">
-  <link rel="stylesheet" href="../../../assets/style.css">
+  <meta name="description" content="Lista zadań do zajęć: przyciski, MsgBox, InputBox, instrukcje warunkowe, pętle, tablice i ciąg Fibonacciego.">
+  <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
   <header>
     <div class="wrap brand">
-      <a href="../../#%2Fcwiczenia" class="button">← Powrót do ćwiczeń</a>
+      <a href="/index.html" class="button">← Powrót do ćwiczeń</a>
       <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
     </div>
   </header>
 
   <main class="wrap">
-    <nav class="breadcrumbs">
-      <a href="../../">Strona główna</a> › <a href="../../#%2Fcwiczenia">Ćwiczenia</a> › <span>Ćwiczenia 1 – Programowanie VBA</span>
-    </nav>
-
     <h1>Ćwiczenia 1 – Programowanie VBA</h1>
 
+    <p class="callout">Za pomocą skryptów VBA i arkuszy kalkulacyjnych Excel wykonaj poniższe zadania. Treść przeniesiono z wersji WordPress i delikatnie skorygowano interpunkcję oraz ortografię.</p>
+
     <ol>
-      <li>Utwórz przycisk o nazwie <strong>Hello</strong>, który wyświetli komunikat <strong>Hello world!</strong> w <code>MsgBox</code>.</li>
-      <li>Napisz procedurę, która doda do siebie dwie liczby podane przez użytkownika w <code>InputBox</code>.</li>
-      <li>Napisz procedurę, która zapyta użytkownika o imię (<code>InputBox</code>), a następnie odpowie: <strong>„Witaj, imię!”</strong>.</li>
-      <li>Utwórz przycisk, który po uruchomieniu wyświetli <code>MsgBox</code> z informacją, czy liczba z komórki <strong>C2</strong> jest parzysta, nieparzysta, czy równa 0.</li>
-      <li>Napisz procedurę, która wypisze w kolejnych komórkach kolumny <strong>A</strong> <strong>N</strong> kolejnych liczb. Wartość <strong>N</strong> podaj w <code>InputBox</code>.</li>
-      <li>Wypisz w kolejnych komórkach kolumny <strong>A</strong> <strong>N</strong> pierwszych wyrazów ciągu <strong>Fibonacciego</strong>. Wartość <strong>N</strong> podaj w <code>InputBox</code>.</li>
+      <li>
+        Utwórz przycisk o nazwie <strong>Hello</strong>, który wyświetli komunikat <strong>Hello world!</strong> w <code>MsgBox</code>.
+        <ul class="links">
+          <li><a rel="noreferrer noopener" target="_blank" href="https://www.tutorialspoint.com/vba/vba_sub_procedure.htm">Sub procedure</a></li>
+          <li><a rel="noreferrer noopener" target="_blank" href="https://www.tutorialspoint.com/vba/vba_message_box.htm">Message Box</a></li>
+          <li>Po napisaniu procedury przypisz ją do przycisku: <em>Deweloper → Wstaw → Kontrolki formularza → Przycisk</em>, a następnie wybierz z listy nazwę procedury.</li>
+        </ul>
+      </li>
+
+      <li>
+        Napisz procedurę, która doda do siebie dwie liczby podane przez użytkownika w <code>InputBox</code>.
+        <ul class="links">
+          <li><a rel="noreferrer noopener" target="_blank" href="https://www.tutorialspoint.com/vba/vba_variables.htm">Zmienne</a></li>
+          <li><a rel="noreferrer noopener" target="_blank" href="https://www.tutorialspoint.com/vba/vba_operators.htm">Operatory</a></li>
+          <li><a rel="noreferrer noopener" target="_blank" href="https://www.tutorialspoint.com/vba/vba_input_box.htm">InputBox</a></li>
+        </ul>
+      </li>
+
+      <li>
+        Napisz procedurę, która zapyta użytkownika o imię (<code>InputBox</code>), a następnie odpowie: <strong>„Witaj, imię!”</strong>.
+        <ul>
+          <li>Połącz stały tekst ze zmienną przechowującą imię operatorem konkatenacji: <code>&amp;</code>.</li>
+        </ul>
+      </li>
+
+      <li>
+        Utwórz przycisk, który po uruchomieniu wyświetli <code>MsgBox</code> z informacją, czy liczba z komórki <strong>C2</strong> jest <em>parzysta</em>, <em>nieparzysta</em>, czy <em>równa 0</em>.
+        <ul class="links">
+          <li><a rel="noreferrer noopener" target="_blank" href="https://www.tutorialspoint.com/vba/vba_nested_if_statements.htm">Zagnieżdżone instrukcje <code>If</code></a></li>
+          <li>Przypisanie wartości komórki (np. A1) do zmiennej: <code>nazwaZmiennej = Range("A1").Value</code></li>
+          <li>Operator modulo (reszta z dzielenia): <code>Mod</code></li>
+        </ul>
+      </li>
+
+      <li>
+        Napisz procedurę, która wypisze w kolejnych komórkach kolumny <strong>A</strong> <strong>N</strong> kolejnych liczb. Wartość <strong>N</strong> podaj w <code>InputBox</code>.
+        <ul class="links">
+          <li><a rel="noreferrer noopener" target="_blank" href="https://www.tutorialspoint.com/vba/vba_for_loop.htm">Pętla <code>For</code></a></li>
+          <li>Przypisanie wartości 10 do komórki A1: <code>Cells(1, 1).Value = 10</code></li>
+          <li>Iteracja po wierszach kolumny A: np. <code>Cells(i, 1).Value = 10</code> przypisuje wartość 10 do wiersza <code>i</code> w kolumnie A.</li>
+        </ul>
+      </li>
+
+      <li>
+        Wypisz w kolejnych komórkach kolumny <strong>A</strong> <strong>N</strong> pierwszych wyrazów ciągu <strong>Fibonacciego</strong>. Wartość <strong>N</strong> podaj w <code>InputBox</code>.
+        <ul class="links">
+          <li><a rel="noreferrer noopener" target="_blank" href="https://www.tutorialspoint.com/vba/vba_arrays.htm">Tablice</a></li>
+          <li>Zmiana rozmiaru tablicy na <em>x</em>: <code>ReDim arr(x)</code></li>
+          <li>Możesz spróbować również bez tablic.</li>
+        </ul>
+      </li>
     </ol>
 
-    <section class="box">
-      <h2>Dodatkowe uwagi</h2>
-      <ul>
-        <li>Zapisuj plik Excela jako <strong>.xlsm</strong> (arkusz z obsługą makr).</li>
-        <li>Aby włączyć kartę <em>Deweloper</em>: <em>Plik → Opcje → Dostosowywanie wstążki → Deweloper</em>.</li>
-        <li>Pierwszą procedurę dodasz w: <em>Deweloper → Visual Basic → Insert → Module</em>.</li>
-      </ul>
-    </section>
+    <h2>Dodatkowe uwagi</h2>
+    <ul>
+      <li>Pamiętaj, aby zapisać plik Excela jako <strong>.xlsm</strong> (arkusz z obsługą makr), w przeciwnym razie utracisz skrypty.</li>
+      <li>Włączenie karty <em>Deweloper</em> w Excelu: <em>Plik → Opcje → Dostosowywanie wstążki → Deweloper</em>.</li>
+      <li>Pierwsza procedura: <em>Deweloper → Visual Basic</em> → prawy przycisk myszy na <em>VBAProject</em> → <em>Insert → Module</em>.</li>
+      <li>Szablon procedury: <code>Sub NazwaProcedury()</code> … <code>End Sub</code>.</li>
+      <li>Procedura nie może mieć takiej samej nazwy jak wbudowane funkcje Excela.</li>
+      <li>Procedury uruchomisz z zakładki <em>Deweloper → Makra</em>.</li>
+    </ul>
 
     <section class="box">
       <h2>Kod Teams</h2>
+      <p><strong><s>GRUPA I: 33ejvup</s></strong></p>
+      <p><strong><s>GRUPA II: 6skfh59</s></strong></p>
+      <p><strong><s>GRUPA III: axum32u</s></strong></p>
       <p><strong>GRUPA IV: rl5ajg7</strong></p>
     </section>
   </main>
@@ -49,3 +96,4 @@
   <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
 </body>
 </html>
+
