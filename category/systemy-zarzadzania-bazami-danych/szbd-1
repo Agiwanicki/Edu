@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 1 i 2 – Bazy danych i SQL</title>
+  <meta name="description" content="Wprowadzenie do SSMS oraz podstawy języka SQL">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <p class="callout">Wykonaj poniższe zadania w środowisku SSMS.</p>
+
+    <h2>Ćwiczenia z języka SQL</h2>
+
+    <ol>
+      <li>
+        Z tabeli <code>Customers</code> pozyskaj listę klientów z Polski.
+        <ul class="links">
+          <li><a href="https://www.w3schools.com/sql/sql_select.asp" target="_blank">SELECT</a></li>
+          <li><a href="https://www.w3schools.com/sql/sql_where.asp" target="_blank">WHERE</a></li>
+        </ul>
+      </li>
+
+      <li>Pobierz imiona klientów mieszkających w Berlinie (wybierz tylko kolumnę z imieniem).</li>
+
+      <li>
+        Znajdź nazwę najdroższego produktu w tabeli <code>Products</code>.
+        <ul class="links">
+          <li><a href="https://www.w3schools.com/sql/sql_orderby.asp" target="_blank">ORDER BY</a></li>
+          <li>Ogranicz wynik do jednego rekordu używając <code>TOP 1</code>.</li>
+        </ul>
+      </li>
+
+      <li>Znajdź numer ID najstarszego zamówienia w tabeli <code>Orders</code>.</li>
+
+      <li>Znajdź imię, nazwisko i notatkę dotyczącą najstarszego pracownika w tabeli <code>Employees</code>.</li>
+
+      <li>
+        Usuń z tabeli <code>Customers</code> rekordy wszystkich klientów z USA.
+        <ul class="links">
+          <li><a href="https://www.w3schools.com/sql/sql_delete.asp" target="_blank">DELETE</a></li>
+        </ul>
+      </li>
+
+      <li>
+        Dodaj nowy produkt do tabeli <code>Products</code>:
+        <ul>
+          <li><a href="https://www.w3schools.com/sql/sql_insert.asp" target="_blank">INSERT</a></li>
+          <li>ProductName: Chocolate Cake</li>
+          <li>SupplierID: Peter Wilson (odpowiednie ID znajdź w tabeli <code>Suppliers</code>)</li>
+          <li>CategoryID: Confections (ID znajdź w tabeli <code>Categories</code>)</li>
+          <li>Unit: 1kg pkg.</li>
+          <li>Price: 12</li>
+        </ul>
+      </li>
+
+      <li>
+        Dodaj nowego pracownika do tabeli <code>Employees</code>:
+        <ul>
+          <li><a href="https://www.w3schools.com/sql/sql_insert.asp" target="_blank">INSERT</a></li>
+          <li>FirstName: Janusz</li>
+          <li>LastName: Tracz</li>
+          <li>BirthDate: 1963-07-02</li>
+          <li>Photo: EmpID11.pic</li>
+          <li>Notes: Liczę na kreatywność</li>
+        </ul>
+      </li>
+
+      <li>
+        Zaktualizuj cenę produktu „Chocolade” do 30.
+        <ul class="links">
+          <li><a href="https://www.w3schools.com/sql/sql_update.asp" target="_blank">UPDATE</a></li>
+        </ul>
+      </li>
+
+      <li>Podnieś cenę wszystkich produktów od dostawcy „Exotic Liquid” o 10 (ID znajdź w tabeli <code>Suppliers</code>).</li>
+
+      <li>
+        Utwórz tabelę <code>ProductsInfo</code> z kolumnami:
+        <ul>
+          <li><a href="https://www.w3schools.com/sql/sql_create_table.asp" target="_blank">CREATE TABLE</a></li>
+          <li>ProductID (int)</li>
+          <li>Note (varchar(200))</li>
+          <li>Warning (text)</li>
+        </ul>
+      </li>
+
+      <li>
+        Oblicz średnią cenę produktów w tabeli <code>Products</code>.
+        <ul class="links">
+          <li><a href="https://www.w3schools.com/sql/sql_count_avg_sum.asp" target="_blank">AVG()</a></li>
+        </ul>
+      </li>
+
+      <li>Policz liczbę klientów z Niemiec w tabeli <code>Customers</code>.</li>
+
+      <li>
+        Dodaj kolumnę <code>isShipped</code> (tinyint) do tabeli <code>Orders</code>.
+        <ul class="links">
+          <li><a href="https://www.w3schools.com/sql/sql_alter.asp" target="_blank">ALTER TABLE</a></li>
+        </ul>
+      </li>
+    </ol>
+
+    <h2>Baza danych online</h2>
+    <p><a href="https://www.w3schools.com/sql/trysql.asp?filename=trysql_select_all" target="_blank">https://www.w3schools.com/sql/trysql.asp?filename=trysql_select_all</a></p>
+
+    <section class="box">
+      <h2>Kod Teams</h2>
+      <p><strong>72lxkox</strong></p>
+    </section>
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
