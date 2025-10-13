@@ -17,97 +17,81 @@
   <main class="wrap">
     <nav class="breadcrumbs"><a href="../../index.html">Strona główna</a> › <a href="../../index.html#%2Fcwiczenia">Ćwiczenia</a> › Ćwiczenia 2 programowanie VBA</nav>
     <h1>Ćwiczenia 2 programowanie VBA</h1>
-    <p>Za pomocą skrypt&oacute;w VBA i arkuszy kalkulacyjnych Excel:</p>
+    <p>Za pomocą skryptów VBA i arkuszy kalkulacyjnych Excel:</p>
 
+    <ol class="wp-block-list">
+      <li>
+        Napisz funkcję, która policzy objętość prostopadłościanu na podstawie danych z trzech komórek arkusza.
+        <ul class="wp-block-list">
+          <li><a rel="noreferrer noopener" href="https://www.tutorialspoint.com/vba/vba_functions.htm" target="_blank">https://www.tutorialspoint.com/vba/vba_functions.htm</a></li>
+        </ul>
+      </li>
 
+      <li>
+        Napisz procedurę, która za pomocą instrukcji <strong>Select Case</strong> sprawdzi kolor wskazanej przez użytkownika komórki arkusza (<strong>InputBox</strong>). Instrukcja ma wyświetlać <strong>MsgBox</strong> z informacją o kolorze komórki (wiadomość dla każdego koloru oraz gdy procedura nie rozpoznaje koloru). Kolor biały ma wyświetlić informację „brak koloru”.
+        <ul class="wp-block-list">
+          <li><a rel="noreferrer noopener" href="https://www.tutorialspoint.com/vba/vba_switch_statement.htm" target="_blank">https://www.tutorialspoint.com/vba/vba_switch_statement.htm</a></li>
+        </ul>
+      </li>
+    </ol>
 
-<ol class="wp-block-list"><li>Napisz funkcję, kt&oacute;ra policzy objętość prostopadłościanu na podstawie danych z trzech kom&oacute;rek arkusza.
-<ul class="wp-block-list"><li><a rel="noreferrer noopener" href="https://www.tutorialspoint.com/vba/vba_functions.htm" target="_blank">https://www.tutorialspoint.com/vba/vba_functions.htm</a></li>
-</ul></li>
+    <h3>Kody kolorów w VBA (Excel)</h3>
+    <p>W języku VBA dostępne są stałe kolorów, które można stosować we właściwościach obiektów (np. <code>Range.Interior.Color</code> lub <code>Font.Color</code>). Poniżej znajduje się lista najczęściej używanych wartości:</p>
 
+    <ul>
+      <li><strong>vbBlack</strong> – czarny (<code>RGB(0, 0, 0)</code>)</li>
+      <li><strong>vbWhite</strong> – biały (<code>RGB(255, 255, 255)</code>)</li>
+      <li><strong>vbRed</strong> – czerwony (<code>RGB(255, 0, 0)</code>)</li>
+      <li><strong>vbGreen</strong> – zielony (<code>RGB(0, 128, 0)</code>)</li>
+      <li><strong>vbBlue</strong> – niebieski (<code>RGB(0, 0, 255)</code>)</li>
+      <li><strong>vbCyan</strong> (alias <strong>vbAqua</strong>) – turkusowy (<code>RGB(0, 255, 255)</code>)</li>
+      <li><strong>vbMagenta</strong> – fioletowy (<code>RGB(255, 0, 255)</code>)</li>
+      <li><strong>vbYellow</strong> – żółty (<code>RGB(255, 255, 0)</code>)</li>
+      <li><strong>vbGray</strong> – szary (<code>RGB(128, 128, 128)</code>)</li>
+      <li><strong>vbDarkGray</strong> – ciemnoszary (<code>RGB(64, 64, 64)</code>)</li>
+      <li><strong>vbLightGray</strong> – jasnoszary (<code>RGB(192, 192, 192)</code>)</li>
+    </ul>
 
-
-<li>Napisz procedurę, kt&oacute;ra za pomocą instrukcji <strong>switch </strong>sprawdzi kolor wskazanej przez użytkownika kom&oacute;rki arkusza (<strong>InputBox</strong>). Instrukcja ma wyświetlać <strong>msgBox </strong>z informacją o kolorze kom&oacute;rki (wiadomość dla każdego koloru oraz gdy nie procedura nie rozpoznaje koloru. Kolor biały ma wyświetlić informację &bdquo;brak koloru&rdquo;).
-<ul class="wp-block-list"><li><a rel="noreferrer noopener" href="https://www.tutorialspoint.com/vba/vba_switch_statement.htm" target="_blank">https://www.tutorialspoint.com/vba/vba_switch_statement.htm</a></li>
-</ul></li>
-<h3>Kody kolorów w VBA (Excel)</h3>
-
-<p>W języku VBA dostępne są stałe kolorów, które można stosować w właściwościach obiektów (np. <code>Range.Interior.Color</code> lub <code>Font.Color</code>).
-Poniżej znajduje się lista najczęściej używanych wartości:</p>
-
-<ul>
-  <li><strong>vbBlack</strong> – czarny (<code>RGB(0, 0, 0)</code>)</li>
-  <li><strong>vbWhite</strong> – biały (<code>RGB(255, 255, 255)</code>)</li>
-  <li><strong>vbRed</strong> – czerwony (<code>RGB(255, 0, 0)</code>)</li>
-  <li><strong>vbGreen</strong> – zielony (<code>RGB(0, 128, 0)</code>)</li>
-  <li><strong>vbBlue</strong> – niebieski (<code>RGB(0, 0, 255)</code>)</li>
-  <li><strong>vbCyan</strong> (alias <strong>vbAqua</strong>) – turkusowy (<code>RGB(0, 255, 255)</code>)</li>
-  <li><strong>vbMagenta</strong> – fioletowy (<code>RGB(255, 0, 255)</code>)</li>
-  <li><strong>vbYellow</strong> – żółty (<code>RGB(255, 255, 0)</code>)</li>
-  <li><strong>vbGray</strong> – szary (<code>RGB(128, 128, 128)</code>)</li>
-  <li><strong>vbDarkGray</strong> – ciemnoszary (<code>RGB(64, 64, 64)</code>)</li>
-  <li><strong>vbLightGray</strong> – jasnoszary (<code>RGB(192, 192, 192)</code>)</li>
-</ul>
-
-<p><strong>Przykład użycia w VBA:</strong></p>
-<pre><code>Range("A1").Interior.Color = vbYellow
+    <p><strong>Przykład użycia w VBA:</strong></p>
+    <pre><code>Range("A1").Interior.Color = vbYellow
 Range("A2").Font.Color = vbBlue
 Range("A3").Interior.Color = RGB(255, 153, 51) ' pomarańczowy
 </code></pre>
 
-<p>Więcej informacji o składni funkcji <code>RGB()</code> oraz dostępnych kolorach znajdziesz tutaj:<br>
-<a href="https://www.w3schools.com/colors/colors_rgb.asp" target="_blank" rel="noopener noreferrer">
-https://www.w3schools.com/colors/colors_rgb.asp</a>
-</p>
+    <p>Więcej informacji o składni funkcji <code>RGB()</code> oraz dostępnych kolorach znajdziesz tutaj:<br>
+      <a href="https://www.w3schools.com/colors/colors_rgb.asp" target="_blank" rel="noopener noreferrer">https://www.w3schools.com/colors/colors_rgb.asp</a>
+    </p>
 
+    <ol start="3" class="wp-block-list">
+      <li>
+        Napisz procedurę, która wypisze w arkuszu Excel 3 losowe liczby z zakresu od 1 do 56 bez powtórek. Każda wylosowana liczba ma trafić do oddzielnej komórki w arkuszu.
+        <ul class="wp-block-list">
+          <li>Losowanie liczby od 1 do 56: <strong>Round(Rnd() * 56, 0)</strong></li>
+          <li>Deklaracja tablicy z 3 elementami typu Integer: <strong>Dim number(3) As Integer</strong></li>
+          <li>Do losowania bez powtórek można zastosować np. pętle <strong>For</strong>, instrukcję <strong>Select Case</strong> oraz <strong>If</strong>.</li>
+          <li>Procedura <strong>nie musi</strong> działać dla dowolnej liczby losowań — wystarczy, że zadziała dla 3.</li>
+        </ul>
+      </li>
 
+      <li>
+        Napisz procedurę, która wypisze w arkuszu Excel wybraną przez użytkownika liczbę losowych liczb z zakresu od 1 do 56 bez powtórek.
+        <ul class="wp-block-list">
+          <li>Dynamiczne ustalanie rozmiaru tablicy: <strong>ReDim uniqueNumbers(1 To numCount)</strong></li>
+          <li>Do wyszukania powtórek w tablicy trzeba napisać własną funkcję (nie ma takiej domyślnie w VBA).</li>
+          <li>Aby generować liczby dopóki nie wylosuje się unikatowa wartość, można wykorzystać pętlę <strong>Do … Loop Until Not</strong> oraz funkcję <strong>IsInArray</strong>.</li>
+          <li>Przykład: <a href="https://www.makroaplikacje.pl/petla-do-while-i-do-until/" target="_blank" rel="noreferrer noopener">https://www.makroaplikacje.pl/petla-do-while-i-do-until/</a></li>
+        </ul>
+      </li>
+    </ol>
 
-<li>Napisz procedurę, kt&oacute;ra wypisze w arkuszu Excel 3 losowe liczb z zakresu od 1 do 56 bez powt&oacute;rek. Każda wylosowana liczba ma trafić do oddzielnej kom&oacute;rki w arkuszu.
-<ul class="wp-block-list"><li>Losowanie liczby od 1 do 56 :<strong> Round(Rnd() * 56, 0)</strong></li>
+    <ul style="margin-left: 2em; list-style-type: disc;">
+      <li>Wartość koloru komórki: <strong>Cells(1, 1).Interior.Color</strong></li>
+      <li>Reset wartości komórek: <strong>Range("A10:N10").ClearContents</strong></li>
+      <li>Reset koloru komórki: <strong>Cells(1, 1).Interior.ColorIndex = 0</strong></li>
+    </ul>
 
-
-
-<li>Deklaracja tablicy z 3 elementami typu Integer: <strong>Dim number(3) As Integer</strong></li>
-
-
-
-<li>Do losowania bez powt&oacute;rzeń można zastosować np. pętle <strong>for</strong>, instrukcję <strong>switch</strong> oraz <strong>if</strong>.</li>
-
-
-
-<li>Procedura <strong>nie musi</strong> działać dla dowolnej ilości liczb! wystarczy, że zadziała dla 3.</li>
-</ul></li>
-
-
-
-<li>Napisz procedurę, kt&oacute;ra wypisze w arkuszu Excel wybraną przez użytkownika ilość losowych liczb z zakresu od 1 do 56 bez powt&oacute;rek. 
-<ul class="wp-block-list"><li>Dynamiczne ustalanie rozmiaru tablicy: <strong>ReDim uniqueNumbers(1 To numCount)</strong></li>
-
-
-
-<li>Do wyszukania powt&oacute;rek w tablicy trzeba napisać własną funkcję! (Nie ma takie domyślnie w VBA)</li>
-
-
-
-<li>Aby generować liczby dop&oacute;ki nie wylosuje się unikatowa wartość, można wykorzystać pętle <strong>Do &lt;r&oacute;b coś&gt; Loop Until Not</strong> &lt;funkcja IsInArray&gt;. </li>
-
-
-
-<li>Przykład: <a href="https://www.makroaplikacje.pl/petla-do-while-i-do-until/">https://www.makroaplikacje.pl/petla-do-while-i-do-until/</a></li>
-</ul></li>
-
-
-<li>Wartość koloru kom&oacute;rki: <strong>Cells(1, 1).Interior.color</strong></li>
-
-
-
-<li>Reset wartości kom&oacute;rek: <strong>Range(&bdquo;A10:N10&rdquo;).ClearContents</strong></li>
-
-
-
-<li>Reset koloru kom&oacute;rki: <strong>Cells(1, 1).Interior.ColorIndex = 0</strong></li>
-</ul></li>
   </main>
   <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
 </body>
 </html>
+
