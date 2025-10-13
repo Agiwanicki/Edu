@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 2 programowanie VBA</title>
+  <meta name="description" content="Ćwiczenia 2 programowanie VBA">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html#%2Fcwiczenia" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+  <main class="wrap">
+    <nav class="breadcrumbs"><a href="../../index.html">Strona główna</a> › <a href="../../index.html#%2Fcwiczenia">Ćwiczenia</a> › Ćwiczenia 2 programowanie VBA</nav>
+    <h1>Ćwiczenia 2 programowanie VBA</h1>
+    <p>Za pomocą skrypt&oacute;w VBA i arkuszy kalkulacyjnych Excel:</p>
+
+
+
+<ol class="wp-block-list"><li>Napisz funkcję, kt&oacute;ra policzy objętość prostopadłościanu na podstawie danych z trzech kom&oacute;rek arkusza.
+<ul class="wp-block-list"><li><a rel="noreferrer noopener" href="https://www.tutorialspoint.com/vba/vba_functions.htm" target="_blank">https://www.tutorialspoint.com/vba/vba_functions.htm</a></li>
+</ul></li>
+
+
+
+<li>Napisz procedurę, kt&oacute;ra za pomocą instrukcji <strong>switch </strong>sprawdzi kolor wskazanej przez użytkownika kom&oacute;rki arkusza (<strong>InputBox</strong>). Instrukcja ma wyświetlać <strong>msgBox </strong>z informacją o kolorze kom&oacute;rki (wiadomość dla każdego koloru oraz gdy nie procedura nie rozpoznaje koloru. Kolor biały ma wyświetlić informację &bdquo;brak koloru&rdquo;).
+<ul class="wp-block-list"><li><a rel="noreferrer noopener" href="https://www.tutorialspoint.com/vba/vba_switch_statement.htm" target="_blank">https://www.tutorialspoint.com/vba/vba_switch_statement.htm</a></li>
+</ul></li>
+</ol><p><strong>Kody kolor&oacute;w</strong>: (vbWhite to kolor domyślny dla kom&oacute;rek Excela)</p>
+
+
+
+<figure class="wp-block-image is-resized"><img fetchpriority="high" decoding="async" width="307" height="173" src="./../../../../wp-content/uploads/2022/10/excel_vbcolor_10-edited.png" alt="" class="wp-image-198" style="width:207px;height:undefinedpx" srcset="./../../../../wp-content/uploads/2022/10/excel_vbcolor_10-edited.png 307w, ./../../../../wp-content/uploads/2022/10/excel_vbcolor_10-edited-300x169.png 300w" sizes="(max-width: 307px) 100vw, 307px"></figure><ol start="3" class="wp-block-list"><li>Napisz procedurę, kt&oacute;ra wypisze w arkuszu Excel 3 losowe liczb z zakresu od 1 do 56 bez powt&oacute;rek. Każda wylosowana liczba ma trafić do oddzielnej kom&oacute;rki w arkuszu.
+<ul class="wp-block-list"><li>Losowanie liczby od 1 do 56 :<strong> Round(Rnd() * 56, 0)</strong></li>
+
+
+
+<li>Deklaracja tablicy z 3 elementami typu Integer: <strong>Dim number(3) As Integer</strong></li>
+
+
+
+<li>Do losowania bez powt&oacute;rzeń można zastosować np. pętle <strong>for</strong>, instrukcję <strong>switch</strong> oraz <strong>if</strong>.</li>
+
+
+
+<li>Procedura <strong>nie musi</strong> działać dla dowolnej ilości liczb! wystarczy, że zadziała dla 3.</li>
+</ul></li>
+
+
+
+<li>Napisz procedurę, kt&oacute;ra wypisze w arkuszu Excel wybraną przez użytkownika ilość losowych liczb z zakresu od 1 do 56 bez powt&oacute;rek. 
+<ul class="wp-block-list"><li>Dynamiczne ustalanie rozmiaru tablicy: <strong>ReDim uniqueNumbers(1 To numCount)</strong></li>
+
+
+
+<li>Do wyszukania powt&oacute;rek w tablicy trzeba napisać własną funkcję! (Nie ma takie domyślnie w VBA)</li>
+
+
+
+<li>Aby generować liczby dop&oacute;ki nie wylosuje się unikatowa wartość, można wykorzystać pętle <strong>Do &lt;r&oacute;b coś&gt; Loop Until Not</strong> &lt;funkcja IsInArray&gt;. </li>
+
+
+
+<li>Przykład: <a href="https://www.makroaplikacje.pl/petla-do-while-i-do-until/">https://www.makroaplikacje.pl/petla-do-while-i-do-until/</a></li>
+</ul></li>
+
+
+
+<li>Wartość koloru kom&oacute;rki: <strong>Cells(1, 1).Interior.color</strong></li>
+
+
+
+<li>Reset wartości kom&oacute;rek: <strong>Range(&bdquo;A10:N10&rdquo;).ClearContents</strong></li>
+
+
+
+<li>Reset koloru kom&oacute;rki: <strong>Cells(1, 1).Interior.ColorIndex = 0</strong></li>
+</ul></li>
+</ol><figure class="wp-block-image size-full"><img decoding="async" width="892" height="265" src="./../../../../wp-content/uploads/2022/10/Capture-1.png" alt="" class="wp-image-178" srcset="./../../../../wp-content/uploads/2022/10/Capture-1.png 892w, ./../../../../wp-content/uploads/2022/10/Capture-1-300x89.png 300w, ./../../../../wp-content/uploads/2022/10/Capture-1-768x228.png 768w" sizes="(max-width: 892px) 100vw, 892px"></figure>
+  </main>
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
