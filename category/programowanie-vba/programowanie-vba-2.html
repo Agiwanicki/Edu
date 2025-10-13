@@ -30,11 +30,39 @@
 <li>Napisz procedurę, kt&oacute;ra za pomocą instrukcji <strong>switch </strong>sprawdzi kolor wskazanej przez użytkownika kom&oacute;rki arkusza (<strong>InputBox</strong>). Instrukcja ma wyświetlać <strong>msgBox </strong>z informacją o kolorze kom&oacute;rki (wiadomość dla każdego koloru oraz gdy nie procedura nie rozpoznaje koloru. Kolor biały ma wyświetlić informację &bdquo;brak koloru&rdquo;).
 <ul class="wp-block-list"><li><a rel="noreferrer noopener" href="https://www.tutorialspoint.com/vba/vba_switch_statement.htm" target="_blank">https://www.tutorialspoint.com/vba/vba_switch_statement.htm</a></li>
 </ul></li>
-</ol><p><strong>Kody kolor&oacute;w</strong>: (vbWhite to kolor domyślny dla kom&oacute;rek Excela)</p>
+<h3>Kody kolorów w VBA (Excel)</h3>
+
+<p>W języku VBA dostępne są stałe kolorów, które można stosować w właściwościach obiektów (np. <code>Range.Interior.Color</code> lub <code>Font.Color</code>).
+Poniżej znajduje się lista najczęściej używanych wartości:</p>
+
+<ul>
+  <li><strong>vbBlack</strong> – czarny (<code>RGB(0, 0, 0)</code>)</li>
+  <li><strong>vbWhite</strong> – biały (<code>RGB(255, 255, 255)</code>)</li>
+  <li><strong>vbRed</strong> – czerwony (<code>RGB(255, 0, 0)</code>)</li>
+  <li><strong>vbGreen</strong> – zielony (<code>RGB(0, 128, 0)</code>)</li>
+  <li><strong>vbBlue</strong> – niebieski (<code>RGB(0, 0, 255)</code>)</li>
+  <li><strong>vbCyan</strong> (alias <strong>vbAqua</strong>) – turkusowy (<code>RGB(0, 255, 255)</code>)</li>
+  <li><strong>vbMagenta</strong> – fioletowy (<code>RGB(255, 0, 255)</code>)</li>
+  <li><strong>vbYellow</strong> – żółty (<code>RGB(255, 255, 0)</code>)</li>
+  <li><strong>vbGray</strong> – szary (<code>RGB(128, 128, 128)</code>)</li>
+  <li><strong>vbDarkGray</strong> – ciemnoszary (<code>RGB(64, 64, 64)</code>)</li>
+  <li><strong>vbLightGray</strong> – jasnoszary (<code>RGB(192, 192, 192)</code>)</li>
+</ul>
+
+<p><strong>Przykład użycia w VBA:</strong></p>
+<pre><code>Range("A1").Interior.Color = vbYellow
+Range("A2").Font.Color = vbBlue
+Range("A3").Interior.Color = RGB(255, 153, 51) ' pomarańczowy
+</code></pre>
+
+<p>Więcej informacji o składni funkcji <code>RGB()</code> oraz dostępnych kolorach znajdziesz tutaj:<br>
+<a href="https://www.w3schools.com/colors/colors_rgb.asp" target="_blank" rel="noopener noreferrer">
+https://www.w3schools.com/colors/colors_rgb.asp</a>
+</p>
 
 
 
-<figure class="wp-block-image is-resized"><img fetchpriority="high" decoding="async" width="307" height="173" src="./../../../../wp-content/uploads/2022/10/excel_vbcolor_10-edited.png" alt="" class="wp-image-198" style="width:207px;height:undefinedpx" srcset="./../../../../wp-content/uploads/2022/10/excel_vbcolor_10-edited.png 307w, ./../../../../wp-content/uploads/2022/10/excel_vbcolor_10-edited-300x169.png 300w" sizes="(max-width: 307px) 100vw, 307px"></figure><ol start="3" class="wp-block-list"><li>Napisz procedurę, kt&oacute;ra wypisze w arkuszu Excel 3 losowe liczb z zakresu od 1 do 56 bez powt&oacute;rek. Każda wylosowana liczba ma trafić do oddzielnej kom&oacute;rki w arkuszu.
+<li>Napisz procedurę, kt&oacute;ra wypisze w arkuszu Excel 3 losowe liczb z zakresu od 1 do 56 bez powt&oacute;rek. Każda wylosowana liczba ma trafić do oddzielnej kom&oacute;rki w arkuszu.
 <ul class="wp-block-list"><li>Losowanie liczby od 1 do 56 :<strong> Round(Rnd() * 56, 0)</strong></li>
 
 
@@ -69,7 +97,6 @@
 </ul></li>
 
 
-
 <li>Wartość koloru kom&oacute;rki: <strong>Cells(1, 1).Interior.color</strong></li>
 
 
@@ -80,7 +107,6 @@
 
 <li>Reset koloru kom&oacute;rki: <strong>Cells(1, 1).Interior.ColorIndex = 0</strong></li>
 </ul></li>
-</ol><figure class="wp-block-image size-full"><img decoding="async" width="892" height="265" src="./../../../../wp-content/uploads/2022/10/Capture-1.png" alt="" class="wp-image-178" srcset="./../../../../wp-content/uploads/2022/10/Capture-1.png 892w, ./../../../../wp-content/uploads/2022/10/Capture-1-300x89.png 300w, ./../../../../wp-content/uploads/2022/10/Capture-1-768x228.png 768w" sizes="(max-width: 892px) 100vw, 892px"></figure>
   </main>
   <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
 </body>
