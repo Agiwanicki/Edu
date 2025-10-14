@@ -3,240 +3,164 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ćwiczenia 3 Systemy zarządzania bazami danych</title>
-  <meta name="description" content="Ćwiczenia 3 Systemy zarządzania bazami danych">
+  <title>Ćwiczenia 3 – Systemy zarządzania bazami danych</title>
+  <meta name="description" content="Ćwiczenia 3 – Systemy zarządzania bazami danych (SQL Server, SSMS).">
   <link rel="stylesheet" href="../../assets/style.css">
 </head>
 <body>
   <header>
     <div class="wrap brand">
-      <a href="../../index.html#%2Fcwiczenia" class="button">← Powrót do ćwiczeń</a>
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
       <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
     </div>
   </header>
+
   <main class="wrap">
-    <nav class="breadcrumbs"><a href="../../index.html">Strona główna</a> › <a href="../../index.html#%2Fcwiczenia">Ćwiczenia</a> › Ćwiczenia 3 Systemy zarządzania bazami danych</nav>
-    <h1>Ćwiczenia 3 Systemy zarządzania bazami danych</h1>
-    <p><strong>Za pomocą skrypt&oacute;w SQL:</strong></p>
-
-
-
-<ol style="list-style-type:1" class="wp-block-list"><li>Zał&oacute;ż nową bazę o nazwie PROG2.
-<ul class="wp-block-list"><li><strong>CREATE DATABASE [PROG2]</strong></li>
-</ul></li>
-
-
-
-<li>Zał&oacute;ż w bazie PROG2 strukturę tabel zgodnie z bazą PROG. Baza PROG była utworzona podczas poprzednich zajęć. Skrypt tworzący jej strukturę tabel to &bdquo;Lab2.1.PROG.struktura_bazy.sql&rdquo; jest dostępny na teams.</li>
-
-
-
-<li>Przypisz dane z bazy PROG do bazy PROG2 przy pomocy ciągu poleceń INSERT. Uwaga: należy użyć wyrażenia SET IDENTITY_INSERT.
-<ul class="wp-block-list"><li><a rel="noreferrer noopener" href="https://skillstest.pl/library/question/68" target="_blank">https://skillstest.pl/library/question/68</a></li>
-
-
-
-<li><a rel="noreferrer noopener" href="https://4programmers.net/Bazy_danych/W%C5%82asno%C5%9B%C4%87_identity_insert_t-sql" target="_blank">https://4programmers.net/Bazy_danych/W%C5%82asno%C5%9B%C4%87_identity_insert_t-sql</a></li>
-
-
-
-<li>Przykład przepisanie danych z jednej bazy do drugiej (takie same tabele):
-<ul class="wp-block-list"><li><strong>SET IDENTITY</strong>_I<strong>NSERT &lt;nazwaTabeli&gt; ON</strong></li>
-
-
-
-<li><strong>INSERT INTO &lt;nazwaTabeli&gt;(kolumna1, kolumna2, itp.) SELECT kolumna1, kolumna2, itp. FROM nazwaBazy.nazwaTabeli</strong></li>
-
-
-
-<li><strong>SET IDENTITY</strong>_<strong>INSERT &lt;nazwaTabeli&gt; OFF</strong></li>
-</ul></li>
-</ul></li>
-
-
-
-<li>W bazie PROG2 utw&oacute;rz tabelę INFO o kolumnach (typ i rozmiar pola dobrać na podstawie opisu z punktu 5).<ul><li><a rel="noreferrer noopener" href="https://learn.microsoft.com/en-us/sql/t-sql/statements/create-table-transact-sql-identity-property?view=sql-server-ver16" target="_blank">https://learn.microsoft.com/en-us/sql/t-sql/statements/create-table-transact-sql-identity-property?view=sql-server-ver16</a></li></ul><ul class="wp-block-list"><li><a rel="noreferrer noopener" href="https://learn.microsoft.com/en-us/sql/relational-databases/tables/create-primary-keys?view=sql-server-ver16" target="_blank">https://learn.microsoft.com/en-us/sql/relational-databases/tables/create-primary-keys?view=sql-server-ver16</a></li>
-
-
-
-<li>https://towardsdatascience.com/primary-key-and-clustered-index-bf85f7f87b60
-<ul class="wp-block-list"><li>Id info &ndash; pole autonumerowane</li>
-
-
-
-<li>Adresat</li>
-
-
-
-<li>Treść</li>
-
-
-
-<li>Data wystawienia</li>
-
-
-
-<li>Email</li>
-</ul></li>
-
-
-
-<li>Aby utworzyć klucz gł&oacute;wny tabeli, dodaj na końcu wyrażenia CREATEA TABLE(wewnątrz nawiasu!):
-<ul class="wp-block-list"><li><strong>CONSTRAINT [PK_nazwaTabeli] PRIMARY KEY CLUSTERED ([nazwaKolumny])</strong></li>
-</ul></li>
-</ul></li>
-
-
-
-<li>Wypełnij tabelę INFO danymi o przyznanych nagrodach oraz nałożonych karach. Dla każdej nagrody i kary mają być wystawione dwie informacje: jedna dla pracownika, jedna dla jego przełożonego (o ile pracownik go ma). Spos&oacute;b wypełniania:
-<ul class="wp-block-list"><li>Id info &ndash; numer kolejnego wpisu</li>
-
-
-
-<li>Adresat &ndash; tekst &bdquo;Pan Imię Nazwisko&rdquo; lub &bdquo;Pani Imię Nazwisko&rdquo; w zależności od płci pracownika; imię i nazwisko to dane pracownika, do kt&oacute;rego adresujemy informację.</li>
-
-
-
-<li>Treść &ndash; jeden z poniższych tekst&oacute;w:
-<ol class="wp-block-list"><li>&bdquo;Otrzymał Pan/Otrzymała Pani nagrodę w kwocie 9.999,99 zł z tytułu &lt;tytuł&gt;&rdquo;.</li>
-
-
-
-<li>&bdquo;Nałożono na Pana/Panią karę w kwocie 9.999,99 zł z tytułu &lt;tytuł&gt;&rdquo;.</li>
-
-
-
-<li>&bdquo;Pana/Pani podwładny otrzymał/podwładna otrzymała nagrodę w kwocie 9.999,99 zł z tytułu &lt;tytuł&gt;&rdquo;.</li>
-
-
-
-<li>&bdquo;Na Pana/Pani podwładnego nałożono/podwładną nałożono karę w kwocie 9.999,99 zł z tytułu &lt;tytuł&gt;&rdquo;.</li>
-</ol></li>
-
-
-
-<li>Data wystawienia &ndash; data systemowa odczytana funkcją SQL.</li>
-
-
-
-<li>Email &ndash; tekst &bdquo;imie.nazwisko.id@prog.pl&rdquo;, gdzie imię, nazwisko i id brane są z danych adresata, bez polskich znak&oacute;w.</li>
-</ul></li>
-</ol><p class="has-text-align-center has-large-font-size"><strong>Informacje do zadania 5</strong></p>
-
-
-
-<p><strong>Formuła do utworzenia tekstu Pan/Pani w zależności od płci adresata:</strong></p>
-
-
-
-<pre class="wp-block-code"><code>SELECT IIF(p.pr_plec = 'M', 'Pan', 'Pani') + ' ' + p.pr_imie + ' ' + p.pr_nazwisko AS adresat FROM pracownik AS p;</code></pre>
-
-
-
-<ul class="wp-block-list"><li>https://www.w3schools.com/sql/func_sqlserver_iif.asp</li>
-</ul><p><strong>Funkcja SQL do pobrania aktualnej daty i konwersja na inny typ:</strong></p>
-
-
-
-<pre class="wp-block-code"><code>SELECT CAST(getdate() AS date) AS data_wstawienia;</code></pre>
-
-
-
-<ul class="wp-block-list"><li><a href="https://www.w3schools.com/sql/func_sqlserver_getdate.asp" target="_blank" rel="noreferrer noopener">https://www.w3schools.com/sql/func_sqlserver_getdate.asp</a></li>
-
-
-
-<li><a href="https://www.w3schools.com/sql/func_sqlserver_cast.asp" target="_blank" rel="noreferrer noopener">https://www.w3schools.com/sql/func_sqlserver_cast.asp</a></li>
-</ul><p><strong>Usuwanie polskich znak&oacute;w z tekstu (znaczniej lepszym rozwiązaniem jest pobranie danych z bazy i usunięcie polskich znak&oacute;w za pomocą skryptu np. Pythona!):</strong></p>
-
-
-
-<p><a href="https://stackoverflow.com/questions/517923/what-is-the-best-way-to-remove-accents-normalize-in-a-python-unicode-string">https://stackoverflow.com/questions/517923/what-is-the-best-way-to-remove-accents-normalize-in-a-python-unicode-string</a></p>
-
-
-
-<pre class="wp-block-code"><code>SELECT REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
-        LOWER(p.pr_imie) + '.' + LOWER(p.pr_nazwisko)
-        ,' ',''),'ą','a'),'ć','c'),'ę','e'),'ł','l'),'ń','n'),'&oacute;','o'),'ś','s'),'ź','z'),'ż','z')
+    <h1>Ćwiczenia 3 – Systemy zarządzania bazami danych</h1>
+    <p class="callout"><strong>Cel:</strong> operacje kopiowania danych między bazami, tworzenie widoków oraz generowanie informacji tekstowych w SQL Server Management Studio (SSMS).</p>
+
+    <ol>
+      <li>
+        Załóż nową bazę o nazwie <strong>PROG2</strong>.
+        <ul class="links">
+          <li><code>CREATE DATABASE [PROG2];</code></li>
+        </ul>
+      </li>
+
+      <li>
+        Utwórz w bazie <strong>PROG2</strong> strukturę tabel zgodną z bazą <strong>PROG</strong>.
+        <ul class="links">
+          <li>Użyj skryptu <strong>Lab2.1.PROG.struktura_bazy.sql</strong> (dostępny na Teams).</li>
+        </ul>
+      </li>
+
+      <li>
+        Przepisz dane z bazy <strong>PROG</strong> do <strong>PROG2</strong> poleceniami <strong>INSERT</strong>. Uwaga: użyj <strong>SET IDENTITY_INSERT</strong>.
+        <ul class="links">
+          <li>Przykład (dla jednej tabeli):</li>
+        </ul>
+        <pre><code>SET IDENTITY_INSERT dbo.NazwaTabeli ON;
+
+INSERT INTO dbo.NazwaTabeli (kolumna1, kolumna2, ...)
+SELECT kolumna1, kolumna2, ...
+FROM PROG.dbo.NazwaTabeli;
+
+SET IDENTITY_INSERT dbo.NazwaTabeli OFF;</code></pre>
+      </li>
+
+      <li>
+        W bazie <strong>PROG2</strong> utwórz tabelę <strong>INFO</strong> o kolumnach (dobierz typy i rozmiary pól):
+        <ul>
+          <li>Id info – pole autonumerowane</li>
+          <li>Adresat</li>
+          <li>Treść</li>
+          <li>Data wystawienia</li>
+          <li>Email</li>
+        </ul>
+        <p>Dodaj klucz główny, np.:</p>
+        <pre><code>CREATE TABLE dbo.info (
+  in_id INT IDENTITY(1,1) NOT NULL,
+  in_adres NVARCHAR(200) NOT NULL,
+  in_tresc NVARCHAR(1000) NOT NULL,
+  in_data_wystawienia DATE NOT NULL,
+  in_email NVARCHAR(200) NOT NULL,
+  CONSTRAINT PK_info PRIMARY KEY CLUSTERED (in_id)
+);</code></pre>
+      </li>
+
+      <li>
+        Wypełnij tabelę <strong>INFO</strong> danymi o nagrodach i karach. Dla każdej nagrody/kary wystaw dwie informacje:
+        <ul>
+          <li>dla pracownika</li>
+          <li>dla jego przełożonego (jeśli istnieje)</li>
+        </ul>
+        <p>Formuły treści (przykłady):</p>
+        <ul>
+          <li>„Otrzymał Pan/Otrzymała Pani nagrodę w kwocie 9 999,99 zł z tytułu &lt;tytuł&gt;”.</li>
+          <li>„Nałożono na Pana/Panią karę w kwocie 9 999,99 zł z tytułu &lt;tytuł&gt;”.</li>
+          <li>„Pana/Pani podwładny otrzymał/podwładna otrzymała nagrodę w kwocie 9 999,99 zł z tytułu &lt;tytuł&gt;”.</li>
+          <li>„Na Pana/Pani podwładnego nałożono/podwładną nałożono karę w kwocie 9 999,99 zł z tytułu &lt;tytuł&gt;”.</li>
+        </ul>
+      </li>
+    </ol>
+
+    <h2>Informacje do zadania 5</h2>
+
+    <p><strong>Tekst „Pan/Pani” w zależności od płci adresata:</strong></p>
+    <pre><code>SELECT IIF(p.pr_plec = 'M', 'Pan', 'Pani')
+       + ' ' + p.pr_imie + ' ' + p.pr_nazwisko AS adresat
+FROM pracownik AS p;</code></pre>
+
+    <p><strong>Aktualna data:</strong></p>
+    <pre><code>SELECT CAST(GETDATE() AS date) AS data_wstawienia;</code></pre>
+
+    <p><strong>Usuwanie polskich znaków z tekstu (uwaga: w praktyce lepiej zrobić to w Pythonie):</strong></p>
+    <pre><code>SELECT REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
+         LOWER(p.pr_imie) + '.' + LOWER(p.pr_nazwisko)
+       ,' ',''),'ą','a'),'ć','c'),'ę','e'),'ł','l'),'ń','n'),'ó','o'),'ś','s'),'ź','z'),'ż','z')
        + '.' + REPLACE(CAST(p.pr_id AS char),' ','')
-	   + '@prog.pl' AS email
-  FROM pracownik p;</code></pre>
+       + '@prog.pl' AS email
+FROM pracownik p;</code></pre>
 
-
-
-<p><strong>Utworzenie perspektywy:</strong></p>
-
-
-
-<pre class="wp-block-code"><code>CREATE VIEW vpracownik AS
-SELECT p.pr_id AS vpr_id
-     , p.pr_imie AS vpr_imie
-	 , p.pr_nazwisko AS vpr_nazwisko
-	 , p.pr_pensja AS vpr_pensja
-	 , p.pr_plec AS vpr_plec
-	 , p.pr_st_id AS vpr_st_id
-	 , p.pr_szef_id AS vpr_szef_id
-	 , IIF(p.pr_plec = 'M', 'Pan', 'Pani') AS vpr_pan_pani
-	 , REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
+    <p><strong>Widok pomocniczy:</strong></p>
+    <pre><code>CREATE VIEW dbo.vpracownik AS
+SELECT
+    p.pr_id       AS vpr_id,
+    p.pr_imie     AS vpr_imie,
+    p.pr_nazwisko AS vpr_nazwisko,
+    p.pr_pensja   AS vpr_pensja,
+    p.pr_plec     AS vpr_plec,
+    p.pr_st_id    AS vpr_st_id,
+    p.pr_szef_id  AS vpr_szef_id,
+    IIF(p.pr_plec = 'M','Pan','Pani') AS vpr_pan_pani,
+    REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
         LOWER(p.pr_imie) + '.' + LOWER(p.pr_nazwisko)
-        ,' ',''),'ą','a'),'ć','c'),'ę','e'),'ł','l'),'ń','n'),'&oacute;','o'),'ś','s'),'ź','z'),'ż','z')
-       + '.' + REPLACE(CAST(p.pr_id AS char),' ','')
-	   + '@prog.pl' AS vpr_email
-  FROM pracownik AS p</code></pre>
+      ,' ',''),'ą','a'),'ć','c'),'ę','e'),'ł','l'),'ń','n'),'ó','o'),'ś','s'),'ź','z'),'ż','z')
+      + '.' + REPLACE(CAST(p.pr_id AS char),' ','')
+      + '@prog.pl' AS vpr_email
+FROM dbo.pracownik AS p;</code></pre>
 
+    <p><strong>Informacja dla pracownika o nagrodzie:</strong></p>
+    <pre><code>INSERT INTO dbo.info (in_adres, in_tresc, in_data_wystawienia, in_email)
+SELECT
+    vp.vpr_pan_pani + ' ' + vp.vpr_imie + ' ' + vp.vpr_nazwisko,
+    IIF(vp.vpr_plec='M','Otrzymał Pan','Otrzymała Pani') + ' '
+      + 'nagrodę w kwocie ' + CAST(n.na_kwota AS varchar(20)) + ' zł '
+      + 'z tytułu "' + n.na_z_tytulu + '".' AS tresc,
+    CAST(GETDATE() AS date) AS data_wystawienia,
+    vp.vpr_email
+FROM dbo.nagroda AS n
+JOIN dbo.vpracownik AS vp ON vp.vpr_id = n.na_pr_id;</code></pre>
 
+    <p><strong>Informacja dla szefa o nagrodzie:</strong></p>
+    <pre><code>INSERT INTO dbo.info (in_adres, in_tresc, in_data_wystawienia, in_email)
+SELECT
+    vszef.vpr_pan_pani + ' ' + vszef.vpr_imie + ' ' + vszef.vpr_nazwisko,
+    IIF(vszef.vpr_plec='M','Pana','Pani') + ' '
+      + IIF(vp.vpr_plec='M','podwładny otrzymał','podwładna otrzymała') + ' '
+      + 'nagrodę w kwocie ' + CAST(n.na_kwota AS varchar(20)) + ' zł z tytułu "' + n.na_z_tytulu + '".'
+      AS tresc,
+    CAST(GETDATE() AS date) AS data_wystawienia,
+    vszef.vpr_email
+FROM dbo.nagroda AS n
+JOIN dbo.vpracownik AS vp    ON vp.vpr_id      = n.na_pr_id
+JOIN dbo.vpracownik AS vszef ON vszef.vpr_id   = vp.vpr_szef_id;</code></pre>
 
-<ul class="wp-block-list"><li><a href="https://www.w3schools.com/sql/sql_view.asp" target="_blank" rel="noreferrer noopener">https://www.w3schools.com/sql/sql_view.asp</a></li>
-</ul><p><strong>Wprowadzenie informacji dla pracownika o nagrodzie:</strong></p>
+    <p><strong>Analogicznie wykonaj:</strong></p>
+    <ul>
+      <li>Informację dla pracownika o karze.</li>
+      <li>Informację dla szefa o karze.</li>
+    </ul>
 
-
-
-<pre class="wp-block-code"><code>INSERT INTO dbo.info (in_adres, in_tresc, in_data_wystawienia, in_email)
-SELECT vp.vpr_pan_pani + ' ' + vp.vpr_imie + ' ' + vp.vpr_nazwisko
-	 , IIF(vp.vpr_plec='M','Otrzymał Pan','Otrzymała Pani') + ' ' 
-       + 'nagrodę w kwocie ' + CAST(na_kwota AS varchar) + ' zł '
-	   + 'z tytułu "' + n.na_z_tytulu + '".'
-	   AS tresc
-	 , CAST(getdate() AS date) AS data_wstawienia
-	 , vpr_email
-  FROM dbo.nagroda AS n
-     , dbo.vpracownik AS vp
- WHERE vp.vpr_id = n.na_pr_id</code></pre>
-
-
-
-<p><strong>Wprowadzenie informacji dla szefa o nagrodzie</strong></p>
-
-
-
-<pre class="wp-block-code"><code>INSERT INTO dbo.info (in_adres, in_tresc, in_data_wystawienia, in_email)
-SELECT vszef.vpr_pan_pani + ' ' + vszef.vpr_imie + ' ' + vszef.vpr_nazwisko
-	 , IIF(vszef.vpr_plec='M','Pana','Pani') + ' '
-	   + IIF(vp.vpr_plec='M','podwładny otrzymał','podwładna otrzymała') + ' '
-	   + 'nagrodę w kwocie ' + CAST(n.na_kwota AS varchar) + ' zł z tytułu "' + n.na_z_tytulu + '".'
-	   AS tresc
-	 , CAST(getdate() AS date) AS data_wstawienia
-	 , vszef.vpr_email AS email
-  FROM dbo.nagroda AS n
-	 , dbo.vpracownik AS vp
-	 , dbo.vpracownik AS vszef
- WHERE vp.vpr_id = n.na_pr_id
-   AND vp.vpr_szef_id = vszef.vpr_id
-;</code></pre>
-
-
-
-<p><strong>Analogicznie (z wykorzystaniem tej samej perspektywy) należy wykonać:</strong></p>
-
-
-
-<ul class="wp-block-list"><li>Wprowadzenie informacji dla pracownika o karze</li>
-
-
-
-<li>Wprowadzenie informacji dla szefa o nagrodzie</li>
-</ul>
+    <h2>Dodatkowe materiały</h2>
+    <ul class="links">
+      <li><a href="https://www.w3schools.com/sql/func_sqlserver_iif.asp" target="_blank" rel="noreferrer noopener">IIF (SQL Server)</a></li>
+      <li><a href="https://www.w3schools.com/sql/func_sqlserver_getdate.asp" target="_blank" rel="noreferrer noopener">GETDATE</a></li>
+      <li><a href="https://www.w3schools.com/sql/func_sqlserver_cast.asp" target="_blank" rel="noreferrer noopener">CAST</a></li>
+      <li><a href="https://www.w3schools.com/sql/sql_view.asp" target="_blank" rel="noreferrer noopener">CREATE VIEW</a></li>
+    </ul>
   </main>
+
   <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
 </body>
 </html>
