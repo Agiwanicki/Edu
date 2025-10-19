@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 3 programowanie VBA</title>
+  <meta name="description" content="Ćwiczenia 3 programowanie VBA – zadania i wskazówki">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html#%2Fcwiczenia" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+  <main class="wrap">
+    <nav class="breadcrumbs"><a href="../../index.html">Strona główna</a> › <a href="../../index.html#%2Fcwiczenia">Ćwiczenia</a> › Ćwiczenia 3 programowanie VBA</nav>
+    <h1>Ćwiczenia 3 programowanie VBA</h1>
+
+    <ol class="wp-block-list">
+      <li>
+        Narysuj interfejs aplikacji w arkuszu kalkulacyjnym. <strong>Nie</strong> dodawaj przycisków „sprawdź liczby” i „resetuj loterie” – dodamy je po utworzeniu odpowiednich procedur.
+      </li>
+
+      <li>
+        W nowym module utwórz funkcję sprawdzającą kolor komórki. Funkcja przyjmuje jako argument zakres z arkusza (Range) i zwraca kod koloru cell.Interior.Color.
+        <pre><code>Function CheckBackgroundColor(cell As Range)
+    If (cell.Cells.Count > 1) Then
+        MsgBox ("wrong argument")
+        Exit Function
+    Else
+        CheckBackgroundColor = cell.Interior.Color
+    End If
+End Function</code></pre>
+      </li>
+
+      <li>
+        W tym samym module dodaj nową procedurę resetLotto(). Procedura resetuje kolor komórek w zakresie Lotto (wiersze 2–5, kolumny A–N) i czyści wiersz wyników.
+        <pre><code>Sub resetLotto()
+
+For j = 2 To 5
+    For i = 1 To 14
+        Cells(j, i).Interior.ColorIndex = 0
+    Next i
+Next j
+
+Range("A10:N10").ClearContents
+
+End Sub</code></pre>
+        Pokoloruj 6 komórek w arkuszu, dodaj przycisk „resetuj loterie” i podepnij do niego procedurę resetLotto(). Przetestuj działanie.
+      </li>
+
+      <li>
+        Dodaj procedurę lotto(), która bez powtórek wylosuje 6 liczb z zakresu 1–56 do tablicy liczby(5).
+        <pre><code>Sub lotto()
+
+    Dim liczby(5) As Integer
+    Dim wylosowanaLiczba As Integer
+    Dim powtorzenie As Boolean
+    Dim i As Integer
+    i = 0
+
+    Do While liczby(5) = 0
+        wylosowanaLiczba = Int(Round(Rnd() * 56, 0))
+        powtorzenie = False
+        For Each liczba In liczby
+            If liczba = wylosowanaLiczba Then
+                powtorzenie = True
+            End If
+        Next
+        If powtorzenie = False Then
+            liczby(i) = wylosowanaLiczba
+            i = i + 1
+        End If
+    Loop
+
+'Tutaj wklej kod z podpunktu 5!
+
+End Sub</code></pre>
+      </li>
+
+      <li>
+        Wypisz wylosowane liczby do arkusza w wierszu 10 (kolumny A–F).
+        <pre><code>For i = 1 To 6 Step 1
+    Cells(10, i).Value = liczby(i - 1)
+Next i
+
+'Tutaj wklej kod z podpunktu 6!</code></pre>
+      </li>
+
+      <li>
+        Zidentyfikuj komórki pokolorowane przez użytkownika i zapisz wartości do tablicy twojeLiczby(5). Przyjmij, że kolor „brak” ma kod 16777215.
+        <pre><code>Dim twojeLiczby(5) As Integer
+Dim color As Double
+Dim x As Integer
+x = 0
+color = 16777215</code></pre>
+        Przejrzyj zakres (wiersze 2–5, kolumny A–N) i wykorzystaj funkcję CheckBackgroundColor():
+        <pre><code>For i = 2 To 5 Step 1
+    For j = 1 To 14 Step 1
+        If CheckBackgroundColor(Cells(i, j)) <> color Then
+            twojeLiczby(x) = Cells(i, j).Value
+            x = x + 1
+        End If
+    Next j
+Next i
+
+'Tutaj wklej kod z podpunktu 7!</code></pre>
+      </li>
+
+      <li>
+        Wypisz wartości pokolorowanych liczb w wierszu 10 (kolumny I–N; tj. przesunięte o 8 kolumn).
+        <pre><code>For i = 1 To 6 Step 1
+    Cells(10, i + 8).Value = twojeLiczby(i - 1)
+Next i
+
+'Tutaj wklej kod z podpunktu 8!</code></pre>
+      </li>
+
+      <li>
+        Sprawdź, ile pokolorowanych liczb jest równych wylosowanym.
+        <pre><code>Dim wynik As Integer
+wynik = 0
+
+For i = 0 To 5 Step 1
+    For j = 0 To 5 Step 1
+        If liczby(i) = twojeLiczby(j) Then
+            wynik = wynik + 1
+        End If
+    Next
+Next
+
+'Tutaj wklej kod z podpunktu 9!</code></pre>
+      </li>
+
+      <li>
+        Wyświetl komunikat z liczbą trafień i zapisz wynik do arkusza.
+        <pre><code>MsgBox ("Twój wynik to: " & wynik)
+Cells(14, 3).Value = wynik
+wynik = 0</code></pre>
+      </li>
+
+      <li>
+        Utwórz przycisk „Sprawdź liczby” i przypnij do niego procedurę lotto(). Pokoloruj 6 komórek i przetestuj program.
+      </li>
+    </ol>
+
+    <p><strong>Zadanie dodatkowe:</strong> Dodaj do programu możliwość wielokrotnego losowania (użytkownik podaje liczbę losowań; program zwraca najwyższy wynik).</p>
+
+  </main>
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
