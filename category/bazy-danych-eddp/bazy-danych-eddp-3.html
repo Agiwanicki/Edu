@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 3 – Bazy danych & SQL [EDDP]</title>
+  <meta name="description" content="Ćwiczenia 3 Bazy danych & SQL [EDDP] – zadania DML/DQL.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html#%2Fcwiczenia" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <nav class="breadcrumbs"><a href="../../index.html">Strona główna</a> › <a href="../../index.html#%2Fcwiczenia">Ćwiczenia</a> › Ćwiczenia 4 – Bazy danych & SQL [EDDP]</nav>
+    <h1>Ćwiczenia 3 – Bazy danych & SQL [EDDP]</h1>
+
+    <ol class="wp-block-list">
+      <li>
+        <strong>Utwórz nową pustą bazę</strong> o nazwie <code>PROG</code>.
+        <ul class="wp-block-list">
+          <li>Kliknij prawym przyciskiem myszy na <strong>Databases</strong>.</li>
+          <li>Wybierz <strong>New Database…</strong>.</li>
+          <li>W polu <strong>Database name</strong> wpisz <code>PROG</code>.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Utwórz tabele</strong> w bazie <code>PROG</code> przy pomocy skryptu <code>Lab2.1.PROG.struktura_bazy.sql</code> (do pobrania na Teams).
+        <ul class="wp-block-list">
+          <li>Plik → <strong>Open</strong> → <strong>File…</strong>, wskaż <code>Lab2.1.PROG.struktura_bazy.sql</code>.</li>
+          <li>Uruchom skrypt klawiszem <strong>F5</strong> lub przyciskiem <strong>Execute</strong>.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Wygeneruj diagram bazy danych</strong>.
+        <ul class="wp-block-list">
+          <li>Rozwiń bazę <strong>PROG</strong>.</li>
+          <li>Prawy przycisk myszy na <strong>Database Diagrams</strong> → <strong>New Database Diagram</strong>.</li>
+          <li>Przytrzymaj <strong>Shift</strong>, zaznacz wszystkie tabele i kliknij <strong>Add</strong>.</li>
+          <li>Zamknij okno (<strong>Close</strong>) i zapisz diagram (<strong>Ctrl+S</strong>).</li>
+          <li>Diagram znajdziesz w folderze <strong>Database Diagrams</strong>.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Wypełnij tabele danymi</strong> skryptem <code>Lab2.2.PROG.dane.sql</code> (Teams).
+        <ul class="wp-block-list">
+          <li>Otwórz i uruchom analogicznie jak w pkt 2 (<code>Lab2.2.PROG.dane.sql</code>).</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Obejrzyj zawartość wszystkich tabel</strong>.
+        <ul class="wp-block-list">
+          <li>Prawy przycisk myszy na nazwę tabeli → <strong>Select Top 1000 Rows</strong>.</li>
+          <li>Edycja rekordów: <strong>Edit Top 200 Rows</strong>.</li>
+          <li>Zmiana właściwości kolumn: <strong>Design</strong>.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Napisz polecenia DML</strong> wykonujące akcje (po jednym poleceniu na podpunkt). <br>
+        Otwórz nowy edytor (<strong>New Query</strong>), a następnie <strong>Ctrl+S</strong>, aby zapisać plik z poleceniem.
+        <ol class="wp-block-list">
+          <li><em>INSERT</em>: dodaj siebie jako pracownika.</li>
+          <li><em>INSERT</em>: dodaj trzech pracowników (dane dowolne) w <strong>jednym</strong> poleceniu.</li>
+          <li><em>INSERT</em>: dodaj nowe stanowisko.</li>
+          <li><em>UPDATE</em>: przypisz pracowników z pkt 2. do stanowiska z pkt 3. i ustaw pracownika z pkt 1. jako ich szefa (jedno polecenie).</li>
+          <li><em>DELETE</em>: usuń wszystkie kary powyżej 500 zł.</li>
+          <li><em>INSERT…SELECT</em>: dodaj każdemu pracownikowi (poza prezesem) nagrodę = 10% pensji.
+            <ol class="wp-block-list">
+              <li><a href="https://www.tutorialspoint.com/sql/sql-sub-queries.htm" target="_blank" rel="noreferrer noopener">Materiał: subqueries</a></li>
+              <li>TIP: <code>INSERT INTO … SELECT … FROM … WHERE …</code></li>
+            </ol>
+          </li>
+          <li><em>UPDATE…FROM</em>: ustaw wszystkim pracownikom pensję = <code>dodatek * 2 + 1000</code>.
+            <ol class="wp-block-list">
+              <li>TIP: <code>UPDATE … SET … FROM … WHERE …</code></li>
+            </ol>
+          </li>
+          <li><em>MERGE / IF EXISTS</em>: jeśli w bazie jest stanowisko „Programista”, ustaw mu dodatek = 1000; jeśli nie ma – dodaj je z dodatkiem = 1000.
+            <ol class="wp-block-list">
+              <li><a href="https://tutorialspoint.dev/language/sql/sql-merge-statement" target="_blank" rel="noreferrer noopener">Materiał: MERGE</a></li>
+            </ol>
+          </li>
+          <li><em>DQL</em>Napisz zapytanie zwracające: Imię, Nazwisko, Nazwa stanowiska, <strong>Suma należności</strong> = pensja + dodatek + nagrody + kary.</li>
+          <li><em>UPDATE</em> (zadanie dodatkowe): ustaw prezesowi pensję na wartość o 100 większą niż najwyższa <strong>Suma należności</strong> dla pracownika.
+            <ol class="wp-block-list">
+              <li><a href="https://www.w3schools.com/sql/sql_min_max.asp" target="_blank" rel="noreferrer noopener">MIN / MAX</a></li>
+              <li><a href="https://www.w3schools.com/sql/sql_count_avg_sum.asp" target="_blank" rel="noreferrer noopener">COUNT / AVG / SUM</a></li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+    </ol>
+
+    <h3>Dodatkowe materiały</h3>
+    <ul class="wp-block-list">
+      <li>Przegląd SSMS: <a href="https://www.youtube.com/watch?v=Q8gBvsUjTLw&t=108s" target="_blank" rel="noreferrer noopener">wideo</a></li>
+      <li>Sub-queries (nested queries): <a href="https://www.youtube.com/watch?v=m1KcNV-Zhmc" target="_blank" rel="noreferrer noopener">wideo</a></li>
+      <li>Przykład <code>MERGE</code>: <a href="https://www.youtube.com/watch?v=oFZ5Lc3NZ_U" target="_blank" rel="noreferrer noopener">wideo</a></li>
+    </ul>
+
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
