@@ -1,1 +1,106 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zajęcia 3 – Automatyzacja procesów przetwarzania danych</title>
+  <meta name="description" content="Ćwiczenia z automatyzacji procesów przetwarzania danych: import, analiza, raportowanie i wizualizacja w Pythonie.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Zajęcia 3 – Automatyzacja procesów przetwarzania danych</h1>
+
+    <p class="callout">Wykorzystaj biblioteki <code>pandas</code>, <code>numpy</code> i <code>matplotlib</code> do przetwarzania danych z plików CSV oraz tworzenia raportów i wykresów.</p>
+
+    <ol>
+      <li>
+        Wczytaj pliki <code>studenci.csv</code> i <code>stock.csv</code> do obiektów <code>DataFrame</code> i wypisz podstawowe informacje:
+        <ul>
+          <li>liczba wierszy i kolumn,</li>
+          <li>pierwsze 5 wierszy każdego pliku.</li>
+        </ul>
+      </li>
+
+      <li>
+        Na podstawie danych z <code>studenci.csv</code>:
+        <ul>
+          <li>policz liczbę studentów na każdym kierunku,</li>
+          <li>oblicz średnią ocen per kierunek,</li>
+          <li>wskaż kierunek z najwyższą średnią.</li>
+        </ul>
+      </li>
+
+      <li>
+        Wyfiltruj studentów ze średnią ocen ≥ 4.5 i zapisz wynik do pliku <code>honors.csv</code>.
+      </li>
+
+      <li>
+        Dodaj do danych kolumnę <code>Status</code> według reguł:
+        <ul>
+          <li>średnia ≥ 4.5 → „Wyróżnienie”</li>
+          <li>4.0–4.49 → „Dobry”</li>
+          <li>3.0–3.99 → „Zaliczone”</li>
+          <li>&lt; 3.0 → „Warunek”</li>
+        </ul>
+      </li>
+
+      <li>
+        W pliku <code>stock.csv</code>:
+        <ul>
+          <li>zamień kolumnę <code>Data</code> na typ daty i posortuj rosnąco,</li>
+          <li>oblicz dzienne stopy zwrotu,</li>
+          <li>oblicz 7-dniową średnią kroczącą stopy zwrotu.</li>
+        </ul>
+      </li>
+
+      <li>
+        Oblicz 30-dniową zmienność (odchylenie standardowe) dziennej stopy zwrotu oraz
+        30-dniową średnią kroczącą ceny zamknięcia. Dodaj je jako kolumny <code>vol30</code> i <code>sma30</code>.
+      </li>
+
+      <li>
+        Zidentyfikuj największe obsunięcie (max drawdown) w szeregu <code>Zamkniecie</code>:
+        <ul>
+          <li>oblicz bieżący szczyt (rolling max),</li>
+          <li>oblicz obsunięcie w %,</li>
+          <li>wskaż daty szczytu, dołka i wartość maksymalnego obsunięcia.</li>
+        </ul>
+      </li>
+
+      <li>
+        Wykryj dni z luką cenową („gap”) – różnica między <code>Otwarcie</code> a poprzednim <code>Zamknieciem</code> większa niż 2%.
+        Wypisz 5 pierwszych wystąpień.
+      </li>
+
+      <li>
+        Przygotuj raporty w formacie Excel (<code>raporty_APPD.xlsx</code>):
+        <ul>
+          <li>arkusz <strong>Studenci</strong>: liczba, średnia, mediana, odchylenie standardowe i udział „Wyróżnienie” per kierunek,</li>
+          <li>arkusz <strong>Stock</strong>: średnia i mediana ceny, średnia zmienność, największe obsunięcie i liczba luk &gt; 2%.</li>
+        </ul>
+      </li>
+
+      <li>
+        Przygotuj dwa wykresy:
+        <ul>
+          <li>cena zamknięcia z 30-dniową średnią kroczącą,</li>
+          <li>dzienne stopy zwrotu.</li>
+        </ul>
+        Zapisz je w katalogu eksportu jako pliki PNG.
+      </li>
+    </ol>
+
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
 
