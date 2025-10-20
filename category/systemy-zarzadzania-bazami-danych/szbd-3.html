@@ -101,6 +101,16 @@ FROM pracownik AS p;</code></pre>
        + '.' + REPLACE(CAST(p.pr_id AS char),' ','')
        + '@prog.pl' AS email
 FROM pracownik p;</code></pre>
+    <p><strong>Usuwanie polskich znaków z tekstu (inny sposób 2017+):</strong></p>
+    <pre><code>
+        SELECT
+      CONCAT(
+        TRANSLATE(LOWER(p.pr_imie),     N'ąćęłńóśźż', N'acelnoszz'), '.',
+        TRANSLATE(LOWER(p.pr_nazwisko), N'ąćęłńóśźż', N'acelnoszz'), '.',
+        p.pr_id, '@prog.pl'
+      ) AS email
+    FROM pracownik AS p;
+    </code></pre>
 
     <p><strong>Widok pomocniczy:</strong></p>
     <pre><code>CREATE VIEW dbo.vpracownik AS
