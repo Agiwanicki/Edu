@@ -129,7 +129,28 @@ SELECT
       + '.' + REPLACE(CAST(p.pr_id AS char),' ','')
       + '@prog.pl' AS vpr_email
 FROM dbo.pracownik AS p;</code></pre>
+ 
+  <p><strong>Widok pomocniczy:</strong></p>
+  <pre><code>
+    CREATE OR ALTER VIEW dbo.vpracownik AS
+    SELECT
+        p.pr_id       AS vpr_id,
+        p.pr_imie     AS vpr_imie,
+        p.pr_nazwisko AS vpr_nazwisko,
+        p.pr_pensja   AS vpr_pensja,
+        p.pr_plec     AS vpr_plec,
+        p.pr_st_id    AS vpr_st_id,
+        p.pr_szef_id  AS vpr_szef_id,
+        IIF(p.pr_plec = 'M', 'Pan', 'Pani') AS vpr_pan_pani,
+        CONCAT(
+            TRANSLATE(LOWER(p.pr_imie),     N'ąćęłńóśźż', N'acelnoszz'), '.',
+            TRANSLATE(LOWER(p.pr_nazwisko), N'ąćęłńóśźż', N'acelnoszz'), '.',
+            p.pr_id, '@prog.pl'
+        ) AS vpr_email
+    FROM dbo.pracownik AS p;
+  <pre><code>
 
+    
     <p><strong>Informacja dla pracownika o nagrodzie:</strong></p>
     <pre><code>INSERT INTO dbo.info (in_adres, in_tresc, in_data_wystawienia, in_email)
 SELECT
