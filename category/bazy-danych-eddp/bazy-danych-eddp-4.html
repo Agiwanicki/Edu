@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 4 – Bazy danych i SQL</title>
+  <meta name="description" content="Projektowanie struktur baz danych na podstawie wymagań: tabele DOM, OSOBA, UMOWA oraz widok z listą miast.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Ćwiczenia 4 – Bazy danych i SQL</h1>
+
+    <p class="callout">
+      Celem zajęć jest zaprojektowanie struktur w SQL Server na podstawie <strong>opisu wymagań</strong>.
+      Nie korzystaj z gotowych skryptów – samodzielnie dobierz typy danych i ograniczenia.
+    </p>
+
+    <h2>Zadania</h2>
+    <ol>
+      <li>
+        <strong>Utwórz nową bazę danych</strong> o nazwie <code>DOMY</code>.
+      </li>
+
+      <li>
+        <strong>Zaprojektuj tabelę <code>DOM</code></strong> przechowującą informacje o budynkach. W tabeli mają znaleźć się pola:
+        <ul>
+          <li>unikalny identyfikator (nadawany automatycznie),</li>
+          <li>powierzchnia domu (liczba z dwoma miejscami po przecinku),</li>
+          <li>informacja o posiadaniu piwnicy (wartości „T”/„N”),</li>
+          <li>liczba pięter (liczba całkowita),</li>
+          <li>miasto, ulica, numer ulicy (ograniczyć długość tekstu),</li>
+          <li>opcjonalny opis obiektu.</li>
+        </ul>
+        Wymagania jakości danych: wymagane pola muszą być <em>niepuste</em>, wartości dla „piwnicy” ograniczone do dwóch liter, brak wartości ujemnych tam, gdzie to ma sens.
+      </li>
+
+      <li>
+        <strong>Zaprojektuj tabelę <code>OSOBA</code></strong> przechowującą dane osób:
+        <ul>
+          <li>unikalny identyfikator (klucz główny),</li>
+          <li>imię i nazwisko (tekst, Unicode),</li>
+          <li>PESEL – 11 znaków, wartość musi być unikalna w skali tabeli.</li>
+        </ul>
+        Zadbaj o odpowiednie długości pól tekstowych i wymagalność najważniejszych atrybutów.
+      </li>
+
+      <li>
+        <strong>Zaprojektuj tabelę <code>UMOWA</code></strong> przechowującą informacje o zawieranych umowach:
+        <ul>
+          <li>unikalny identyfikator,</li>
+          <li>numer umowy (unikalny, tekst ograniczonej długości),</li>
+          <li>data zawarcia (domyślnie bieżąca data),</li>
+          <li>powiązanie z konkretnym domem (<code>DOM</code>),</li>
+          <li>powiązanie z konkretną osobą (<code>OSOBA</code>).</li>
+        </ul>
+        Zdefiniuj poprawne <em>klucze obce</em> do tabel <code>DOM</code> i <code>OSOBA</code> oraz wymagalność kluczowych kolumn.
+      </li>
+
+      <li>
+        <strong>Dodaj dane przykładowe</strong>: co najmniej po 2 rekordy w tabelach <code>DOM</code>, <code>OSOBA</code> oraz odpowiadające im wpisy w <code>UMOWA</code>.
+        Upewnij się, że <code>UMOWA</code> odnosi się do istniejących rekordów z pozostałych tabel.
+      </li>
+
+      <li>
+        <strong>Utwórz perspektywę (widok)</strong> zwracającą listę <em>unikalnych</em> miast, w których zarejestrowane są domy.
+        Widok ma zwracać jedną kolumnę z nazwą miasta (bez duplikatów).
+      </li>
+
+      <li>
+        <strong>Przygotuj skrypt porządkowy</strong> usuwający utworzone obiekty (widoki i tabele) w poprawnej kolejności.
+        Uwaga: najpierw usuń obiekty zależne (widok, tabele z kluczami obcymi), dopiero na końcu tabele bazowe.
+      </li>
+    </ol>
+
+    <section class="box">
+      <h2>Wskazówki</h2>
+      <ul>
+        <li>Dobieraj typy danych adekwatnie do charakteru informacji (np. liczby całkowite vs. wartości dziesiętne, długość varchar).</li>
+        <li>Dla tekstów używaj typów w kodowaniu Unicode.</li>
+        <li>Waliduj wartości (np. dopuszczalne zakresy, wymagane pola, unikalność tam, gdzie potrzebna).</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
