@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 4 – Programowanie VBA</title>
+  <meta name="description" content="Model dwufazowego wzrostu dywidendy w Excel VBA: interfejs, walidacja, kolorowanie błędów, reset i eksport do Word.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Ćwiczenia 4 – Programowanie VBA</h1>
+
+    <p class="callout">
+      Celem zajęć jest zbudowanie w Excelu <strong>aplikacji VBA</strong> wyceniającej akcję w modelu <strong>dwufazowego wzrostu dywidendy</strong> (DDM).
+      Aplikacja ma być odporna na błędy użytkownika (walidacja danych, komunikaty, kolorowanie błędów, reset) oraz posiadać funkcję <strong>eksportu raportu do Worda</strong>.
+    </p>
+
+    <h2>1. Interfejs i dane wejściowe</h2>
+    <p>Na arkuszu zbuduj prosty formularz (etykiety + komórki na dane + przyciski). Pola wejściowe:</p>
+    <ul>
+      <li><strong>D</strong> – dywidenda na 1 akcję za rok (wartość dodatnia).</li>
+      <li><strong>g1</strong> – stałe, <em>wyższe</em> tempo wzrostu w I fazie (np. w % na rok).</li>
+      <li><strong>g2</strong> – stałe, <em>niższe</em> tempo wzrostu w II fazie.</li>
+      <li><strong>N</strong> – długość I fazy (lata, liczba całkowita &gt;= 1).</li>
+      <li><strong>r</strong> – wymagana stopa zwrotu inwestora (w % na rok, r &gt; 0).</li>
+    </ul>
+    <p>Dodaj przyciski: <strong>Oblicz</strong>, <strong>Reset</strong>, <strong>Eksport do Word</strong>.</p>
+
+    <h2>2. Walidacja i „odporność” na błędy</h2>
+    <ul>
+      <li>Błędna wartość ma powodować <strong>MsgBox</strong> z komunikatem oraz <strong>pokolorowanie komórki</strong> z błędem.</li>
+      <li><strong>Zakaz dzielenia przez 0</strong> – pilnuj przypadków typu <code>r = 0</code> lub <code>r = g2</code> w części stałej modelu.</li>
+      <li><strong>Reset</strong> ma przywracać domyślne kolory komórek i czyścić pola wejściowe.</li>
+      <li>Przykład kolorowania: właściwość <code>Interior.ColorIndex</code> (np. na żółto dla błędu), oraz przywracanie koloru domyślnego przy poprawie.</li>
+    </ul>
+
+    <h2>3. Obliczenia</h2>
+    <h2>Model dwufazowego wzrostu dywidendy</h2>
+    <figure class="illustration">
+      <img src="../../assets/Model dwufazowy.jpg"
+           alt="Model zmiennego wzrostu dywidendy – model dwóch faz"
+           style="max-width: 100%; border-radius: 8px; margin: 1em 0; box-shadow: 0 0 12px rgba(0,0,0,0.15);">
+      <figcaption>Rys. 1. Model zmiennego wzrostu dywidendy – model dwóch faz (DDM dwufazowy).</figcaption>
+    </figure>
+
+    <p>Zaimplementuj formułe dla modelu dwufazowego. Wynik (wycena akcji) pokaż w przeznaczonej do tego komórce. </p>
+
+    <h2>4. Eksport do Word</h2>
+    <p>Przygotuj procedurę kopiującą wskazany <em>zakres tabeli z arkusza</em> do dokumentu Word jako tabelę lub jako obraz (metafile) lub OLEObject.</p>
+    <ul class="links">
+      <li><strong>Włączenie biblioteki:</strong> <em>Tools → References…</em> → zaznacz <strong>Microsoft Word 16.0 Object Library</strong>.</li>
+      <li><a rel="noreferrer noopener" target="_blank" href="https://learn.microsoft.com/en-us/office/vba/excel/concepts/working-with-other-applications/exporting-a-range-to-a-table-in-a-word-document">Exporting a range to a table in a Word document</a></li>
+      <li><a rel="noreferrer noopener" target="_blank" href="https://learn.microsoft.com/en-us/office/vba/excel/concepts/working-with-other-applications/exporting-a-table-to-a-word-document">Exporting a table to a Word document</a></li>
+      <li>Wklejanie jako JPG: użyj <code>DataType := wdPasteMetafilePicture</code>.</li>
+      <li>Wklejanie jako obiekt powiązany (aktualizuje dane): <code>DataType := wdPasteOLEObject</code>. Zobacz też: <a rel="noreferrer noopener" target="_blank" href="https://learn.microsoft.com/en-us/office/vba/api/word.wdpastedatatype">Word.WdPasteDataType</a>.</li>
+      <li><strong>With</strong> statement w VBA: <a rel="noreferrer noopener" target="_blank" href="https://learn.microsoft.com/en-us/office/vba/language/reference/user-interface-help/with-statement">With statement</a></li>
+    </ul>
+
+    <h2>5. Podpowiedzi techniczne</h2>
+    <ul>
+      <li>Kolorowanie komórek: <code>Range(...).Interior.ColorIndex = 6</code> (żółty) oraz przywracanie koloru domyślnego.</li>
+      <li>Obsługa wyjątków: <code>On Error GoTo Handler</code>; waliduj wejście przed obliczeniami.</li>
+      <li>Tekst % → liczba: zamieniaj przecinki/kropki i skaluj (np. 5% → 0.05).</li>
+      <li>Formatowanie wyników: <code>Format(value, "0.00")</code> albo ustawienia formatu komórek.</li>
+      <li>Praca z zakresem do eksportu: zaznacz tabelę wejścia/wyjścia (nagłówki + wartości) i wskaż ją w kodzie.</li>
+    </ul>
+
+    <section class="box">
+      <h2>Wymagania aplikacji:</h2>
+      <ul>
+        <li>Interfejs z polami D, g1, g2, N, r oraz trzema przyciskami.</li>
+        <li>Walidacja i kolorowanie błędów + reset.</li>
+        <li>Poprawne obliczenia modelu dwufazowego.</li>
+        <li>Eksport raportu do Word (tabela lub obraz / OLEObject).</li>
+      </ul>
+    </section>
+
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
