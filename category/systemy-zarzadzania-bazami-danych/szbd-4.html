@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 4 – Systemy zarządzania bazami danych</title>
+  <meta name="description" content="Ćwiczenia 4 – DDL/DML w SQL Server: tworzenie baz, tabel, kluczy i wstawianie danych.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Ćwiczenia 4 – Bazy danych i SQL (SSMS)</h1>
+    <p class="callout"><strong>Cel:</strong> utworzenie bazy danych <code>DOMY</code>, definicja tabel <code>DOM</code>, <code>OSOBA</code>, <code>UMOWA</code> z poprawnymi kluczami i ograniczeniami, wstawienie przykładowych danych oraz przygotowanie skryptu usuwającego obiekty.</p>
+
+    <h2>Instrukcje</h2>
+    <ol>
+      <li>
+        <strong>Załóż bazę</strong> <code>DOMY</code> (skryptem T‑SQL).
+      </li>
+
+      <li>
+        <strong>Utwórz tabelę</strong> <code>DOM</code> o kolumnach (wymagalne = <code>NOT NULL</code>):
+        <ul>
+          <li><strong>Id</strong> – liczba całkowita, <em>autonumerowana</em>, klucz główny.
+            <ul>
+              <li>autonumerowanie: <code>IDENTITY(1,1)</code></li>
+              <li>klucz główny: <code>CONSTRAINT [dom_PK] PRIMARY KEY NONCLUSTERED ([id] ASC)</code> lub po prostu <code>PRIMARY KEY</code> przy kolumnie <code>Id</code></li>
+            </ul>
+          </li>
+          <li><strong>Powierzchnia</strong> – typ liczbowy, zakres 0–999,99: <code>[powierzchnia] decimal(5,2) NOT NULL</code></li>
+          <li><strong>Piwnica</strong> – 1 znak UNICODE, wartości tylko <code>'T'</code> lub <code>'N'</code>:
+            <ul>
+              <li><code>[piwnica] nchar(1) NOT NULL CHECK (piwnica IN ('T','N'))</code></li>
+            </ul>
+          </li>
+          <li><strong>Pieter</strong> – liczba całkowita (odpowiedni typ do liczby pięter, np. <code>smallint</code>).</li>
+          <li><strong>Miasto</strong> – tekst do 50 znaków w UNICODE (<code>nvarchar</code>), <em>wymagalne</em>.</li>
+          <li><strong>Ulica</strong> – tekst do 100 znaków w UNICODE, <em>wymagalne</em>.</li>
+          <li><strong>Nr_ulicy</strong> – tekst do 10 znaków w UNICODE, <em>wymagalne</em>.</li>
+          <li><strong>Opis</strong> – tekst do 255 znaków w UNICODE, <em>niewymagalne</em>.</li>
+        </ul>
+        <ul class="links">
+          <li><a href="https://learn.microsoft.com/en-us/sql/t-sql/data-types/nchar-and-nvarchar-transact-sql?view=sql-server-ver16" target="_blank" rel="noopener">NVARCHAR / NCHAR (MS Learn)</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Utwórz tabelę</strong> <code>OSOBA</code> o kolumnach:
+        <ul>
+          <li><strong>Id</strong> – int, <code>IDENTITY(1,1)</code>, <em>PRIMARY KEY</em>.</li>
+          <li><strong>Imie</strong> – <code>nvarchar(50) NOT NULL</code>.</li>
+          <li><strong>Nazwisko</strong> – <code>nvarchar(50) NOT NULL</code>.</li>
+          <li><strong>Pesel</strong> – <code>nchar(11) NOT NULL</code>, z ograniczeniem unikalności (<code>UNIQUE</code>).</li>
+        </ul>
+        <ul class="links">
+          <li><a href="https://www.w3schools.com/sql/sql_unique.asp" target="_blank" rel="noopener">UNIQUE (W3Schools)</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Utwórz tabelę</strong> <code>UMOWA</code> o kolumnach:
+        <ul>
+          <li><strong>Id</strong> – int, <code>IDENTITY(1,1)</code>, <em>PRIMARY KEY</em>.</li>
+          <li><strong>Nr</strong> – <code>nvarchar(10) NOT NULL</code>, wartości muszą być unikalne (<code>UNIQUE</code>).</li>
+          <li><strong>Data</strong> – typ daty, <em>NOT NULL</em>, domyślnie bieżąca data (<code>DEFAULT</code> z funkcją wbudowaną).</li>
+          <li><strong>Dom_id</strong> – <em>NOT NULL</em>, klucz obcy do <code>DOM(Id)</code>:
+            <div class="code"><pre><code>CONSTRAINT [umowa_dom_FK]
+  FOREIGN KEY ([dom_id]) REFERENCES [dbo].[dom]([id])</code></pre></div>
+          </li>
+          <li><strong>Osoba_id</strong> – <em>NOT NULL</em>, klucz obcy do <code>OSOBA(Id)</code> (analogicznie: <code>[umowa_osoba_FK]</code>).</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Wprowadź dane</strong> (dowolne) o dwóch osobach, dwóch domach i dwóch umowach wiążących domy z osobami.
+        <ul>
+          <li>Id mają być nadawane automatycznie (dzięki <code>IDENTITY</code>).</li>
+          <li>Wykorzystaj <strong>INSERT ... SELECT ... UNION ALL</strong> do wstawienia wielu wierszy jednocześnie, np.:
+            <div class="code"><pre><code>INSERT INTO dbo.osoba (imie, nazwisko, pesel)
+SELECT N'Jan',  N'Kowalski', N'85021012345' UNION ALL
+SELECT N'Adam', N'Nowak',    N'76031523456';</code></pre></div>
+          </li>
+        </ul>
+        <ul class="links">
+          <li><a href="https://www.w3schools.com/sql/sql_ref_union.asp" target="_blank" rel="noopener">UNION (W3Schools)</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Utwórz skrypt</strong> usuwający wszystkie tabele (i ewentualne perspektywy) z bazy <code>DOMY</code>.
+        <ul>
+          <li><code>DROP TABLE [nazwa_tabeli]</code></li>
+          <li><code>DROP VIEW [nazwa_perspektywy]</code></li>
+        </ul>
+        <p class="note">Uwaga: zachowaj poprawną kolejność (najpierw usuń klucze obce lub tabele zależne).</p>
+      </li>
+    </ol>
+
+    <h2>Wskazówki</h2>
+    <ul>
+      <li>W SQL Server funkcje domyślnej daty: <code>GETDATE()</code> (datetime) lub <code>SYSDATETIME()</code> (datetime2).</li>
+      <li>Pole UNICODE wstawiaj z prefiksem <code>N''</code> (np. <code>N'Łódź'</code>).</li>
+    </ul>
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
