@@ -23,7 +23,7 @@
       Aplikacja ma być odporna na błędy użytkownika (walidacja danych, komunikaty, kolorowanie błędów, reset) oraz posiadać funkcję <strong>eksportu raportu do Worda</strong>.
     </p>
 
-    <h2>1. Interfejs i dane wejściowe</h2>
+    <h3>1. Interfejs i dane wejściowe</h3>
     <p>Na arkuszu zbuduj prosty formularz (etykiety + komórki na dane + przyciski). Pola wejściowe:</p>
     <ul>
       <li><strong>D</strong> – dywidenda na 1 akcję za rok (wartość dodatnia).</li>
@@ -34,7 +34,7 @@
     </ul>
     <p>Dodaj przyciski: <strong>Oblicz</strong>, <strong>Reset</strong>, <strong>Eksport do Word</strong>.</p>
 
-    <h2>2. Walidacja i „odporność” na błędy</h2>
+    <h3>2. Walidacja i „odporność” na błędy</h3>
     <ul>
       <li>Błędna wartość ma powodować <strong>MsgBox</strong> z komunikatem oraz <strong>pokolorowanie komórki</strong> z błędem.</li>
       <li><strong>Zakaz dzielenia przez 0</strong> – pilnuj przypadków typu <code>r = 0</code> lub <code>r = g2</code> w części stałej modelu.</li>
@@ -42,8 +42,8 @@
       <li>Przykład kolorowania: właściwość <code>Interior.ColorIndex</code> (np. na żółto dla błędu), oraz przywracanie koloru domyślnego przy poprawie.</li>
     </ul>
 
-    <h2>3. Obliczenia</h2>
-    <h2>Model dwufazowego wzrostu dywidendy</h2>
+    <h3>3. Obliczenia</h3>
+    <h3>Model dwufazowego wzrostu dywidendy</h3>
     <figure class="illustration">
       <img src="../../assets/Model dwufazowy.jpg"
            alt="Model zmiennego wzrostu dywidendy – model dwóch faz"
@@ -53,7 +53,7 @@
 
     <p>Zaimplementuj formułe dla modelu dwufazowego. Wynik (wycena akcji) pokaż w przeznaczonej do tego komórce. </p>
 
-    <h2>4. Eksport do Word</h2>
+    <h3>4. Eksport do Word</h3>
     <p>Przygotuj procedurę kopiującą wskazany <em>zakres tabeli z arkusza</em> do dokumentu Word jako tabelę lub jako obraz (metafile) lub OLEObject.</p>
     <ul class="links">
       <li><strong>Włączenie biblioteki:</strong> <em>Tools → References…</em> → zaznacz <strong>Microsoft Word 16.0 Object Library</strong>.</li>
@@ -64,7 +64,7 @@
       <li><strong>With</strong> statement w VBA: <a rel="noreferrer noopener" target="_blank" href="https://learn.microsoft.com/en-us/office/vba/language/reference/user-interface-help/with-statement">With statement</a></li>
     </ul>
 
-    <h2>5. Podpowiedzi techniczne</h2>
+    <h3>5. Podpowiedzi techniczne</h3>
     <ul>
       <li>Kolorowanie komórek: <code>Range(...).Interior.ColorIndex = 6</code> (żółty) oraz przywracanie koloru domyślnego.</li>
       <li>Tekst % → liczba: zamieniaj przecinki/kropki i skaluj (np. 5% → 0.05).</li>
