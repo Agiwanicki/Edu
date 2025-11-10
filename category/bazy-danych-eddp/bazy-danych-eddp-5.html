@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 5 – Systemy zarządzania bazami danych</title>
+  <meta name="description" content="Ćwiczenia do SQL Server/SSMS: relacje, widoki, indeksy. Bez gotowych rozwiązań.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Ćwiczenia 5 – Systemy zarządzania bazami danych</h1>
+<p class="callout"><strong>Cel:</strong> normalizacja istniejącej struktury danych poprzez wprowadzenie tabel słownikowych, kluczy obcych, ograniczeń i indeksów oraz modyfikację widoków w celu eliminacji redundancji i zapewnienia spójności danych w bazie.</p>
+
+
+    <h2>Zakres zajęć</h2>
+<p><strong>Wyjaśnienie postaci normalnych (1NF, 2NF, 3NF):</strong><br>
+<a href="https://www.sqlpedia.pl/projektowanie-i-normalizacja-bazy-danych/" target="_blank">https://www.sqlpedia.pl/projektowanie-i-normalizacja-bazy-danych/</a></p>
+<a href="https://pl.wikipedia.org/wiki/Posta%C4%87_normalna_(bazy_danych)" target="_blank">https://pl.wikipedia.org/wiki/Posta%C4%87_normalna_(bazy_danych)</a>
+
+    <ul>
+      <li>Relacje między tabelami i klucze obce.</li>
+      <li>Porządkowanie modelu pod kątem <em>normalizacji</em> (1NF–3NF) – przenoszenie atrybutów do tabel referencyjnych.</li>
+      <li>Widoki (perspektywy) i ich modyfikacje.</li>
+      <li>Indeksy (klastrowe i nieklastrowe), unikalność oraz spójność danych.</li>
+    </ul>
+
+    <h2>Ćwiczenia</h2>
+<p>Odtwórz bazę <strong>domy</strong> wykonując skrypt <strong>Restore.sql</strong> (do pobrania z Teams).<br>
+Po uruchomieniu całego skryptu uruchom także zakomentowaną sekcję dotyczącą utworzenia perspektywy.</p>
+
+<ol>
+  <li>Utwórz tabelę <strong>ADRES</strong> o kolumnach:
+    <ul>
+      <li>id – liczba całkowita, IDENTITY, klucz główny</li>
+      <li>miasto NOT NULL</li>
+      <li>kod_pocztowy NOT NULL</li>
+      <li>ulica NOT NULL</li>
+      <li>nr_domu NOT NULL</li>
+      <li>nr_lokalu NULL</li>
+      <li>typ wartości 'Z' (zameldowania) lub 'K' (korespondencyjny)</li>
+      <li>osoba_id klucz obcy do OSOBA(id)</li>
+    </ul>
+    <p>(normalizacja – <strong>1NF</strong>: upewnij się, że każda kolumna ma wartości atomowe, np. ulica, numer domu oraz kod pocztowy są oddzielnymi polami)</p>
+  </li>
+
+  <li>Wprowadź dane o adresach osób. Dla jednej osoby wprowadź adres zameldowania, a dla innej zameldowania oraz korespondencyjny. ID ma być nadawane automatycznie.
+    <p>(normalizacja – <strong>1NF</strong>: każda wartość w kolumnie jest pojedyncza; dwa różne adresy to dwa wiersze, a nie jedna kolumna zawierająca listę wartości)</p>
+  </li>
+
+  <li>Utwórz indeks zapewniający unikalność pary pól <strong>OSOBA_ID</strong> oraz <strong>TYP</strong>. Następnie sprawdź działanie indeksu, próbując dodać duplikat.
+  </li>
+
+  <li>Zmodyfikuj perspektywę <strong>vmiasta</strong> tak, aby uwzględniała miasta występujące zarówno w tabeli DOM, jak i ADRES (użyj UNION).</li>
+
+  <li>Utwórz tabelę <strong>MIASTO</strong> o kolumnach:
+    <ul>
+      <li>id – klucz główny</li>
+      <li>nazwa – NOT NULL, UNIQUE</li>
+      <li>stawka – NULL</li>
+    </ul>
+  </li>
+
+  <li>Dodaj do tabel <strong>ADRES</strong> i <strong>DOM</strong> kolumnę <strong>miasto_id</strong> będącą kluczem obcym do <strong>MIASTO(id)</strong>. Dodane pole ma być niewymagalne.</li>
+
+  <li>Wypełnij tabelę <strong>MIASTO</strong> danymi o miastach zapisanych w tabelach ADRES i DOM (wykorzystaj perspektywę vmiasta).</li>
+
+  <li>Zaktualizuj pola <strong>miasto_id</strong> w tabelach ADRES i DOM na podstawie nazw miast.</li>
+
+  <li>Usuń kolumnę tekstową zawierającą nazwę miasta z tabel ADRES i DOM oraz zmień pole <strong>miasto_id</strong> na NOT NULL.
+<p>(formalna teoria → <strong>3NF</strong>: eliminacja zależności przechodniej — nazwa miasta oraz stawka zależą od encji MIASTO, a nie od ADRES/DOM)<br>
+(podejście projektowe / SQLpedia → traktowane jako <strong>2NF</strong>: wydzielamy dane niezwiązane z encją do osobnej tabeli, aby ADRES/DOM zawierały wyłącznie swoje atrybuty)</p>
+</li>
+
+  <li>Usuń perspektywę <strong>vmiasta</strong>.</li>
+
+  <li>Wprowadź przykładowe wartości pola <strong>stawka</strong> w tabeli MIASTO.</li>
+
+  <li>Utwórz perspektywę, która będzie zwracała wszystkie kolumny z tabeli DOM oraz dodatkowo:
+    <ul>
+      <li>Nazwę miasta</li>
+      <li>Stawkę dla miasta (jeżeli brak stawki → zwróć 0)</li>
+      <li>Wycenę domu: <strong>powierzchnia * stawka</strong></li>
+    </ul>
+  </li>
+</ol>
+
+<h2>Indeksy CLUSTERED i NONCLUSTERED</h2> 
+    <div class="card">
+      <pre><code>-- Klastrowy (CLUSTERED) – w tabeli może istnieć tylko jeden
+CREATE CLUSTERED INDEX IX_Table_Clustered
+  ON dbo.TableName(ColumnA ASC);
+
+-- Nieklastrowy (NONCLUSTERED)
+CREATE NONCLUSTERED INDEX IX_Table_ColumnB
+  ON dbo.TableName(ColumnB DESC);
+</code></pre>
+    </div>
+
+    <div class="card">
+      <pre><code>-- Składnia DROP INDEX (z nazwą indeksu i nazwą tabeli)
+DROP INDEX IX_Table_ColumnB ON dbo.TableName;
+</code></pre>
+      <p class="note">Uwaga: klastrowy indeks powiązany z kluczem głównym (PRIMARY KEY) najczęściej usuwa się przez skasowanie
+      odpowiedniego ograniczenia i ponowne jego utworzenie z inną opcją (CLUSTERED/NONCLUSTERED).</p>
+    </div>
+
+    <div class="card">
+      <pre><code>-- 1) Usuń istniejący klastrowy indeks
+DROP INDEX IX_Table_Clustered ON dbo.TableName;
+
+-- 2) Utwórz nowy, nieklastrowy na tej samej kolumnie/kolumnach
+CREATE NONCLUSTERED INDEX IX_Table_NonClustered
+  ON dbo.TableName(ColumnA);
+</code></pre>
+      <p class="note">
+        Jeśli klastrowość wynika z <code>PRIMARY KEY</code>, stosuj operację na ograniczeniu:
+      </p>
+      <pre><code>-- Usunięcie klucza głównego (domyślnie często CLUSTERED)
+ALTER TABLE dbo.TableName
+  DROP CONSTRAINT PK_TableName;
+
+-- Ponowne utworzenie klucza głównego jako NONCLUSTERED
+ALTER TABLE dbo.TableName
+  ADD CONSTRAINT PK_TableName
+  PRIMARY KEY NONCLUSTERED (ColumnA);
+
+-- Albo utworzenie osobnego indeksu klastrowego na innej kolumnie
+CREATE CLUSTERED INDEX IX_Table_Clustered_New
+  ON dbo.TableName(ColumnB);
+
+-- Wyłączenie / włączenie indeksu
+ALTER INDEX IX_Table_NonClustered ON dbo.TableName DISABLE;
+ALTER INDEX IX_Table_NonClustered ON dbo.TableName REBUILD; -- włącza ponownie
+</code></pre>
+   </div>
+
+      
+
+</main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
