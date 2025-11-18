@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 6 – Systemy zarządzania bazami danych</title>
+  <meta name="description" content="Ćwiczenia 6 – Systemy zarządzania bazami danych (SQL Server, SSMS): sekwencje, typy użytkownika, indeksy (CLUSTERED/NONCLUSTERED), widoki z agregacją oraz skrypt generujący dane.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Ćwiczenia 6 – Systemy zarządzania bazami danych</h1>
+    <p class="callout"><strong>Cel:</strong> zaprojektowanie tabeli dziennika odwiedzin (<code>OBSERWACJE</code>) z wykorzystaniem <em>sekwencji</em> i <em>typu użytkownika</em>, utrwalenie różnicy między indeksami <code>CLUSTERED</code>/<code>NONCLUSTERED</code>, a także przygotowanie <em>perspektyw</em> (widoków) z agregacją oraz skryptu T‑SQL generującego dane testowe.</p>
+
+    <ol>
+      <li>
+        <strong>Utwórz tabelę <code>OBSERWACJE</code></strong> o kolumnach:
+        <ul>
+          <li><strong>id</strong> – liczba całkowita; wartość nadawana z sekwencji (utworzysz ją w następnym kroku); klucz główny <em>NONCLUSTERED</em>,</li>
+          <li><strong>data</strong> – data i czas (<code>DATETIME</code>/<code>DATETIME2</code>), <em>NOT NULL</em>,</li>
+          <li><strong>IP</strong> – adres IPv4 jako tekst, <em>NOT NULL</em>,</li>
+          <li><strong>dom_id</strong> – <em>NOT NULL</em>, klucz obcy do <code>DOM(id)</code>.</li>
+        </ul>
+        <ul class="links">
+          <li>Indeks nieklastrowy vs klastrowy: <a href="https://www.geeksforgeeks.org/difference-between-clustered-and-non-clustered-index/" target="_blank" rel="noreferrer noopener">porównanie</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Utwórz sekwencję</strong> do nadawania wartości klucza głównego:
+        <ul class="links">
+          <li>Dokumentacja: <a href="https://learn.microsoft.com/en-us/sql/t-sql/statements/create-sequence-transact-sql?view=sql-server-ver16" target="_blank" rel="noreferrer noopener">CREATE SEQUENCE</a></li>
+        </ul>     
+      </li>
+
+      <li>
+        <strong>Utwórz typ użytkownika <code>ut_IPv4</code></strong> przeznaczony dla adresów IPv4.
+        <ul class="links">
+          <li>Dokumentacja: <a href="https://learn.microsoft.com/en-us/sql/t-sql/statements/create-type-transact-sql?view=sql-server-ver16" target="_blank" rel="noreferrer noopener">CREATE TYPE</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Zmień typ kolumny <code>IP</code> w tabeli <code>OBSERWACJE</code> na <code>dbo.ut_IPv4</code></strong>.     
+      </li>
+
+      <li>
+        <strong>Utwórz indeks <code>CLUSTERED</code> na kolumnie <code>IP</code></strong> w tabeli <code>OBSERWACJE</code> (klucz główny pozostaje <em>NONCLUSTERED</em>).
+      </li>
+
+      <li>
+        <strong>Wstaw dane testowe</strong> skryptem T‑SQL (identyfikator z sekwencji, losowe daty i adresy IP, losowe powiązania z tabelą <code>DOM</code>).
+        <ul class="links">
+          <li>Materiały T‑SQL: <a href="https://www.tutorialspoint.com/t_sql/index.htm" target="_blank" rel="noreferrer noopener">podstawy</a></li>
+        </ul>
+        <p>Poniżej przykładowy skrypt (dostosuj nazwy schematów/tabel, jeśli różnią się w Twojej bazie):</p>
+        <div class="card"><pre><code>USE [DOMY];
+SET NOCOUNT ON;
+
+BEGIN
+  DECLARE 
+    @domy_min  INT,
+    @domy_max  INT,
+    @dom_id    INT,
+    @licznik   INT;
+
+  SET @licznik = 1;
+  SET @domy_min = (SELECT MIN(id) FROM dbo.DOM);
+  SET @domy_max = (SELECT MAX(id) FROM dbo.DOM);
+
+  WHILE @licznik &lt;= 100
+  BEGIN
+    SET @dom_id = (
+      SELECT TOP 1 id
+      FROM dbo.DOM
+      WHERE id &gt;= (SELECT ROUND((@domy_max - @domy_min) * RAND(), 0) + @domy_min)
+      ORDER BY id ASC
+    );
+
+    INSERT INTO dbo.OBSERWACJE(id, data, IP, dom_id)
+    SELECT NEXT VALUE FOR dbo.seq_obserwacje_id,
+           DATEADD(DAY, -ROUND(RAND() * 365, 0), GETDATE()),
+           CAST(CAST(ROUND(255 * RAND(), 0) AS NVARCHAR(3)) + '.' +
+                CAST(ROUND(255 * RAND(), 0) AS NVARCHAR(3)) + '.' +
+                CAST(ROUND(255 * RAND(), 0) AS NVARCHAR(3)) + '.' +
+                CAST(ROUND(255 * RAND(), 0) AS NVARCHAR(3)) AS NVARCHAR(15)),
+           @dom_id;
+
+    SET @licznik += 1;
+  END;
+END;</code></pre></div>
+      </li>
+
+      <li>
+        <strong>Utwórz perspektywę</strong> zliczającą liczbę obserwacji dla każdego domu.
+        <ul>
+          <li>Nazwa kolumny z wynikiem: <strong>liczba_odwiedzin</strong>.</li>
+          <li>Posortuj malejąco po <strong>liczba_odwiedzin</strong> — jeśli chcesz użyć <code>ORDER BY</code> w perspektywie, zastosuj <code>SELECT TOP 1000 … ORDER BY …</code>.</li>
+        </ul>
+        <ul class="links">
+          <li>Agregacja: <code>COUNT()</code></li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Utwórz perspektywę TOP&nbsp;10</strong> zwracającą domy najczęściej oglądane w ciągu ostatnich 100 dni.
+        <ul>
+          <li>Filtr daty: <code>WHERE data BETWEEN GETDATE() - 100 AND GETDATE()</code>.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Utwórz perspektywę z adresami IP</strong>, z których którykolwiek dom przeglądano <em>więcej niż 3 razy</em>.
+        <ul class="links">
+          <li><a href="https://www.w3schools.com/sql/sql_having.asp" target="_blank" rel="noreferrer noopener">HAVING</a> (warunek na agregacie)</li>
+        </ul>
+        <p>Jeśli w danych brakuje powtarzających się IP, dodaj kilka przykładowych wierszy, aby przetestować perspektywę.</p>
+      </li>
+    </ol>
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
