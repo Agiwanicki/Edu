@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 6 – Bazy danych i SQL</title>
+  <meta name="description" content="Ćwiczenia 6 – Bazy danych i SQL: implementacja projektu bazy danych w SQL Server i SSMS. Tabele, relacje, więzy integralności, dane przykładowe oraz zapytania DQL.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Ćwiczenia 6 – Bazy danych i SQL</h1>
+
+    <p class="callout">
+      <strong>Cel:</strong> implementacja projektu własnej bazy danych w środowisku <strong>SQL Server</strong> z wykorzystaniem <strong>SSMS</strong>. Zestaw obejmuje definicję tabel, relacji i więzów, wstawianie danych oraz przygotowanie przykładowych zapytań <em>DQL</em>.
+    </p>
+
+    <h2>Zadania</h2>
+    <ol>
+      <li>
+        <strong>Przygotuj schemat bazy danych</strong> na podstawie projektu z poprzednich zajęć.
+        <ul>
+          <li>Zespół 2‑osobowy: co najmniej <strong>8 tabel</strong>. Praca solo: co najmniej <strong>5 tabel</strong>.</li>
+          <li>Każda tabela musi mieć <strong>klucz główny</strong>.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Zdefiniuj relacje między tabelami</strong> z użyciem <strong>kluczy obcych</strong>.
+        <ul>
+          <li>Określ kierunek relacji 1:N, N:M (dla N:M zastosuj tabelę pośrednią).</li>
+          <li>Zadbaj o zgodność typów danych w powiązanych kolumnach.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Dodaj więzy integralności i dziedziny</strong>.
+        <ul>
+          <li><code>UNIQUE</code> dla atrybutów wymagających unikalności (np. numery, identyfikatory zewnętrzne).</li>
+          <li>Odpowiednie długości tekstu (<code>varchar</code>, <code>nvarchar</code>), wartości nieujemne dla pól liczbowych, wymagane kolumny jako <code>NOT NULL</code>.</li>
+          <li><code>CHECK</code> dla ograniczeń zakresu i dopuszczalnych wartości.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Wstaw przykładowe dane</strong> do każdej tabeli z użyciem poleceń <code>INSERT</code>.
+        <ul>
+          <li>Minimum po kilka rekordów do tabel głównych i po co najmniej 1–2 rekordy do tabel powiązań.</li>
+          <li>Pilnuj zgodności relacji — rekordy z kluczami obcymi muszą wskazywać istniejące wiersze.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Przygotuj przykładowe zapytania DQL</strong> (<code>SELECT</code>).
+        <ul>
+          <li>Co najmniej 5 zapytań obejmujących: filtrowanie <code>WHERE</code>, sortowanie <code>ORDER BY</code>, agregacje <code>GROUP BY</code> z funkcjami, złączenia <code>JOIN</code>, podzapytania.</li>
+        </ul>
+      </li>
+    </ol>
+
+    <section class="box">
+      <h2>Materiały</h2>
+      <ul class="links">
+        <li><a href="http://www.informatyka.orawskie.pl/?pl_projektowanie-bazy-danych,113" target="_blank" rel="noreferrer noopener">Projektowanie baz danych – przykładowe wskazówki</a></li>
+        <li><a href="https://www.sqltutorial.org/sql-cheat-sheet/" target="_blank" rel="noreferrer noopener">SQL Cheat Sheet</a></li>
+        <li><a href="https://www.w3schools.com/mysql/default.asp" target="_blank" rel="noreferrer noopener">W3Schools – SQL (MySQL)</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
