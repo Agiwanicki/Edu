@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zajęcia 4 – Pandas: podstawy analizy danych</title>
+  <meta name="description" content="Ćwiczenia z pandas: wczytywanie CSV, filtrowanie (bool indexing), operacje na danych, agregacja w kolumnach i wierszach, metody any() i all().">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Zajęcia 4 – Pandas: podstawy analizy danych</h1>
+
+    <p class="callout">
+      Cel: opanowanie podstaw pandas – wczytywanie plików CSV z różnymi separatorami,
+      filtrowanie (boolean indexing), proste operacje na kolumnach, agregacja po kolumnach i wierszach
+      (<code>.sum(axis=0)</code>, <code>.sum(axis=1)</code>) oraz wykorzystanie operatorów logicznych
+      i metod <code>.any()</code> / <code>.all()</code>.
+    </p>
+
+    <ol>
+      <li>
+        <strong>Wczytywanie CSV z różnymi separatorami</strong>
+        <p>
+          Analityk otrzymał plik z danymi z kampanii marketingowych banku. Plik ma średnik jako separator pól.
+          Wczytaj cały zestaw danych do ramki i przygotuj krótką notatkę wstępną:
+          sprawdź, ile jest wierszy i kolumn, jakie są typy danych oraz jak wyglądają pierwsze rekordy.
+          Załóż, że po imporcie będziesz potrzebować informacji o strukturze, aby ustalić dalsze kroki analizy.
+        </p>
+        <ul class="links">
+          <li><a href="https://www.w3schools.com/python/pandas/pandas_csv.asp" target="_blank" rel="noreferrer noopener">Pandas – Read CSV</a></li>
+          <li><a href="https://www.w3schools.com/python/pandas/pandas_analyzing.asp" target="_blank" rel="noreferrer noopener">Analyze DataFrames – head()/tail()</a></li>
+          <li><a href="https://www.w3schools.com/python/pandas/ref_df_info.asp" target="_blank" rel="noreferrer noopener">DataFrame.info()</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Filtrowanie (boolean indexing)</strong>
+        <p>
+          Zespół ryzyka prosi o listę klientów, którzy mogą mieć zwiększoną ekspozycję kredytową:
+          (a) klienci, którzy posiadają kredyt hipoteczny; (b) klienci starsi niż 50 lat;
+          (c) klienci łączący kredyt hipoteczny i kredyt konsumpcyjny, ale jednocześnie bez historii przeterminowanych zobowiązań
+          (pole <em>default</em> wskazuje brak zaległości).
+          Przygotuj trzy odrębne wycinki danych odpowiadające tym trzem warunkom.
+        </p>
+        <ul class="links">
+          <li><a href="https://www.w3schools.com/python/pandas/ref_df_query.asp" target="_blank" rel="noreferrer noopener">DataFrame.query()</a></li>
+          <li><a href="https://www.w3schools.com/python/pandas/ref_df_isin.asp" target="_blank" rel="noreferrer noopener">DataFrame.isin()</a></li>
+          <li><a href="https://www.w3schools.com/python/pandas/pandas_ref_dataframe.asp" target="_blank" rel="noreferrer noopener">DataFrame Reference (porównania, wybór wierszy/kolumn)</a></li>
+          <li><a href="https://www.w3schools.com/python/python_operators.asp" target="_blank" rel="noreferrer noopener">Python Operators (logiczne)</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Operacje na danych (tworzenie nowych kolumn)</strong>
+        <p>
+          Zespół call center chce porównać czas rozmów między kampaniami. Przygotuj dwie pomocnicze miary:
+          (a) czas trwania ostatniego kontaktu w minutach (na podstawie kolumny <em>duration</em> w sekundach);
+          (b) zasobność klienta wyrażoną w tysiącach euro na podstawie średniego rocznego salda (<em>balance</em>).
+          Następnie zaktualizuj schemat danych, usuwając kolumnę, której zespół analityczny nie planuje używać w dalszej części raportu.
+        </p>
+        <ul class="links">
+          <li><a href="https://www.w3schools.com/python/pandas/pandas_dataframes.asp" target="_blank" rel="noreferrer noopener">Pandas DataFrames (praca z kolumnami)</a></li>
+          <li><a href="https://www.w3schools.com/python/pandas/pandas_ref_dataframe.asp" target="_blank" rel="noreferrer noopener">DataFrame Reference (m.in. drop, operacje arytm.)</a></li>
+          <li><a href="https://www.w3schools.com/python/python_operators.asp" target="_blank" rel="noreferrer noopener">Python Operators</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Agregacja po kolumnach i po wierszach</strong>
+        <p>
+          Kierownik projektu prosi o szybkie oszacowanie „masy” danych liczbowych.
+          Rozważ wyłącznie kolumny numeryczne i przygotuj dwie agregacje:
+          (a) sumę wartości w każdej kolumnie, aby zobaczyć łączny poziom miar w całej próbie;
+          (b) sumę wartości w każdym wierszu jako prosty, złożony wskaźnik intensywności kontaktu/relacji z klientem
+          (dodaj tę sumę jako nową kolumnę pomocniczą, aby móc ją później analizować).
+        </p>
+        <ul class="links">
+          <li><a href="https://www.w3schools.com/python/pandas/ref_df_sum.asp" target="_blank" rel="noreferrer noopener">DataFrame.sum() (axis)</a></li>
+          <li><a href="https://www.w3schools.com/python/pandas/ref_df_agg.asp" target="_blank" rel="noreferrer noopener">DataFrame.agg()</a></li>
+          <li><a href="https://www.w3schools.com/python/pandas/pandas_ref_dataframe.asp" target="_blank" rel="noreferrer noopener">DataFrame Reference (select_dtypes)</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Operatory logiczne: <code>.any()</code> i <code>.all()</code></strong>
+        <p>
+          Dla menedżera kampanii przygotuj dwa krótkie wnioski kontrolne:
+          (a) sprawdź, czy istnieje choć jeden klient o bardzo wysokiej skumulowanej wartości wskaźnika z poprzedniego zadania;
+          (b) zweryfikuj, czy wszyscy klienci mieli dodatni czas rozmowy podczas ostatniego kontaktu.
+          Użyj metod logicznych, aby sformułować odpowiedzi „tak/nie” dla całej tabeli.
+        </p>
+        <ul class="links">
+          <li><a href="https://www.w3schools.com/python/pandas/ref_df_any.asp" target="_blank" rel="noreferrer noopener">DataFrame.any()</a></li>
+          <li><a href="https://www.w3schools.com/python/pandas/ref_df_all.asp" target="_blank" rel="noreferrer noopener">DataFrame.all()</a></li>
+          <li><a href="https://www.w3schools.com/python/python_operators.asp" target="_blank" rel="noreferrer noopener">Python Operators (logiczne)</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Zapis wyników do CSV</strong>
+        <p>
+          Przygotuj arkusz wynikowy do dalszego raportowania. Zapisz przetworzoną ramkę danych do nowego pliku CSV
+          (bez indeksu w pliku), aby można było przekazać ją innemu zespołowi do wizualizacji.
+        </p>
+        <ul class="links">
+          <li><a href="https://www.w3schools.com/python/pandas/pandas_csv.asp" target="_blank" rel="noreferrer noopener">Read/CSV – praca z plikami</a></li>
+          <li><a href="https://www.w3schools.com/python/pandas/pandas_ref_dataframe.asp" target="_blank" rel="noreferrer noopener">DataFrame Reference (lista metod)</a></li>
+        </ul>
+      </li>
+    </ol>
+
+    <section class="box">
+      <h2>Dane do ćwiczeń</h2>
+      <p>
+        Wykorzystujemy plik <code>bank-full.csv</code> z publicznego zbioru „Bank Marketing”.
+        Opis zmiennych i źródło znajdziesz w pliku <code>bank-names.txt</code>; oba pliki są dostępne na Teams.
+      </p>
+    </section>
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
+
