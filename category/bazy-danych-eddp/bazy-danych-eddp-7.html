@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 7 – Bazy danych i SQL (EDDP)</title>
+  <meta name="description" content="Ćwiczenia 7 – Bazy danych i SQL: rozszerzenie projektu o więzy integralności i dane przykładowe. ALTER TABLE, UNIQUE, CHECK, DEFAULT, FOREIGN KEY, NOT NULL oraz INSERT.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Ćwiczenia 7 – Bazy danych i SQL</h1>
+
+    <p class="callout">
+      <strong>Cel:</strong> aktualizacja projektu własnej bazy danych w <strong>SQL Server</strong> przy użyciu <strong>SSMS</strong>. Dodawanie i modyfikacja więzów integralności oraz przygotowanie danych testowych za pomocą poleceń <em>INSERT</em>. Pracuj na projekcie z poprzednich zajęć.
+    </p>
+
+    <ol>
+      <li>
+        <strong>Unikalność</strong> dodaj co najmniej jedno ograniczenie <code>UNIQUE</code> tam, gdzie wymagana jest niepowtarzalność wartości (np. identyfikator zewnętrzny, e‑mail, numer dokumentu). Nazwij ograniczenie w sposób czytelny.
+      </li>
+
+      <li>
+        <strong>Zmiana typu danych</strong> zmodyfikuj typ i/lub długość co najmniej dwóch kolumn (<code>ALTER COLUMN</code>), tak aby lepiej odzwierciedlały dane biznesowe (np. rozszerzenie długości telefonu, zmiana na <code>NVARCHAR</code> dla tekstów wielojęzycznych).
+      </li>
+
+      <li>
+        <strong>Kontrola długości i zakresów</strong> dodaj ograniczenia <code>CHECK</code> dla wybranych kolumn, które wymuszają dopuszczalne wartości lub długości (np. <code>LEN(nazwa) &lt;= 50</code>, zakres wieku, dopuszczalne wartości kodów typu).
+      </li>
+
+      <li>
+        <strong>Wartości domyślne</strong> ustaw <code>DEFAULT</code> dla kolumn, które powinny otrzymywać domyślną wartość, gdy nie zostanie podana (np. kraj, status, data utworzenia).
+      </li>
+
+      <li>
+        <strong>Relacje</strong> dodaj brakujące klucze obce <code>FOREIGN KEY</code> między tabelami. Zadbaj o zgodność typów danych oraz sensowną politykę usuwania/aktualizacji (np. <code>ON DELETE NO ACTION</code> albo <code>ON DELETE CASCADE</code> tam, gdzie to uzasadnione).
+      </li>
+
+      <li>
+        <strong>NOT NULL</strong> ustaw <code>NOT NULL</code> dla kolumn, które muszą być obowiązkowe z perspektywy biznesowej. Upewnij się, że istniejące dane nie łamią nowego ograniczenia.
+      </li>
+
+      <li>
+        <strong>Porządkowanie ograniczeń</strong> jeśli to potrzebne, usuń lub zastąp nieaktualne ograniczenia (<code>DROP CONSTRAINT</code>) i dodaj poprawne odpowiedniki. Zadbaj o spójne nazewnictwo.
+      </li>
+
+      <li>
+        <strong>Dane przykładowe</strong> przygotuj zestaw poleceń <code>INSERT</code> dla każdej tabeli w projekcie:
+        <ul>
+          <li>co najmniej 1 wstawienie bez jawnego wskazania kolumn,</li>
+          <li>co najmniej 1 wstawienie z listą kolumn,</li>
+          <li>co najmniej 1 polecenie wstawiające wiele wierszy jednocześnie.</li>
+        </ul>
+        Wartości powinny spełniać zdefiniowane więzy i odwzorowywać realistyczne przypadki.
+      </li>
+    </ol>
+
+    <section class="box">
+      <h2>Materiały</h2>
+      <ul class="links">
+        <li><a href="https://learn.microsoft.com/sql/t-sql/statements/alter-table-transact-sql" target="_blank" rel="noreferrer noopener">ALTER TABLE (MS Docs)</a></li>
+        <li><a href="https://learn.microsoft.com/sql/relational-databases/tables/unique-constraints-and-check-constraints" target="_blank" rel="noreferrer noopener">UNIQUE i CHECK (MS Docs)</a></li>
+        <li><a href="https://learn.microsoft.com/sql/relational-databases/tables/primary-and-foreign-key-constraints" target="_blank" rel="noreferrer noopener">PRIMARY KEY i FOREIGN KEY (MS Docs)</a></li>
+        <li><a href="https://learn.microsoft.com/sql/t-sql/statements/insert-transact-sql" target="_blank" rel="noreferrer noopener">INSERT (MS Docs)</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
