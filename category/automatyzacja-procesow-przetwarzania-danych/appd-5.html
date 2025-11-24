@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zajęcia 5 – Praca na bazie obiektowej movies_sample.json</title>
+  <meta name="description" content="Ćwiczenia z pracy na bazie obiektowej movies_sample.json: wczytywanie listy słowników, podgląd danych, filtrowanie, proste agregacje, wyszukiwanie oraz zapis wyników do plików JSON.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Zajęcia 5 – Praca na bazie obiektowej <code>movies_sample.json</code></h1>
+
+    <p class="callout">
+      Cel: opanowanie podstaw pracy z bazą obiektową w Pythonie.
+      Podgląd struktury danych, filtrowanie listy obiektów, proste agregacje
+      (zliczanie po roku i gatunku), wyszukiwanie po fragmencie tytułu oraz zapis wybranych wyników do plików JSON.
+    </p>
+
+    <ol>
+      <li>
+        <strong>Podstawowe informacje o bazie</strong>
+        <p>
+          Wczytaj plik <code>movies_sample.json</code>. Następnie:
+          (a) wypisz liczbę filmów w kolekcji;
+          (b) wypisz listę wszystkich kluczy (pól) dostępnych w pierwszym filmie;
+          (c) sprawdź i wypisz typ zmiennej przechowującej kolekcję (np. <code>list</code>) oraz typ pojedynczego filmu
+          (np. <code>dict</code>).
+        </p>
+      </li>
+
+      <li>
+        <strong>Podgląd pierwszych filmów</strong>
+        <p>
+          Wyświetl podgląd kilku pierwszych filmów:
+          (a) wypisz tytuł i rok produkcji pierwszych 5 filmów;
+          (b) użyj pętli <code>for</code> oraz indeksowania po liście <code>movies</code>.
+        </p>
+      </li>
+
+      <li>
+        <strong>Filtrowanie po roku produkcji</strong>
+        <p>
+          Wypisz wszystkie filmy wyprodukowane w roku <code>&gt;= 2000</code>:
+          (a) przefiltruj listę <code>movies</code>;
+          (b) wypisz liczbę takich filmów;
+          (c) wypisz przykładowe 10 tytułów.
+          Użyj warunku w pętli <code>for</code> i metody <code>.get()</code> z domyślną wartością.
+        </p>
+      </li>
+
+      <li>
+        <strong>Filtrowanie po ocenie IMDb i liczbie głosów</strong>
+        <p>
+          Pracuj na polu <code>imdb</code>:
+          (a) wyciągnij filmy, które mają ocenę <code>imdb.rating &gt;= 8.0</code>;
+          (b) dodatkowo wymagaj, aby liczba głosów <code>imdb.votes</code> była <code>&gt;= 1000</code>;
+          (c) wypisz 10 najlepszych filmów (sortowanie po rating malejąco).
+        </p>
+      </li>
+
+      <li>
+        <strong>Projekcja wybranych pól i zapis do pliku JSON</strong>
+        <p>
+          Zbuduj nową listę <code>projekcja</code> zawierającą tylko wybrane pola:
+          (a) <code>title</code>;
+          (b) <code>year</code>;
+          (c) <code>imdb_rating</code> (pole wyliczone na podstawie <code>imdb.rating</code>);
+          (d) <code>genres</code> (lista gatunków).
+          Następnie wypisz pierwsze 5 elementów tej listy oraz zapisz ją do pliku JSON.
+        </p>
+      </li>
+
+      <li>
+        <strong>Agregacja: liczba filmów na rok</strong>
+        <p>
+          Wykonaj prostą agregację „liczba filmów na rok”:
+          (a) zlicz, ile filmów przypada na każdy rok produkcji (pole <code>year</code>);
+          (b) zapisz wyniki w słowniku, w którym kluczem jest rok, a wartością – liczba filmów z danego roku;
+          (c) wypisz lata posortowane rosnąco oraz odpowiadające im liczności.
+        </p>
+      </li>
+
+      <li>
+        <strong>Agregacja: liczba filmów na gatunek</strong>
+        <p>
+          Zrób agregację „liczba filmów na gatunek”:
+          (a) każde pole <code>genres</code> to lista gatunków (np. <code>["Drama", "Romance"]</code>);
+          (b) rozbij tę listę i policz, ile razy każdy gatunek występuje;
+          (c) wypisz top 10 najczęstszych gatunków.
+        </p>
+      </li>
+
+      <li>
+        <strong>Wyszukiwanie po fragmencie tytułu</strong>
+        <p>
+          Napisz prostą wyszukiwarkę po tytule:
+          (a) poproś użytkownika o fragment tytułu (np. „ring”);
+          (b) znajdź wszystkie filmy, których tytuł zawiera ten fragment (wyszukiwanie <em>case-insensitive</em>);
+          (c) wypisz maksymalnie 20 tytułów z rokiem.
+        </p>
+      </li>
+
+      <li>
+        <strong>Eksport przefiltrowanej listy filmów do JSON-lines</strong>
+        <p>
+          Wyeksportuj przefiltrowaną listę filmów do nowego pliku JSON-lines:
+          (a) weź tylko filmy z roku produkcji <code>&gt;= 2010</code> i ratingiem <code>IMDb &gt;= 7.5</code>;
+          (b) zapisz je do pliku <code>movies_2010.json</code>;
+        </p>
+      </li>
+    </ol>
+
+    <section class="box">
+      <h2>Dane do ćwiczeń</h2>
+      <p>
+        W ćwiczeniach korzystamy z pliku <code>movies_sample.json</code>, który zawiera dane filmów w formacie
+        JSON-lines (jeden wiersz = jeden obiekt–film). Plik został przygotowany na podstawie przykładowej bazy
+        <em>sample_mflix</em> z MongoDB Atlas i udostępniony na platformie Teams.
+      </p>
+    </section>
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
