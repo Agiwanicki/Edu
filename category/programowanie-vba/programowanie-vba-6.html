@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 6 - Programowanie VBA</title>
+  <meta name="description" content="Ćwiczenia 6 - Programowanie VBA: import CSV, pętle Do Until, odczyt plików, Split, ActiveCell.Offset, zapis do pliku tekstowego, InputBox, wyszukiwanie maksimum.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny - Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Ćwiczenia 6 - Programowanie VBA</h1>
+
+    <p class="callout">
+      <strong>Cel:</strong> praca z plikami tekstowymi i tablicami w VBA: import danych CSV do arkusza, pętle <code>Do Until</code> i funkcja <code>EOF</code>, odczyt wierszy przez <code>Line Input</code>, dzielenie tekstu funkcją <code>Split</code>, wstawianie danych przez <code>ActiveCell.Offset</code>, zapis arkusza do pliku tekstowego oraz wyszukiwanie maksimum w zakresie. Przykładowe dane: kurs BTC (historia dzienna).
+    </p>
+
+    <h3>1. Pobierz dane BTC</h3>
+    <p>Pobierz plik CSV z notowaniami BTC (10 lat) i zapisz w tej samej lokalizacji co skoroszyt:</p>
+    <ul class="links">
+      <li><a href="https://stooq.pl/q/d/?s=btcusd&amp;c=0" target="_blank" rel="noreferrer noopener">Historia BTC na Stooq</a> → „Dane historyczne” → „Pobierz dane w pliku CSV”</li>
+    </ul>
+
+    <h3>2. Makro importujące CSV do aktywnej komórki</h3>
+    <p>Utwórz makro, które wczytuje plik CSV i wstawia dane w wierszach rozpoczynając od aktualnie zaznaczonej komórki. Wskazówki:</p>
+    <ul>
+      <li>Zbuduj ścieżkę do pliku: <code>ActiveWorkbook.Path</code> + nazwa pliku, np. <code>btcpln_d.csv</code>.</li>
+      <li>Otwórz plik do odczytu: <code>Open ... For Input As #1</code>.</li>
+      <li>Wprowadź licznik wierszy, np. <code>row_number = 0</code>.</li>
+      <li>Zastosuj pętlę <code>Do Until EOF(1)</code> ... <code>Loop</code> (EOF - koniec pliku).</li>
+      <li>Czytaj linie: <code>Line Input #1, LineFromFile</code>.</li>
+      <li>Podziel wiersz na kolumny: <code>LineItems = Split(LineFromFile, ",")</code>.</li>
+      <li>Przepisz dane do arkusza: <code>ActiveCell.Offset(row_number, i).Value = LineItems(i)</code>.</li>
+      <li>Po pętli zamknij plik: <code>Close #1</code>.</li>
+    </ul>
+    <ul class="links">
+      <li><a href="https://www.tutorialspoint.com/vba/vba_do_until_loop.htm" target="_blank" rel="noreferrer noopener">VBA: Do Until</a></li>
+      <li><a href="https://support.microsoft.com/pl-pl/office/funkcja-eof-ae0f97ab-d314-4857-8ae0-a243123ba859" target="_blank" rel="noreferrer noopener">Funkcja EOF</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/office/vba/language/reference/user-interface-help/line-inputstatement" target="_blank" rel="noreferrer noopener">Line Input</a></li>
+      <li><a href="https://learn.microsoft.com/pl-pl/office/vba/api/excel.application.activecell" target="_blank" rel="noreferrer noopener">ActiveCell</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/office/vba/api/excel.range.offset" target="_blank" rel="noreferrer noopener">Range.Offset</a></li>
+    </ul>
+
+    <h3>3. Wersja uniwersalna (dowolna liczba kolumn)</h3>
+    <p>Skopiuj makro z punktu 2 i rozbuduj je tak, aby działało dla dowolnej liczby kolumn w wierszu CSV (iteracja po elementach tablicy).</p>
+    <ul class="links">
+      <li><a href="https://excelchamps.com/vba/arrays/array-size/" target="_blank" rel="noreferrer noopener">Rozmiar tablicy w VBA</a></li>
+    </ul>
+
+    <h3>4. Eksport widocznego arkusza do pliku tekstowego</h3>
+    <ul>
+      <li>Plik wynikowy zapisz w tej samej lokalizacji co skoroszyt.</li>
+      <li>Nazwę pliku pobierz od użytkownika przez <code>InputBox</code>.</li>
+      <li>Zapisz wszystkie widoczne komórki bieżącego arkusza (wartości).</li>
+    </ul>
+    <ul class="links">
+      <li><a href="https://www.tutorialspoint.com/vba/vba_text_files.htm" target="_blank" rel="noreferrer noopener">VBA: praca z plikami tekstowymi</a></li>
+    </ul>
+
+    <h3>5. Najwyższa wartość „zamkniecie” i zapis do pliku</h3>
+    <ul>
+      <li>Znajdź maksymalną wartość kolumny „zamkniecie” w imporcie BTC.</li>
+      <li>Zapisz wynik do pliku tekstowego wskazanego przez użytkownika (np. „Najwyższa historyczna wartość BTC w PLN: &lt;kwota&gt;”).</li>
+      <li>Wskazówka: <code>Application.WorksheetFunction.Max(Range("..."))</code>.</li>
+    </ul>
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
