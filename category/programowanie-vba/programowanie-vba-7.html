@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 7 - Programowanie VBA</title>
+  <meta name="description" content="Ćwiczenia 7 - Programowanie VBA: UserForm z MultiPage, inicjalizacja, ComboBox, import CSV z argumentami, obsługa błędów, przypisywanie procedur do przycisków.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny - Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Ćwiczenia 7 - Programowanie VBA</h1>
+
+    <p class="callout">
+      <strong>Cel:</strong> praca z formularzami <code>UserForm</code> w VBA: tworzenie formularza z kontrolką <code>MultiPage</code>, inicjalizacja i konfiguracja elementów formularza, dodawanie pozycji do <code>ComboBox</code>, rozbudowa procedury importu CSV o argumenty, obsługa błędów oraz przypisywanie procedur do przycisków. Pracujemy na pliku z poprzednich zajęć.
+    </p>
+
+    <ol>
+      <li>
+        Z MS Teams pobierz plik z ostatnich zajęć (własny, przesłany jako ćwiczenia 6). Zmień jego nazwę na <strong>Ćwiczenia7</strong> i zapisz jako <strong>.xlsm</strong>.
+      </li>
+
+      <li>
+        Utwórz nowy formularz uruchamiany skrótem <strong>Ctrl+T</strong>.
+        <ul>
+          <li>Kliknij prawym przyciskiem na obszarze obok folderu <strong>Modules</strong> → <strong>Insert</strong> → <strong>UserForm</strong>.</li>
+          <li>Przejdź do widoku formularza: prawy przycisk myszy na formularzu → <strong>View Object</strong>.</li>
+          <li>Zmień we właściwościach: <strong>Name</strong> na <code>TradingToolForm</code>, <strong>Caption</strong> na <code>TradingTool</code>.</li>
+          <li>Z <strong>Toolbox</strong> dodaj <strong>MultiPage</strong> i dopasuj rozmiar.</li>
+          <li>Zmień nazwy zakładek: <strong>Page1</strong> → <code>ImportPage</code> (Caption: <code>Import</code>), <strong>Page2</strong> → <code>ExportPage</code> (Caption: <code>Export</code>).</li>
+          <li>W module <strong>Module1</strong> utwórz procedurę <code>Sub RunTradingTool()</code> i uruchamiaj w niej formularz: <code>TradingToolForm.Show</code>.</li>
+          <li>Przypisz skrót klawiszowy: Excel → Deweloper → Makra → wybierz <strong>RunTradingTool</strong> → <strong>Opcje…</strong> → <code>Ctrl+T</code>.</li>
+        </ul>
+      </li>
+
+      <li>
+        Na zakładce <strong>Import</strong> dodaj: 3 × <strong>TextBox</strong>, 1 × <strong>ComboBox</strong>, 3 × <strong>Label</strong>, 3 × <strong>CommandButton</strong>. Ustaw czytelne nazwy obiektów (np. <code>FileTypeComboBox</code>) oraz podpisy (Caption) zgodnie z obrazem referencyjnym.
+      </li>
+
+      <li>
+        Dodaj typy plików do <strong>ComboBox</strong> podczas inicjalizacji formularza.
+        <ul>
+          <li>Otwórz kod formularza: prawy przycisk myszy na formularzu → <strong>View Code</strong>.</li>
+          <li>W górnych listach wybierz <strong>UserForm</strong> oraz <strong>Initialize</strong>.</li>
+          <li>Wewnątrz <code>Private Sub UserForm_Initialize()</code> dodaj elementy <code>txt</code> i <code>csv</code> do Twojego <code>ComboBox</code>.</li>
+          <li><a href="http://www.homeandlearn.org/the_form_initialize_event.html" target="_blank" rel="noreferrer noopener">Form Initialize - wprowadzenie</a></li>
+        </ul>
+      </li>
+
+      <li>
+        Rozbuduj procedurę importu CSV tak, aby przyjmowała 5 argumentów: nazwa pliku, typ pliku, znak separatora, flaga importu do <code>ActiveCell</code> (<code>Boolean</code>), adres komórki docelowej (<code>Range</code> lub tekst).
+        <ul>
+          <li>Przykład sygnatury: <code>Sub OpenAnyCSV(FileName, FileType, Separator, ImportToCell, CellRange)</code>.</li>
+          <li>Argumenty <code>FileName</code> i <code>FileType</code> wykorzystaj do budowy ścieżki <em>FilePath</em>.</li>
+          <li>Separator przekaż jako drugi argument do <code>Split</code>.</li>
+          <li>Użyj zmiennej <code>ImportCell As Range</code>. Jeśli <code>ImportToCell = False</code> to <code>Set ImportCell = ActiveCell</code>, w przeciwnym razie <code>Set ImportCell = Range(CellRange)</code>.</li>
+          <li><a href="https://learn.microsoft.com/en-us/office/vba/language/concepts/getting-started/calling-sub-and-function-procedures" target="_blank" rel="noreferrer noopener">Wywoływanie procedur Sub i Function</a></li>
+        </ul>
+      </li>
+
+      <li>
+        Dodaj obsługę błędów do procedury importu CSV.
+        <ul>
+          <li>Po nagłówku <code>Sub</code> ustaw przechwytywanie błędów, a na końcu procedury dodaj sekcję z etykietą i komunikatem dla użytkownika.</li>
+          <li>Upewnij się, że otwarty plik zostaje zamknięty w przypadku błędu.</li>
+        </ul>
+      </li>
+
+      <li>
+        Przypisz procedurę importu do przycisków na formularzu.
+        <ul>
+          <li>Dwuklik w przycisk tworzy <code>Private Sub &lt;NazwaPrzycisku&gt;_Click()</code>.</li>
+          <li>Wewnątrz wywołaj <code>OpenAnyCSV</code>, przekazując wartości z <code>TextBox</code> i <code>ComboBox</code>.</li>
+          <li>Przyciski: import do <code>ActiveCell</code> oraz import do wskazanej komórki (adres z <code>TextBox</code>).</li>
+        </ul>
+      </li>
+
+      <li>
+        Dodaj funkcjonalność przycisku <strong>Clear Active Sheet</strong> czyszczącego aktywny arkusz.
+      </li>
+
+      <li>
+        Przetestuj działanie całego formularza: inicjalizacja, wybór typu pliku, import CSV różnymi separatorami, obsługa błędów, czyszczenie arkusza.
+      </li>
+    </ol>
+
+    <h3>Materiały</h3>
+    <ul class="links">
+      <li><a href="https://www.tutorialspoint.com/vba/vba_userforms.htm" target="_blank" rel="noreferrer noopener">UserForms w VBA</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/office/vba/language/reference/user-interface-help/line-inputstatement" target="_blank" rel="noreferrer noopener">Line Input</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/office/vba/api/excel.range.offset" target="_blank" rel="noreferrer noopener">Range.Offset</a></li>
+      <li><a href="https://support.microsoft.com/pl-pl/office/funkcja-eof-ae0f97ab-d314-4857-8ae0-a243123ba859" target="_blank" rel="noreferrer noopener">Funkcja EOF</a></li>
+    </ul>
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
