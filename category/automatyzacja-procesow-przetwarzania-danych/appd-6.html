@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zajęcia 6 – Analiza w pandas (movies_sample.json)</title>
+  <meta name="description" content="Ćwiczenia z wykorzystania biblioteki pandas na bazie obiektowej movies_sample.json: wczytywanie danych do DataFrame, agregacje, filtrowanie z użyciem boolean indexing, wyrażenia regularne oraz prosta chmura słów.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Zajęcia 6 – Analiza <code>movies_sample.json</code></h1>
+
+    <p class="callout">
+      Cel: Wczytywanie pliku JSON do <code>DataFrame</code>, praca z kolumnami zagnieżdżonymi, agregacje (po gatunkach i latach), filtrowanie za pomocą boolean indexing, proste wyrażenia regularne na tytułach/opisach oraz wizualizacja tekstu w postaci chmury słów.
+    </p>
+
+    <ol>
+      <li>
+        <strong>Wczytanie JSON i podgląd <code>DataFrame</code></strong>
+        <p>
+          Wczytaj plik <code>movies_sample.json</code> jako listę słowników, a następnie utwórz na jej podstawie
+          obiekt <code>DataFrame</code>:
+          (a) wczytaj dane funkcją <code>json.load</code>; (b) utwórz <code>df = pd.DataFrame(movies)</code>;
+          (c) wypisz pierwsze 5 wierszy, listę kolumn, typy danych (<code>dtypes</code>) oraz kształt
+          ramki danych (<code>shape</code>).
+        </p>
+      </li>
+
+      <li>
+        <strong>Kolumny zagnieżdżone – pole <code>imdb</code></strong>
+        <p>
+          Pracuj na ramce <code>df</code>, tworząc nową ramkę <code>df_basic</code> z kolumn:
+          <code>title</code>, <code>year</code>, <code>runtime</code>, <code>genres</code>, <code>imdb</code>.
+          Następnie:
+          (a) dodaj kolumnę <code>imdb_rating</code> na podstawie pola <code>imdb["rating"]</code>;
+          (b) dodaj kolumnę <code>imdb_votes</code> na podstawie pola <code>imdb["votes"]</code>;
+          (c) wyświetl pierwszych 5 wierszy <code>df_basic</code>.
+        </p>
+      </li>
+
+      <li>
+        <strong>Proste agregacje: statystyki globalne i po gatunkach</strong>
+        <p>
+          Korzystając z ramki <code>df_basic</code>:
+          (a) wypisz opis statystyczny kolumny <code>runtime</code> (metoda <code>describe()</code>);
+          (b) policz średni rating <code>imdb_rating</code> oraz łączną liczbę głosów <code>imdb_votes</code>;
+          (c) znajdź najdłuższy film (tytuł, rok, czas trwania).
+          Następnie wykonaj agregacje po gatunkach:
+          (d) rozbij listę gatunków za pomocą <code>df_basic.explode("genres")</code>;
+          (e) dla każdego gatunku policz liczbę filmów, średni czas trwania i średni rating IMDb;
+          (f) posortuj wyniki malejąco po średnim ratingu.
+        </p>
+      </li>
+
+      <li>
+        <strong>Agregacje po latach produkcji</strong>
+        <p>
+          Wykonaj agregacje według pola <code>year</code>:
+          (a) policz liczbę filmów w każdym roku (użyj <code>groupby("year")["title"].count()</code>);
+          (b) oblicz średni rating IMDb w każdym roku (<code>groupby("year")["imdb_rating"].mean()</code>);
+          (c) zbuduj ramkę z kolumnami <code>liczba_filmow</code> oraz <code>sr_rating</code>, posortowaną malejąco
+          po średnim ratingu; (d) wskaż rok, w którym średni rating jest najwyższy w badanej próbce.
+        </p>
+      </li>
+
+      <li>
+        <strong>Boolean indexing – filtrowanie według wielu warunków</strong>
+        <p>
+          Na ramce <code>df_basic</code> zdefiniuj maskę logiczną wybierającą filmy, które spełniają jednocześnie:
+          (a) <code>runtime &gt; 60</code>; (b) <code>year &lt; 1915</code>;
+          (c) <code>imdb_rating &gt;= 7.0</code>.
+          Następnie:
+          (d) wyświetl tytuł, rok, czas trwania i rating wybranych filmów;
+          (e) policz, jaki procent wszystkich filmów stanowią takie pozycje (użyj długości ramki i operacji dzielenia).
+        </p>
+      </li>
+
+      <li>
+        <strong>Boolean indexing z krajem produkcji</strong>
+        <p>
+          Wykorzystaj pole <code>countries</code> z oryginalnej ramki <code>df</code> i dodaj do
+          <code>df_basic</code> kolumnę <code>main_country</code>, zawierającą pierwszy kraj z listy (lub
+          <code>None</code>, jeśli lista jest pusta). Następnie wyfiltruj filmy, które:
+          (a) mają <code>main_country == "USA"</code>;
+          (b) mają <code>imdb_rating &gt;= 7.0</code>;
+          (c) mają <code>runtime</code> w przedziale od 10 do 90 minut (włącznie).
+          Posortuj wynik malejąco po ratingu imdb i wypisz maksymalnie 10 pierwszych tytułów.
+        </p>
+      </li>
+
+      <li>
+        <strong>Wyrażenia regularne na tytułach filmów</strong>
+        <p>
+          Skup się na kolumnie <code>title</code> i użyj metod stringowych <code>Series.str.contains()</code>:
+          (a) znajdź wszystkie filmy, których tytuł zaczyna się od słowa <code>"The"</code> (bez względu na wielkość liter, użyj wzorca <code>^The\b</code>);
+          (b) znajdź filmy, których tytuł zawiera słowo <code>"Train"</code> lub <code>"Wheat"</code>;
+          (c) policz liczbę filmów rozpoczynających się od <code>"The"</code> oraz wypisz listę tytułów zawierających
+          w nazwie <code>"Train"</code> lub <code>"Wheat"</code>.
+        </p>
+      </li>
+
+      <li>
+        <strong>Wyrażenia regularne na opisach (<code>plot</code>)</strong>
+        <p>
+          W kolumnie <code>plot</code> odszukaj filmy, w których opis zawiera słowo
+          <code>"war"</code> lub <code>"peace"</code> (dopasowanie całego słowa, niezależnie od wielkości liter – np. wzorzec <code>\b(war|peace)\b</code>):
+          (a) zbuduj maskę logiczną z wykorzystaniem <code>str.contains()</code>;
+          (b) wypisz tytuł i rok filmów spełniających warunek;
+          (c) policz, jaki procent całej próbki stanowią filmy, których opis zawiera takie “wojenno-pokojowe” słowa.
+        </p>
+      </li>
+
+      <li>
+        <strong>Chmura słów z opisów filmów</strong>
+        <p>
+          Na podstawie kolumny <code>plot</code> przygotuj chmurę słów:
+          (a) połącz wszystkie niepuste opisy w jeden długi tekst (np. <code>" ".join(...)</code>);
+          (b) skorzystaj z klasy <code>WordCloud</code>, dodając z góry zdefiniowane wyrazy pomijane (<code>STOPWORDS</code>);
+          (c) wygeneruj chmurę i wyświetl ją za pomocą <code>matplotlib.pyplot</code>;
+          (d) zwróć uwagę, jakie słowa pojawiają się najczęściej i czy odzwierciedlają tematykę filmów z próbki.
+        </p>
+      </li>
+
+      <li>
+        <strong>Funkcja wyszukująca filmy wg parametrów</strong>
+        <p>
+          Napisz funkcję <code>wyszukaj_filmy(df_basic, min_year=None, max_year=None, min_rating=None, slowo_w_tytule=None)</code>,
+          która:
+          (a) opcjonalnie filtruje po zakresie lat (<code>year</code> między <code>min_year</code> a <code>max_year</code>);
+          (b) opcjonalnie filtruje po minimalnym ratingu IMDb (<code>min_rating</code>);
+          (c) jeśli podano parametr <code>slowo_w_tytule</code>, wybiera filmy, których tytuł zawiera dane słowo
+          (dopasowanie całego słowa, z użyciem wyrażeń regularnych);
+          (d) zwraca ramkę z kolumnami <code>title</code>, <code>year</code>, <code>runtime</code>, <code>imdb_rating</code>,
+          posortowaną malejąco po <code>imdb_rating</code>, a następnie rosnąco po roku.
+          Przetestuj funkcję na kilku różnych zestawach parametrów.
+        </p>
+      </li>
+    </ol>
+
+    <section class="box">
+      <h2>Dane do ćwiczeń</h2>
+      <p>
+        W ćwiczeniach korzystamy z pliku <code>movies_sample.json</code>, zawierającego dane filmów w formacie JSON.
+        Plik został przygotowany na podstawie bazy <em>sample_mflix</em> z MongoDB Atlas i udostępniony
+        na platformie Teams.
+      </p>
+    </section>
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
