@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 8 - Programowanie VBA</title>
+  <meta name="description" content="Ćwiczenia 8 - Programowanie VBA: MultiPage i zakładka Indicators, ustawienia kontrolek, obliczanie Rate of return, funkcja Beta, wyszukiwanie końca danych.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny - Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Ćwiczenia 8 - Programowanie VBA</h1>
+
+    <p class="callout">
+      <strong>Cel:</strong> praca z formularzem <code>UserForm</code> i kontrolką <code>MultiPage</code>, konfiguracja elementów interfejsu, obliczanie dziennego <em>Rate of return</em> oraz implementacja funkcji <em>Beta</em> z wykorzystaniem wbudowanych funkcji arkusza. Pracujemy na pliku z poprzednich zajęć.
+    </p>
+
+    <ol>
+      <li>
+        Pobierz plik <strong>Ćwiczenia7.xlsm</strong> (własny z Teams lub z dysku sieciowego) oraz pliki CSV z danymi.
+      </li>
+
+      <li>
+        W istniejącym formularzu dodaj nową stronę <strong>Indicators</strong> i umieść na niej elementy: <strong>2 × Frame, 4 × Label, 5 × TextBox, 2 × CommandButton</strong>.
+        <ul>
+          <li>Aby dodać stronę: kliknij prawym przyciskiem myszy na nagłówki stron formularza i wybierz <strong>New Page</strong>.</li>
+          <li>Zgrupuj elementy wewnątrz <strong>Frame</strong> zgodnie z obrazem referencyjnym.</li>
+          <li>Nadaj wszystkim kontrolkom czytelne i jednoznaczne nazwy.</li>
+        </ul>
+      </li>
+
+      <li>
+        Utwórz procedurę obliczającą dzienny <strong>Rate of return</strong> dla wskazanej serii danych.
+        <ul>
+          <li>Wzór: <strong>P1/P0 - 1</strong>, gdzie <em>P1</em> to cena bieżąca, a <em>P0</em> to cena z dnia poprzedniego.</li>
+          <li>Procedura ma samodzielnie znajdować koniec szeregu danych. Przykładowa technika:
+            <div class="card"><pre><code>LastRow = ActiveSheet.Cells.Find("*", SearchOrder:=xlByRows, SearchDirection:=xlPrevious).Row</code></pre></div>
+          </li>
+          <li>Procedura ma przyjmować jako argumenty: komórkę będącą początkiem serii danych oraz komórkę, od której ma rozpocząć wypisywanie wyników.</li>
+          <li>Jeśli przekazujesz adres komórki jako tekst, na początku przypisz go do zmiennej typu <code>String</code>, a następnie użyj w wywołaniu <code>Range(zmienna)</code>.</li>
+          <li>Możesz pozyskać indeks kolumny i wiersza:
+            <div class="card"><pre><code>Range("E10").Column  'zwraca 5
+Range("E10").Row     'zwraca 10</code></pre></div>
+          </li>
+          <li>Rate of return sformatuj w procentach (formatowanie komórek przez VBA).</li>
+        </ul>
+        <ul class="links">
+          <li><a href="https://www.excelhowto.com/macros/formatting-a-range-of-cells-in-excel-vba/" target="_blank" rel="noreferrer noopener">Formatowanie zakresu w VBA</a></li>
+        </ul>
+      </li>
+
+      <li>
+        Utwórz <strong>funkcję</strong> zwracającą wskaźnik <strong>Beta</strong> dla dwóch serii <em>Rate of return</em> (instrument oraz indeks rynkowy).
+        <ul>
+          <li>Wzór: <code>Beta = COV(stockPriceRor, marketPriceRor) / VAR(marketPriceRor)</code>.</li>
+          <li>Skorzystaj z funkcji arkuszowych:
+            <div class="card"><pre><code>Application.WorksheetFunction.Covariance_P(stockPriceRor, marketPriceRor)
+Application.WorksheetFunction.Var_P(marketPriceRor)</code></pre></div>
+          </li>
+          <li>Argumenty funkcji: komórki oznaczające początek serii <em>Rate of return</em> dla instrumentu i rynku (koniec serii wykrywaj jak wyżej przez <code>LastRow</code>).</li>
+        </ul>
+        <ul class="links">
+          <li><a href="https://pl.wikipedia.org/wiki/Wsp%C3%B3%C5%82czynnik_beta" target="_blank" rel="noreferrer noopener">Współczynnik Beta – Wikipedia</a></li>
+        </ul>
+      </li>
+    </ol>
+
+    <h3>Wskazówki</h3>
+    <ul class="links">
+      <li><a href="https://www.excelcampus.com/vba/userforms-explained/" target="_blank" rel="noreferrer noopener">UserForm i kontrolki</a></li>
+      <li><a href="http://www.homeandlearn.org/the_form_initialize_event.html" target="_blank" rel="noreferrer noopener">Form Initialize</a></li>
+    </ul>
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
