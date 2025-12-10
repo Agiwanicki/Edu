@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 8 – Bazy danych i SQL</title>
+  <meta name="description" content="Ćwiczenia 8 – Bazy danych i SQL (SQL Server, SSMS): wprowadzenie do łączeń (INNER/LEFT/RIGHT/FULL/SELF JOIN), sekwencje oraz pierwsze zapytania DQL na wielu tabelach we własnej bazie projektowej.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Ćwiczenia 8 – Bazy danych i SQL</h1>
+    <p class="callout">
+      <strong>Cel:</strong> wprowadzenie do łączeń tabel (<em>JOIN</em>) w wariantach
+      <code>INNER</code>, <code>LEFT</code>, <code>RIGHT</code>, <code>FULL</code> i <code>SELF</code>
+      na przykładzie bazy <strong>Northwind</strong>, wprowadzenie sekwencji oraz pierwszych zapytań
+      <em>DQL</em> na wielu tabelach we własnej bazie projektowej.
+    </p>
+
+    <ol>
+      <li>
+        <strong>Uruchom skrypt bazy Northwind</strong> - w SSMS wykonaj plik <code>instnwnd.sql</code> (dostępny na Teams).
+      </li>
+
+      <li>
+        <strong>Lista pracowników i terytoriów</strong> - zwróć <code>FirstName</code>, <code>LastName</code> z tabeli <code>Employees</code> oraz <code>TerritoryID</code> z tabeli <code>EmployeeTerritories</code>, wykorzystując <code>INNER JOIN</code>.
+        <ul class="links">
+          <li><a href="https://www.w3schools.com/sql/sql_join.asp" target="_blank" rel="noreferrer noopener">JOIN - wprowadzenie</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Nowy klient</strong> - dodaj rekord do <code>Customers</code>, w którym <code>ContactName</code> ma wartość <code>'ABC'</code>.
+      </li>
+
+      <li>
+        <strong>Nowe zamówienie</strong> - wstaw wiersz do <code>Orders</code>, ustawiając <code>EmployeeID</code> na największą wartość istniejącą w <code>Employees</code> (użyj odpowiedniej funkcji agregującej). Pozostałe pola ustaw na <code>NULL</code>.
+      </li>
+
+      <li>
+        <strong>Klienci i ich zamówienia (LEFT JOIN)</strong> - zwróć <code>ContactName</code> z <code>Customers</code> oraz <code>OrderID</code> z <code>Orders</code>. Posortuj rosnąco po <code>CompanyName</code>. Użyj <code>LEFT JOIN</code> i przeanalizuj wyniki.
+        <ul class="links">
+          <li><a href="https://www.w3schools.com/sql/sql_join_left.asp" target="_blank" rel="noreferrer noopener">LEFT JOIN</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Wariant z RIGHT JOIN</strong> - powtórz poprzednie zapytanie z użyciem <code>RIGHT JOIN</code> i porównaj pierwszy wiersz wyników.
+        <ul class="links">
+          <li><a href="https://www.w3schools.com/sql/sql_join_right.asp" target="_blank" rel="noreferrer noopener">RIGHT JOIN</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Wariant z FULL JOIN</strong> - wykonaj analogiczne zapytanie z <code>FULL JOIN</code>. Zwróć uwagę na dwa pierwsze wiersze w wynikach.
+        <ul class="links">
+          <li><a href="https://www.w3schools.com/sql/sql_join_full.asp" target="_blank" rel="noreferrer noopener">FULL JOIN</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>SELF JOIN</strong> - wypisz pary dostawców (<code>ContactName</code> z <code>Suppliers</code>), którzy pochodzą z tego samego kraju (<code>Country</code>), używając złączenia tabeli z samą sobą.
+        <ul class="links">
+          <li><a href="https://www.w3schools.com/sql/sql_join_self.asp" target="_blank" rel="noreferrer noopener">SELF JOIN</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Sekwencja <code>onetwothree</code></strong> - utwórz sekwencję zwracającą cyklicznie wartości 1, 2, 3 i przetestuj działanie (uruchom co najmniej kilka razy):
+        <ul class="links">
+          <li><a href="https://learn.microsoft.com/en-us/sql/t-sql/statements/create-sequence-transact-sql?view=sql-server-ver16" target="_blank" rel="noreferrer noopener">CREATE SEQUENCE (MS Docs)</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Zapytania DQL na wielu tabelach w bazie projektowej</strong> – wykorzystując własną bazę danych (projekt z ćwiczeń 6–8),
+        przygotuj zestaw zapytań łączących dane z co najmniej dwóch tabel.
+        <ul>
+          <li>Opracuj co najmniej <strong>3 zapytania SELECT</strong> z użyciem <code>JOIN</code> (np. łączenie encji głównej z tabelą słownikową, tabelą powiązań N:M itp.).</li>
+          <li>Dla każdego zapytania przygotuj krótki opis słowny (bez kodu SQL), np.:
+            <ul>
+              <li>„Lista zamówień klientów wraz z nazwą klienta i datą zamówienia (tabele: <em>Klient</em>, <em>Zamówienie</em>).”</li>
+              <li>„Lista pozycji zamówienia z nazwą produktu i ceną jednostkową (tabele: <em>Zamówienie</em>, <em>PozycjaZamówienia</em>, <em>Produkt</em>).”</li>
+              <li>„Lista uczniów z nazwą klasy i wychowawcą (tabele: <em>Uczeń</em>, <em>Klasa</em>, <em>Nauczyciel</em>).”</li>
+              <li>„Lista wizyt pacjentów z nazwą lekarza i nazwą gabinetu (tabele: <em>Pacjent</em>, <em>Wizyta</em>, <em>Lekarz</em>, <em>Gabinet</em>).”</li>
+              <li>„Lista pokoi hotelowych z informacją o aktualnym statusie rezerwacji (tabele: <em>Pokój</em>, <em>Rezerwacja</em>, <em>Klient</em>).”</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ol>
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
