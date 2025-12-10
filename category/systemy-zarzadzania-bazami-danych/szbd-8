@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 8 – Systemy zarządzania bazami danych (projektowanie z AI)</title>
+  <meta name="description" content="Ćwiczenia 8 – SZBD: projektowanie schematu bazy danych z użyciem AI, tworzenie tabel, relacji i więzów integralności, implementacja w SQL Server, dane przykładowe i zapytania DQL.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Ćwiczenia 8 – Projektowanie i implementacja bazy danych z wykorzystaniem AI</h1>
+
+    <p class="callout">
+      <strong>Cel:</strong> zaprojektowanie i implementacja relacyjnej bazy danych w środowisku <strong>SQL Server</strong> z wykorzystaniem narzędzi
+      <strong>AI</strong> wspierających etap projektowania. Poprawne specyfikowanie promptów projektowych, definiowanie tabel,
+      relacji i więzów integralności oraz tworzenie przykładowych zapytań DQL<em>DQL</em>.
+    </p>
+
+    <h2>Zadania</h2>
+    <ol>
+      <li>
+        <strong>Zaprojektuj schemat bazy danych z wykorzystaniem AI</strong> na podstawie własnego pomysłu na projekt
+        (np. <em>szkoła</em>, <em>szpital</em>, <em>hotel</em>, <em>wypożyczalnia</em>, <em>firma logistyczna</em>, <em>siłownia</em> itp.).
+        <ul>
+          <li>Najpierw przygotuj <strong>prompt projektowy</strong> według wzorca poniżej i wklej go do wybranego narzędzia AI (np. ChatGPT, Gemini, Claude).</li>
+          <li>Na podstawie odpowiedzi AI dopracuj schemat bazy (tabele, atrybuty, klucze, relacje), dokonując w razie potrzeby poprawek „ręcznie”.</li>
+          <li>Zespół 2-osobowy: co najmniej <strong>8 tabel</strong>. Praca solo: co najmniej <strong>5 tabel</strong>.</li>
+          <li>Każda tabela musi mieć <strong>klucz główny</strong>, a relacje 1:N i N:M powinny być jasno opisane (dla N:M wymagana tabela pośrednia).</li>
+        </ul>
+
+        <h3>Wzorzec prompta do wykorzystania w narzędziu AI</h3>
+        <div class="card">
+          <pre><code>Zaprojektuj kompletną relacyjną bazę danych w SQL Server dla projektu:
+
+[OPIS PROJEKTU – CO MODELUJEMY?]
+(np. system zarządzania szpitalem, baza hotelowa, system magazynowy, baza szkoły, system rezerwacji wizyt, itp.)
+
+Wymagania biznesowe:
+1) Jakie obiekty (rzeczywiste lub logiczne) mają być odwzorowane w bazie danych?
+   Opisz minimum 5–8 obiektów (np. Pacjent, Wizyta, Lekarz, Sala, Lek, Rezerwacja, Płatność, Uczeń, Nauczyciel, Pokój itp.).
+2) Jakie dane muszą być przechowywane dla każdego obiektu? Wypisz przykładowe atrybuty.
+3) Jakie relacje występują między tymi obiektami? (1:N, N:M) – opisz słownie.
+4) Jakie procesy ma obsługiwać system? (np. rejestracja, zapis, wypożyczenie, sprzedaż, rezerwacja, płatność, harmonogram).
+
+Wymagania techniczne:
+1) Zaproponuj nazwy tabel i kolumn zgodne z dobrymi praktykami SQL (bez polskich znaków, nazwy zrozumiałe i jednoznaczne).
+2) Dla każdej tabeli określ:
+   - klucz główny (PK),
+   - klucze obce (FK),
+   - typy danych (np. INT, DECIMAL, DATE, DATETIME, NVARCHAR(50), BIT),
+   - podstawowe ograniczenia (NOT NULL, UNIQUE, CHECK),
+   - krótkie wyjaśnienie roli tabeli w systemie.
+3) Zdefiniuj relacje między tabelami (kto do kogo ma FK, w jakim kierunku relacja 1:N, gdzie występuje N:M i jaka jest tabela pośrednia).
+4) Zwróć wynik w następującym formacie tekstowym:
+
+TABELA: [nazwa_tabeli]
+Kolumny:
+- [nazwa_kolumny] [typ_danych] [ograniczenia] – krótki opis
+- ...
+Relacje:
+- FK [nazwa_fk] -> [tabela_docelowa].[kolumna_docelowa] – opis relacji
+
+</code></pre>
+        </div>
+      </li>
+
+      <li>
+        <strong>Zdefiniuj relacje między tabelami</strong> z użyciem <strong>kluczy obcych</strong>.
+        <ul>
+          <li>Określ kierunek relacji 1:N oraz zaprojektuj relacje N:M z wykorzystaniem tabeli pośredniej.</li>
+          <li>Zadbaj o zgodność typów danych w powiązanych kolumnach oraz o sensowność relacji z punktu widzenia logiki biznesowej systemu.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Dodaj więzy integralności i dziedziny</strong>.
+        <ul>
+          <li>Zastosuj <code>UNIQUE</code> dla atrybutów wymagających unikalności (np. numery PESEL, numery dokumentów, kody zewnętrznych systemów).</li>
+          <li>Dobierz odpowiednie typy i długości danych tekstowych (<code>varchar</code>, <code>nvarchar</code>), wymuś wartości nieujemne dla pól liczbowych oraz oznacz wymagane kolumny jako <code>NOT NULL</code>.</li>
+          <li>Dodaj ograniczenia <code>CHECK</code> dla zakresów i dopuszczalnych wartości (np. status, poziom, przedział dat, zakres liczbowy).</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Wstaw przykładowe dane</strong> do każdej tabeli z użyciem poleceń <code>INSERT</code>.
+        <ul>
+          <li>Wprowadź po kilka rekordów do tabel głównych oraz po co najmniej 1–2 rekordy do tabel powiązań (np. tabel N:M).</li>
+          <li>Pilnuj zgodności relacji — rekordy z kluczami obcymi muszą wskazywać istniejące wiersze w tabelach nadrzędnych.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Przygotuj przykładowe zapytania DQL</strong> (<code>SELECT</code>).
+        <ul>
+          <li>Opracuj co najmniej 5 zapytań obejmujących:
+            <ul>
+              <li>filtrowanie danych z użyciem <code>WHERE</code>,</li>
+              <li>sortowanie wyników (<code>ORDER BY</code>),</li>
+              <li>złączenia tabel (<code>JOIN</code>),</li>
+              <li>podzapytania (w <code>WHERE</code> lub <code>FROM</code>).</li>
+            </ul>
+          </li>
+          <li>Do każdego zapytania dopisz krótki opis oczekiwanego rezultatu (np. „lista najczęściej rezerwowanych pokoi”, „liczba wizyt na lekarza”, „łączna wartość zamówień klienta”).</li>
+        </ul>
+      </li>
+    </ol>
+
+    <section class="box">
+      <h2>Materiały</h2>
+      <ul class="links">
+        <li><a href="http://www.informatyka.orawskie.pl/?pl_projektowanie-bazy-danych,113" target="_blank" rel="noreferrer noopener">Projektowanie baz danych – przykładowe wskazówki</a></li>
+        <li><a href="https://www.sqltutorial.org/sql-cheat-sheet/" target="_blank" rel="noreferrer noopener">SQL Cheat Sheet</a></li>
+        <li><a href="https://www.w3schools.com/mysql/default.asp" target="_blank" rel="noreferrer noopener">W3Schools – SQL (MySQL)</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
