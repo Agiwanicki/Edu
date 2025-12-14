@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 9 - Programowanie VBA</title>
+  <meta name="description" content="Ćwiczenia 9 - Programowanie VBA: generowanie wykresów z UserForm, ChartObjects, SeriesCollection, typy wykresów, dodawanie serii.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny - Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Ćwiczenia 9 - Programowanie VBA</h1>
+
+    <p class="callout"><strong>Cel:</strong> tworzenie wykresów z poziomu VBA przy użyciu UserForm: kontrolka MultiPage (strona Charts), tworzenie wykresów, ustawianie typu wykresu, dodawanie nowych serii danych i przypisywanie procedur do przycisków.</p>
+
+    <ol>
+      <li>Pobierz plik Ćwiczenia8.xlsm z Teams.</li>
+
+      <li>Dodaj nową stronę do formularza (Charts) — będzie generować wykresy. Dodaj elementy:
+        <ul>
+          <li>2 × Frame</li>
+          <li>6 × Label</li>
+          <li>5 × TextBox</li>
+          <li>1 × ComboBox</li>
+          <li>2 × CommandButton</li>
+        </ul>
+      </li>
+
+      <li>Zaprojektuj procedurę tworzącą wykres na podstawie:
+        <ul>
+          <li>kolumny z datami,</li>
+          <li>kolumny z danymi,</li>
+          <li>wybranego typu wykresu,</li>
+          <li>nazwy wykresu podanej przez użytkownika.</li>
+        </ul>
+      </li>
+
+      <li>Obsłuż wprowadzanie liter kolumn przez użytkownika.
+        <p>Użytkownik wpisuje litery kolumn (np. A, B, C). Twoja procedura powinna przekształcić te litery na odpowiednie zakresy danych (<code>Range</code>), które później zostaną wykorzystane do utworzenia wykresu.</p>
+      </li>
+
+      <li>Utwórz wykres na aktywnym arkuszu i przypisz do niego dane wskazane przez użytkownika.
+        <p>Wykres powinien automatycznie otrzymać tytuł zgodny z nazwą podaną w formularzu.</p>
+      </li>
+
+      <li>Dodaj listę dostępnych typów wykresów do kontrolki <code>ComboBox</code> w procedurze <code>UserForm_Initialize()</code>.
+        <p>Użytkownik powinien móc wybrać z listy m.in. wykres liniowy, obszarowy, punktowy i bąbelkowy.</p>
+      </li>
+
+      <li>Przygotuj funkcję, która na podstawie nazwy typu wykresu zwróci odpowiednią wartość liczbową (stałą typu wykresu).
+        <p>Funkcja powinna obsługiwać nazwy wpisane w <code>ComboBox</code> i zwracać odpowiadające im typy wykresów używane w Excelu.</p>
+      </li>
+
+      <li>Zastąp dotychczasowe ustawienie typu wykresu, tak aby wykorzystywało przygotowaną funkcję konwertującą nazwę typu wykresu na wartość liczbową.
+        <p>Dzięki temu jeden formularz będzie obsługiwał wiele typów wykresów zależnie od wyboru użytkownika.</p>
+      </li>
+
+      <li>Utwórz procedurę dodającą nową serię danych do istniejącego wykresu.
+        <p>Użytkownik podaje literę kolumny, z której mają być pobrane dane. Procedura odnajduje wykres po nazwie i dodaje do niego nową serię danych na podstawie wskazanej kolumny.</p>
+      </li>
+
+      <li>Przypisz odpowiednie procedury do przycisków formularza (np. tworzenie wykresu, dodawanie serii).
+        <p>Po dwukrotnym kliknięciu przycisku w edytorze VBA uzupełnij jego procedurę tak, aby wywoływała odpowiednie funkcje/procedury z parametrami pobranymi z kontrolek formularza.</p>
+      </li>
+    </ol>
+
+    <h3>Materiały</h3>
+    <ul class="links">
+      <li><a href="https://www.automateexcel.com/vba/charts-graphs/" target="_blank" rel="noreferrer noopener">Charts &amp; Graphs — VBA</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/office/vba/api/excel.xlcharttype" target="_blank" rel="noreferrer noopener">Typy wykresów (MS Docs)</a></li>
+    </ul>
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
