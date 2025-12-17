@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 9 – Bazy danych i SQL (EDDP)</title>
+  <meta name="description" content="Ćwiczenia 8 – Bazy danych i SQL: praca z publicznym zbiorem Student Performance (UCI), import CSV → SQL Server, porządkowanie typów danych oraz zapytania analityczne.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Ćwiczenia 9 – Bazy danych i SQL</h1>
+
+    <p class="callout">
+      <strong>Cel:</strong> praca z publicznym zbiorem <em>Student Performance</em> (UCI): pobranie danych, konwersja CSV do skryptu SQL i import do <strong>SQL Server</strong>, uporządkowanie typów danych oraz wykonanie zestawu zapytań analitycznych (<em>DQL</em>) w celu weryfikacji zależności w danych.
+    </p>
+
+    <ol>
+      <li>
+        <strong>Pobierz dane o wynikach uczniów</strong> (UCI Machine Learning Repository) i zapisz plik CSV lokalnie.
+        <ul class="links">
+          <li><a href="https://archive.ics.uci.edu/dataset/320/student+performance" target="_blank" rel="noreferrer noopener">UCI: Student Performance</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Skonwertuj CSV na SQL</strong> i popraw ewentualne błędy konwersji (typy, encje znaków, cudzysłowy).
+        <ul class="links">
+          <li><a href="https://www.convertcsv.com/csv-to-sql.htm" target="_blank" rel="noreferrer noopener">CSV → SQL (narzędzie online)</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Uporządkuj typy danych</strong> w tabeli (np. liczby całkowite dla pól liczbowych, <code>NVARCHAR</code> dla tekstów, daty/czas tam, gdzie właściwe). Zadbaj o spójność nazewnictwa kolumn.
+      </li>
+
+      <li>
+        <strong>Wykonaj zapytania SQL</strong> (skopiuj komentarze do SSMS i dopisz rozwiązania bezpośrednio pod każdym wierszem):
+        <div class="card"><pre><code>-- 1. Znajdź liczbę uczniów z każdej szkoły oraz podaj średni wiek uczniów w każdej z nich.
+
+-- 2. Policz, ilu chłopców i ile dziewcząt korzysta z dodatkowego wsparcia w każdej ze szkół.
+
+-- 3. Oblicz średnie wyniki końcowe w zależności od poziomu wykształcenia matki i ojca.
+
+-- 4. Oblicz średnią liczbę nieobecności w zależności od częstotliwości wyjść towarzyskich uczniów.
+
+-- 5. Sprawdź, czy dostęp do internetu ma wpływ na średni wynik końcowy uczniów.
+
+-- 6. Oblicz średnią ocenę zdrowia dla uczniów w zależności od poziomu konsumpcji alkoholu.
+
+-- 7. Ustal, jak wybór opiekuna różni się w zależności od wielkości rodziny i statusu współmałżonków rodziców.
+
+-- 8. Sprawdź, czy czas nauki jest skorelowany z wynikami końcowymi.
+
+-- 9. Znajdź uczniów, którzy mają co najmniej 3 niezaliczenia, niską frekwencję oraz niskie wyniki końcowe.
+
+-- 10. Zbadaj, czy uczniowie z różnymi formami wsparcia osiągają wyższe średnie wyniki końcowe.</code></pre></div>
+      </li>
+    </ol>
+
+    <section class="box">
+      <h2>Materiały</h2>
+      <ul class="links">
+        <li><a href="https://archive.ics.uci.edu/dataset/320/student+performance" target="_blank" rel="noreferrer noopener">UCI: Student Performance</a></li>
+        <li><a href="https://www.convertcsv.com/csv-to-sql.htm" target="_blank" rel="noreferrer noopener">CSV → SQL Converter</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
