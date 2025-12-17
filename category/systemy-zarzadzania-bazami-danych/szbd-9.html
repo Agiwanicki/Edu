@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 8 - Systemy zarządzania bazami danych</title>
+  <meta name="description" content="Ćwiczenia 9 - Systemy zarządzania bazami danych (SQL Server, SSMS): transakcje, ROLLBACK i COMMIT, SET XACT_ABORT, zagnieżdżone zapytania, zmienne T-SQL.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny - Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Ćwiczenia 9 - Systemy zarządzania bazami danych</h1>
+
+    <p class="callout">
+      <strong>Cel:</strong> praca z transakcjami w SQL Server: dodawanie, aktualizacja i usuwanie danych w ramach transakcji,
+      obsługa zatwierdzania (<code>COMMIT</code>) i wycofania (<code>ROLLBACK</code>), użycie polecenia
+      <code>SET XACT_ABORT ON</code> oraz wykorzystanie zmiennych T-SQL i zapytań zagnieżdżonych
+      z zachowaniem integralności danych i relacji między tabelami.
+    </p>
+
+    <ol>
+      <li>
+        <strong>Nowy produkt w nowej kategorii dla dostawcy Exotic Liquids</strong> - utwórz transakcję, która doda do bazy
+        <em>Northwind</em> nowy produkt (nazwa dowolna) w nowej kategorii (nazwa dowolna).
+        Produkt ma być oferowany przez dostawcę <code>Exotic Liquids</code>.
+        Identyfikatory <code>SupplierID</code> i <code>CategoryID</code> pobierz zapytaniami do zmiennych
+        (<code>DECLARE @CategoryID INT</code>, <code>DECLARE @SupplierID INT</code>).
+        Całość wykonaj w bloku <code>BEGIN TRANSACTION</code> ... <code>COMMIT</code>.
+      </li>
+
+      <li>
+        <strong>Podwyżka najdroższego napoju</strong> - utwórz transakcję, która zwiększy cenę najdroższego produktu
+        w kategorii <code>Beverages</code> o 10. Jeśli po zmianie cena przekroczy 300, wycofaj transakcję.
+      </li>
+
+      <li>
+        <strong>Usuwanie kategorii Seafood wraz z powiązaniami</strong> - utwórz transakcję, która usunie kategorię
+        <code>Seafood</code> oraz rekordy zależne (produkty i powiązane zamówienia).
+        Zastosuj kolejność:
+        <div class="card"><pre><code>DELETE FROM [Order Details] -> DELETE FROM Products -> DELETE FROM Categories</code></pre></div>
+      </li>
+
+      <li>
+        <strong>Usuwanie pracowników z London</strong> - utwórz transakcję, która usunie wszystkich pracowników
+        z miasta <code>London</code> oraz powiązane dane w innych tabelach.
+      </li>
+
+      <li>
+        <strong>(Dodatkowe)</strong> - utwórz transakcję, która zmniejszy <code>UnitsInStock</code> o 10
+        dla produktu z największą liczbą zamówień w kategorii <code>Confections</code>.
+        Jeśli stan magazynu spadnie poniżej 10, wycofaj transakcję.
+      </li>
+    </ol>
+
+    <h2>Uwaga</h2>
+    <p>Przed wykonaniem zadań włącz automatyczne wycofywanie przy błędach:</p>
+    <div class="card"><pre><code>SET XACT_ABORT ON;</code></pre></div>
+
+    <ul class="links">
+      <li><a href="https://stackoverflow.com/questions/43192298/why-does-sql-server-default-xact-abort-to-off-can-it-be-set-to-on-globally" target="_blank">Dlaczego XACT_ABORT domyślnie jest OFF</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/sql/t-sql/statements/set-xact-abort-transact-sql?view=sql-server-ver16" target="_blank">SET XACT_ABORT (MS Docs)</a></li>
+    </ul>
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
