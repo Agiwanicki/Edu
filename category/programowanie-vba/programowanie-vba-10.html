@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 10 - Programowanie VBA</title>
+  <meta name="description" content="Ćwiczenia 10 - Programowanie VBA: AnnualRateOfReturn, Sharpe ratio, OptionButton Daily/Annual, obsługa błędów.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny - Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Ćwiczenia 10 - Programowanie VBA</h1>
+
+    <p class="callout">
+      <strong>Cel:</strong> rozbudowa wskaźników w module <em>Indicators</em>: implementacja procedury <code>AnnualRateOfReturn</code> na bazie <code>DailyRateOfReturn</code>, dodanie przełączników <code>OptionButton</code> Daily/Annual w formularzu oraz przygotowanie funkcji liczącej <strong>Sharpe ratio</strong> z obsługą błędów.
+    </p>
+
+    <ol>
+      <li>
+        Skopiuj cały kod procedury <code>DailyRateOfReturn</code> i wklej poniżej. Zmień nazwę na <code>AnnualRateOfReturn</code>. Nowa procedura ma przyjmować dodatkowy argument <code>TradingDays</code>.
+        <div class="card"><pre><code>Sub AnnualRateOfReturn(SeriesStartCell As String, RorStartCell As String, TradingDays)</code></pre></div>
+      </li>
+
+      <li>
+        Zmień nagłówek kolumny wyników z <code>D_ror</code> na <code>Annual_ror</code>.
+        <div class="card"><pre><code>Cells(OutputRowNumber, OutputColumnNumber).FormulaR1C1 = "Annual_ror"</code></pre></div>
+      </li>
+
+      <li>
+        Usuń pętlę liczącą dzienny <em>rate of return</em>. W nowej pętli pobieraj cenę co <code>TradingDays</code> wierszy. Dla akcji przyjmij 252, dla krypto 365. Wzór pozostaje taki sam jak w wersji dziennej.
+        <div class="card"><pre><code>j = OutputRowNumber + 1
+For i = InputRowNumber To (LastRow - 1) Step TradingDays
+  If i + TradingDays &lt; LastRow Then
+    Cells(j, OutputColumnNumber).Value = Round((Cells(i + TradingDays, InputColumnNumber).Value / Cells(i, InputColumnNumber).Value) - 1, 4)
+    j = j + 1
+  Else
+    Cells(j, OutputColumnNumber).Value = Round((Cells(LastRow, InputColumnNumber).Value / Cells(i, InputColumnNumber).Value) - 1, 4)
+    j = j + 1
+  End If
+Next i</code></pre></div>
+      </li>
+
+      <li>
+        Na stronie formularza <strong>Indicators</strong> dodaj dwa <code>OptionButton</code>: <em>Daily</em> i <em>Annual</em>. Zmiana wyboru ma ukrywać lub pokazywać pola związane z <code>TradingDays</code>.
+        <div class="card"><pre><code>Private Sub DailyOptionButton_Click()
+  DailyOptionButton.Value = True
+  AnnualOptionButton.Value = False
+  TradingDaysLabel.Visible = False
+  TradingDaysTextBox.Visible = False
+End Sub
+
+Private Sub AnnualOptionButton_Click()
+  DailyOptionButton.Value = False
+  AnnualOptionButton.Value = True
+  TradingDaysLabel.Visible = True
+  TradingDaysTextBox.Visible = True
+End Sub</code></pre></div>
+      </li>
+
+      <li>
+        Zmodyfikuj procedurę przycisku obliczającego RoR tak, aby wywoływała odpowiednią wersję w zależności od zaznaczonego przycisku.
+        <div class="card"><pre><code>If DailyOptionButton.Value = True Then
+  Call DailyRateOfReturn(StartOfDataSeriesTextBox.Value, OutputRorTextBox.Value)
+Else
+  Call AnnualRateOfReturn(StartOfDataSeriesTextBox.Value, OutputRorTextBox.Value, TradingDaysTextBox.Value)
+End If</code></pre></div>
+      </li>
+
+      <li>
+        W module <strong>Indicators</strong> dodaj funkcję obliczającą wskaźnik <strong>Sharpe</strong>. Argumenty: zasięg komórek z obliczonym <em>annual ror</em> oraz stopa wolna od ryzyka.
+        <div class="card"><pre><code>Function SharpeRatioIndicator(RorRange, RiskFree)
+End Function</code></pre></div>
+        Wewnątrz:
+        <ul>
+          <li>zadeklaruj zmienne i tablicę: <code>AverageReturn</code>, <code>StandardDev</code>, <code>ExcessReturn()</code>, <code>nValues</code>, <code>InputRange As Range</code>,</li>
+          <li>przypisz <code>Set InputRange = Range(RorRange)</code>,</li>
+          <li><code>nValues = InputRange.Rows.Count</code>, <code>ReDim ExcessReturn(1 To nValues)</code>,</li>
+          <li>w pętli oblicz <em>nadwyżkę</em> stopy zwrotu: <code>ExcessReturn(i) = InputRange(i) - RiskFree</code>,</li>
+          <li>policz średnią i odchylenie: <code>Average = Application.WorksheetFunction.Average(ExcessReturn)</code>, <code>Std = Application.WorksheetFunction.StDev(ExcessReturn)</code>,</li>
+          <li>zwróć <code>Round(Average / Std, 4)</code>.</li>
+        </ul>
+      </li>
+
+      <li>
+        Dodaj obsługę błędów do wszystkich nowych procedur i funkcji.
+        <div class="card"><pre><code>On Error GoTo nah
+' ... kod ...
+Exit Sub
+nah:
+  MsgBox "User Error: " &amp; Err.Description</code></pre></div>
+        W funkcjach użyj <code>Exit Function</code> zamiast <code>Exit Sub</code>.
+      </li>
+
+      <li>
+        Praca samodzielna: po kliknięciu przycisku <em>Create RoR data series</em> wypełnij pole <em>Range of annual RoR</em> adresem zakresu kolumny z danymi <code>Annual_ror</code> w arkuszu.
+      </li>
+    </ol>
+
+    <h3>Materiały</h3>
+    <ul class="links">
+      <li><a href="https://www.investopedia.com/terms/s/sharperatio.asp" target="_blank" rel="noreferrer noopener">Sharpe Ratio - Investopedia</a></li>
+    </ul>
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
