@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 10 - Systemy zarządzania bazami danych</title>
+  <meta name="description" content="Ćwiczenia 10 - SQL Server: loginy, użytkownicy, uprawnienia, role, przegląd zasad bezpieczeństwa.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny - Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Ćwiczenia 10 - Systemy zarządzania bazami danych</h1>
+
+    <p class="callout">
+      <strong>Cel:</strong> praca z bezpieczeństwem w SQL Server: tworzenie loginów i użytkowników baz danych, nadawanie oraz odbieranie uprawnień, modyfikacja loginów i praca z rolami.
+    </p>
+
+    <ol>
+      <li>
+        Utwórz dwa loginy serwerowe: <strong>Login1</strong> i <strong>Login2</strong> z hasłami. Zadbaj o zgodność z polityką haseł instancji.
+        <ul class="links">
+          <li><a href="https://learn.microsoft.com/sql/t-sql/statements/create-login-transact-sql" target="_blank" rel="noreferrer noopener">CREATE LOGIN</a></li>
+        </ul>
+      </li>
+
+      <li>
+        Wyświetl listę loginów i ich typ w widoku <code>sys.server_principals</code>.
+        <ul class="links">
+          <li><a href="https://learn.microsoft.com/sql/relational-databases/system-catalog-views/sys-server-principals-transact-sql" target="_blank" rel="noreferrer noopener">sys.server_principals</a></li>
+        </ul>
+      </li>
+
+      <li>
+        W bazie <strong>Northwind</strong> utwórz użytkownika <strong>NorthwindUser</strong> powiązanego z <strong>Login1</strong>. W innej bazie (np. <strong>DOMY</strong>) utwórz użytkownika <strong>OtherUser</strong> powiązanego z <strong>Login2</strong>.
+        <ul class="links">
+          <li><a href="https://learn.microsoft.com/sql/t-sql/statements/create-user-transact-sql" target="_blank" rel="noreferrer noopener">CREATE USER</a></li>
+        </ul>
+      </li>
+
+      <li>
+        Przetestuj uprawnienia dla <strong>NorthwindUser</strong> i nadaj mu możliwość odczytu danych. Zweryfikuj działanie na tabeli <code>Customers</code>.
+        <ul class="links">
+          <li><a href="https://learn.microsoft.com/sql/t-sql/statements/grant-transact-sql" target="_blank" rel="noreferrer noopener">GRANT</a></li>
+          <li><a href="https://learn.microsoft.com/sql/t-sql/statements/revert-transact-sql" target="_blank" rel="noreferrer noopener">REVERT</a></li>
+        </ul>
+      </li>
+
+      <li>
+        Nadaj <strong>NorthwindUser</strong> uprawnienia <code>UPDATE</code> i <code>INSERT</code> do tabel <code>Orders</code> oraz <code>Order Details</code>.
+      </li>
+
+      <li>
+        Cofnij uprawnienie <code>INSERT</code> do tabel <code>Orders</code> i <code>Order Details</code> dla <strong>NorthwindUser</strong>. Pozostaw uprawnienie <code>UPDATE</code> bez zmian.
+        <ul class="links">
+          <li><a href="https://learn.microsoft.com/sql/t-sql/statements/revoke-transact-sql" target="_blank" rel="noreferrer noopener">REVOKE</a></li>
+        </ul>
+      </li>
+
+      <li>
+        Zmień hasło dla <strong>Login1</strong>. Wyłącz (disable) <strong>Login2</strong>.
+        <ul class="links">
+          <li><a href="https://learn.microsoft.com/sql/t-sql/statements/alter-login-transact-sql" target="_blank" rel="noreferrer noopener">ALTER LOGIN</a></li>
+        </ul>
+      </li>
+
+      <li>
+        Usuń <strong>Login2</strong>. Przypisz użytkownika <strong>OtherUser</strong> do <strong>Login1</strong>.
+        <ul class="links">
+          <li><a href="https://learn.microsoft.com/sql/t-sql/statements/drop-login-transact-sql" target="_blank" rel="noreferrer noopener">DROP LOGIN</a></li>
+          <li><a href="https://learn.microsoft.com/sql/t-sql/statements/alter-user-transact-sql" target="_blank" rel="noreferrer noopener">ALTER USER</a></li>
+        </ul>
+      </li>
+
+      <li>
+        Utwórz rolę bazodanową <strong>Salesman</strong>. Nadaj roli uprawnienia <code>SELECT</code> i <code>INSERT</code>. Dodaj do roli użytkownika <strong>NorthwindUser</strong>. Wyświetl listę pryncypałów bazy w widoku <code>sys.database_principals</code>.
+        <ul class="links">
+          <li><a href="https://learn.microsoft.com/sql/t-sql/statements/create-role-transact-sql" target="_blank" rel="noreferrer noopener">CREATE ROLE</a></li>
+          <li><a href="https://learn.microsoft.com/sql/relational-databases/system-catalog-views/sys-database-principals-transact-sql" target="_blank" rel="noreferrer noopener">sys.database_principals</a></li>
+        </ul>
+      </li>
+    </ol>
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
