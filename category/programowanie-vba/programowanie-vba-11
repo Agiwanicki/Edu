@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia – VBA: pobieranie i parsowanie JSON (DummyJSON)</title>
+  <meta name="description" content="Pobieranie surowego JSON z API DummyJSON i budowa tabeli Users z użyciem regex">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html#%2Fcwiczenia" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <nav class="breadcrumbs">
+      <a href="../../index.html">Strona główna</a> › <a href="../../index.html#%2Fcwiczenia">Ćwiczenia</a> › VBA: JSON (DummyJSON)
+    </nav>
+
+    <ol class="wp-block-list">
+      <li>
+        Utwórz nowy skoroszyt Excel i przygotuj środowisko VBA:
+        <ul>
+          <li>włącz kartę <strong>Deweloper</strong>,</li>
+          <li>otwórz edytor VBA (<strong>ALT+F11</strong>),</li>
+          <li>dodaj nowy moduł (np. <code>modDummyJSON</code>),</li>
+          <li>na górze modułu dodaj <code>Option Explicit</code>.</li>
+        </ul>
+      </li>
+
+      <li>
+        W tym samym module zdefiniuj stałą z adresem API:
+        <pre><code>Private Const DUMMYJSON_USERS_URL As String = "https://dummyjson.com/users?limit=100"</code></pre>
+        Twoim celem jest pobranie danych z tego endpointu i przetworzenie ich do arkuszy zgodnie z dalszymi poleceniami.
+      </li>
+
+      <li>
+        Utwórz procedurę <code>FetchRawJSON()</code>, której zadaniem będzie:
+        <ul>
+          <li>pobranie odpowiedzi JSON (jako tekst) spod adresu zdefiniowanego w stałej,</li>
+          <li>utworzenie (jeśli nie istnieje) arkusza <code>RawJSON</code> i wyczyszczenie go,</li>
+          <li>wpisanie w <code>A1</code> tytułu, a w <code>A2</code> surowej odpowiedzi JSON,</li>
+          <li>ustawienie szerokości kolumny A oraz formatowania (pogrubienie tytułu, zawijanie tekstu w wierszu z JSON).</li>
+        </ul>
+        Po wykonaniu procedury program powinien wyświetlić komunikat informujący, że surowy JSON został zapisany.
+      </li>
+
+      <li>
+        W procedurze <code>ParseUsersToSheet()</code> utwórz obiekt regex, który będzie wycinał z całego JSON-a
+        <strong>pojedyncze obiekty użytkowników</strong> (każdy osobno). Użyj dokładnie poniższego wzorca:
+        <pre><code>reUserObj.Pattern = "\{[\s\S]*?""role""\s*:\s*""[^""]+""\}"</code></pre>
+
+        <ul>
+          <li><code>\{</code> – dopasowanie znaku otwierającej klamry <code>{</code> (początek obiektu),</li>
+          <li><code>[\s\S]*?</code> – dopasowanie dowolnych znaków (białych i nie-białych), w trybie <em>niezachłannym</em>, aby nie „połknąć” wielu obiektów naraz,</li>
+          <li><code>""role""</code> – dopasowanie literału <code>"role"</code> jako „kotwicy” końcówki obiektu użytkownika,</li>
+          <li><code>\s*:\s*</code> – dopasowanie dwukropka z opcjonalnymi spacjami po obu stronach,</li>
+          <li><code>""[^""]+""</code> – dopasowanie wartości tekstowej pola role (cudzysłów, potem co najmniej 1 znak niebędący cudzysłowem, i cudzysłów),</li>
+          <li><code>\}</code> – dopasowanie znaku zamykającej klamry <code>}</code> (koniec obiektu).</li>
+        </ul>
+      </li>
+
+      <li>
+        Dla każdego wyciętego obiektu użytkownika napisz funkcję pomocniczą do wyciągania wartości tekstowych po nazwie pola.
+        We wzorcu regex użyj dokładnie poniższego patternu (zmienna z nazwą pola ma się nazywać <code>fieldName</code>):
+        <pre><code>re.Pattern = """" &amp; fieldName &amp; """" &amp; "\s*:\s*""([^""]*)"""</code></pre>
+
+        <ul>
+          <li><code>"""" &amp; fieldName &amp; """"</code> – buduje fragment dopasowujący dokładnie nazwę pola w cudzysłowie, np. <code>"firstName"</code>,</li>
+          <li><code>\s*:\s*</code> – dopasowuje dwukropek z opcjonalnymi spacjami,</li>
+          <li><code>""</code> – dopasowuje cudzysłów otwierający wartość,</li>
+          <li><code>([^""]*)</code> – grupa przechwytująca: zero lub więcej znaków innych niż cudzysłów (czyli treść wartości tekstowej),</li>
+          <li><code>""</code> – dopasowuje cudzysłów zamykający wartość.</li>
+        </ul>
+        Funkcja ma zwracać przechwyconą wartość z grupy, a jeśli pole nie istnieje – pusty tekst.
+      </li>
+
+      <li>
+        Analogicznie utwórz funkcję pomocniczą do wyciągania wartości liczbowych po nazwie pola.
+        Użyj dokładnie poniższego wzorca (zmienna z nazwą pola: <code>fieldName</code>):
+        <pre><code>re.Pattern = """" &amp; fieldName &amp; """" &amp; "\s*:\s*([0-9]+)"</code></pre>
+
+        <ul>
+          <li><code>"""" &amp; fieldName &amp; """"</code> – dopasowuje nazwę pola w cudzysłowie, np. <code>"age"</code>,</li>
+          <li><code>\s*:\s*</code> – dopasowuje dwukropek i opcjonalne spacje,</li>
+          <li><code>([0-9]+)</code> – grupa przechwytująca: co najmniej jedna cyfra (wartość liczbowa bez znaku i bez części dziesiętnej).</li>
+        </ul>
+        Funkcja ma zwracać liczbę, a jeśli pole nie istnieje – wartość pustą (<code>Empty</code>) lub 0 (zgodnie z Twoją decyzją w kodzie).
+      </li>
+
+      <li>
+        Utwórz procedurę <code>ParseUsersToSheet()</code>, która:
+        <ul>
+          <li>sprawdzi, czy istnieje arkusz <code>RawJSON</code> (jeśli nie – zakończy działanie z komunikatem),</li>
+          <li>pobierze tekst JSON z komórki <code>RawJSON!A2</code>,</li>
+          <li>utworzy (jeśli nie istnieje) arkusz <code>Users</code> i wyczyści go,</li>
+          <li>wstawi nagłówki kolumn: <code>id</code>, <code>firstName</code>, <code>lastName</code>, <code>age</code>, <code>gender</code>, <code>email</code>, <code>username</code>, <code>phone</code>,</li>
+          <li>zbuduje tabelę danych, w której każdy wiersz odpowiada jednemu użytkownikowi z JSON.</li>
+        </ul>
+      </li>
+
+      <li>
+        W procedurze parsującej, dla każdego obiektu użytkownika:
+        <ul>
+          <li>wyciągnij wartości pól: <code>id</code>, <code>firstName</code>, <code>lastName</code>, <code>age</code>, <code>gender</code>, <code>email</code>, <code>username</code>, <code>phone</code>,</li>
+          <li>wpisz je do kolejnych wierszy arkusza <code>Users</code> (startując od wiersza 2),</li>
+          <li>po zakończeniu dopasowań dopasuj szerokości kolumn (<code>AutoFit</code>) i wyświetl komunikat z liczbą wczytanych rekordów.</li>
+        </ul>
+      </li>
+
+      <li>
+        Przetestuj działanie całości:
+        <ul>
+          <li>najpierw uruchom <code>FetchRawJSON()</code>,</li>
+          <li>następnie uruchom <code>ParseUsersToSheet()</code>,</li>
+          <li>sprawdź, czy arkusz <code>Users</code> zawiera wiersze z danymi użytkowników oraz czy nagłówki są zgodne z poleceniem.</li>
+        </ul>
+      </li>
+    </ol>
+	
+	
+	<div class="box" style="margin-top:2rem; padding:1rem; border:2px dashed #999;">
+	  <h2>Narzędzia pomocnicze online</h2>
+	  <p>Do pracy z API, JSON-em i wyrażeniami regularnymi możesz używać poniższych narzędzi:</p>
+
+	  <ul>
+		<li>
+		  <a href="https://restful-api.dev/" target="_blank">https://restful-api.dev/</a><br>
+		  Katalog przykładowych endpointów REST.
+		</li>
+
+		<li>
+		  <a href="https://regex101.com/" target="_blank">https://regex101.com/</a><br>
+		  Tester wyrażeń regularnych. Pozwala sprawdzić, czy regex poprawnie dopasowuje tekst,
+		  pokazuje grupy przechwytujące i krok po kroku wyjaśnia działanie wzorca.
+		</li>
+
+		<li>
+		  <a href="https://jsonformatter.curiousconcept.com/#" target="_blank">https://jsonformatter.curiousconcept.com/</a><br>
+		  Formatowanie i walidacja JSON. Pozwala uporządkować surowy JSON, sprawdzić poprawność
+		  składni i łatwiej analizować strukturę danych.
+		</li>
+	  </ul>
+	</div>
+
+  </main>
+
+  <footer>© 2026 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
