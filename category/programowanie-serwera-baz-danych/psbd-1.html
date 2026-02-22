@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 1 – Programowanie serwera baz danych</title>
+  <meta name="description" content="Projektowanie diagramu ERD własnej bazy danych (diagrams.net) jako podstawa dalszych ćwiczeń.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  
+  <main class="wrap">
+    <h1>Ćwiczenia 1 – Diagram ERD własnej bazy danych</h1>
+
+    <p class="callout">
+      W tym ćwiczeniu <strong>nie piszemy jeszcze SQL</strong>. Twoim zadaniem jest zaprojektowanie
+      <strong>diagramu ERD</strong> w narzędziu <a href="https://app.diagrams.net/" target="_blank" rel="noreferrer noopener">app.diagrams.net</a>.
+      Ten diagram będzie podstawą do wszystkich kolejnych ćwiczeń i projektu końcowego.
+    </p>
+
+    <h2>Cel ćwiczeń</h2>
+    <ul>
+      <li>zaprojektować spójną bazę danych dla wybranego problemu biznesowego (dowolna domena: sklep, rezerwacje, wypożyczalnia, eventy, szkoła językowa, serwis itp.),</li>
+      <li>zdefiniować encje, atrybuty i relacje wraz z krotnościami,</li>
+      <li>ustalić klucze główne i obce oraz podstawowe ograniczenia integralności,</li>
+      <li>przygotować diagram tak, aby dało się go bezpośrednio przełożyć na DDL (CREATE TABLE ...).</li>
+    </ul>
+
+    <h2>Wymagania dla diagramu ERD</h2>
+    <ol>
+      <li>
+        Zaprojektuj bazę o minimalnej liczbie:
+        <ul>
+		  <li><strong>solo; 5-6 tabel (encji)</strong>,</li>
+          <li><strong>dla zespołu 2 osobowego; 8-9 tabel (encji)</strong>,</li>
+          <li><strong>dla zespołu 3 osobowego; 10-12 tabel (encji)</strong>,</li>
+        </ul>
+      </li>
+
+      <li>
+        Dla każdej tabeli wskaż:
+        <ul>
+          <li>klucz główny (<code>PK</code>)</li>
+          <li>klucze obce (<code>FK</code>) oraz kierunek zależności</li>
+          <li>najważniejsze atrybuty (kolumny) z proponowanymi typami danych (np. <code>INT</code>, <code>NVARCHAR</code>, <code>DATE</code>, <code>DECIMAL</code>)</li>
+        </ul>
+      </li>
+
+      <li>
+        Zaznacz (opisowo, w diagramie lub w notatkach obok) przynajmniej po 1 przykładzie:
+        <ul>
+          <li>atrybutu wymaganego (<code>NOT NULL</code>)</li>
+          <li>atrybutu unikalnego (<code>UNIQUE</code>)</li>
+          <li>ograniczenia dziedziny / listy wartości (<code>CHECK</code>), np. status: <code>NEW</code>, <code>PAID</code>, <code>CANCELLED</code></li>
+        </ul>
+      </li>
+
+      <li>Dla każdej relacji dopisz krotność (np. <code>1..N</code>) i opcjonalność (czy relacja może być pusta).</li>
+
+      <li>Zadbaj o czytelność: nazwy tabel w liczbie pojedynczej, spójne nazwy kluczy (<code>Id</code>, <code>CustomerId</code>, <code>OrderId</code>…), brak powielanych danych.</li>
+    </ol>
+
+    <h2>Co będzie dalej (zakres projektu w kolejnych ćwiczeniach)</h2>
+    <p>Ten ERD będzie rozwijany i wykorzystywany w następnych zadaniach. Projekt docelowo ma obejmować m.in.:</p>
+    <ul>
+      <li>implementację bazy w SQL Server (DDL): tabele, klucze, więzy integralności, ograniczenia, indeksy,</li>
+      <li>skrypt „odtwarzający” bazę: tworzenie struktury + wypełnienie danymi testowymi (DML),</li>
+      <li>zapytania DQL (SELECT, JOIN, agregacje, podzapytania) oraz elementy T‑SQL,</li>
+      <li>procedury składowane i funkcje (np. walidacje, podsumowania, raporty),</li>
+      <li>transakcje (<code>BEGIN TRAN</code>, <code>COMMIT</code>, <code>ROLLBACK</code>),</li>
+      <li>wybrane zagadnienia „serwerowe” (np. uprawnienia/role, widoki, triggery, logowanie zmian).</li>
+    </ul>
+
+    <h2>Do oddania</h2>
+    <ol>
+      <li>Plik diagramu <strong>.drawio</strong> (źródłowy).</li>
+      <li>Eksport <strong>PNG/PDF</strong> diagramu ERD.</li>
+      <li>Krótki opis (2–5 zdań): jaka domena, jaka logika biznesowa i co jest „rdzeniem” bazy.</li>
+    </ol>
+
+    <section class="box">
+      <h2>Kod Teams</h2>
+      <p><strong><!-- WSTAW KOD TEAMS --></strong></p>
+    </section>
+  </main>
+
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
