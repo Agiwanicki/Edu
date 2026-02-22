@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zajęcia 1 – Diagram przypadków użycia (UCD)</title>
+  <meta name="description" content="Ćwiczenia z projektowania systemów informatycznych: diagram przypadków użycia (UCD) w diagrams.net na przykładzie marketplace Allegro.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  
+  <main class="wrap">
+    <h1>Zajęcia 1 – Diagram przypadków użycia (UCD)</h1>
+
+    <p class="callout">
+      Wykonaj poniższe zadania w narzędziu
+      <a href="https://app.diagrams.net/" target="_blank" rel="noreferrer noopener">app.diagrams.net</a>.    
+    </p>
+
+    <h2>Zadanie główne: UCD dla marketplace „Allegro”</h2>
+
+    <ol>
+      <li>Utwórz diagram przypadków użycia (UCD) dla systemu marketplace „Allegro”.</li>
+
+      <li>
+        Na diagramie umieść granicę systemu (prostokąt) z nazwą:
+        <strong>„System: Allegro”</strong>.
+      </li>
+
+      <li>
+        Dodaj jednego aktora (poza granicą systemu):
+        <strong>„Użytkownik”</strong>.
+      </li>
+
+      <li>
+        Wewnątrz granicy systemu zdefiniuj przypadki użycia (funkcje systemu).
+        Poziom szczegółowości: użytkownik i jego interakcje z systemem (bez szczegółów technicznych).
+      </li>
+
+      <li>
+        Połącz aktora <strong>Użytkownik</strong> relacjami asocjacji z przypadkami użycia.
+      </li>
+
+      <li>
+        Dodaj relacje <code>&lt;&lt;include&gt;&gt;</code> (zależności obowiązkowe).
+        Zastosuj je tam, gdzie jedna funkcja zawsze wymaga innej (np. „finalizacja zamówienia” zawsze zawiera „płatność”).
+      </li>
+
+      <li>
+        Dodaj relacje <code>&lt;&lt;extend&gt;&gt;</code> (zależności opcjonalne/warunkowe).
+        Zastosuj je tam, gdzie funkcja jest wykonywana tylko w określonych sytuacjach (np. „użycie kodu rabatowego”).
+      </li>
+    </ol>
+
+    <p class="hint">
+      Wskazówka: pamiętaj o kierunku strzałek w relacjach <code>&lt;&lt;include&gt;&gt;</code> i <code>&lt;&lt;extend&gt;&gt;</code>.
+      Jeśli korzystasz z prostych łączników, dopisz stereotypy jako etykiety na liniach.
+    </p>
+
+    <h2>Praca samodzielna</h2>
+    <p>
+      Utwórz diagram przypadków użycia dla systemu <strong>rezerwacji biletów w kinie</strong>.
+      Zastosuj granicę systemu, aktora/aktorów, asocjacje oraz relacje <code>&lt;&lt;include&gt;&gt;</code> i <code>&lt;&lt;extend&gt;&gt;</code>.
+    </p>
+
+    <h2>Do oddania</h2>
+    <ol>
+      <li>Eksport diagramu (PNG lub PDF).</li>
+      <li>Plik źródłowy (.drawio).</li>
+    </ol>
+
+    <section class="box">
+      <h2>Kod Teams</h2>
+      <p><strong>yl58oja</strong></p>
+    </section>
+  </main>
+
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
