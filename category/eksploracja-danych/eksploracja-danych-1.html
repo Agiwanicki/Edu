@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<html lang="pl">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Ćwiczenia 1 – Eksploracja danych [0600-BFGC2C]</title>
+<meta content="Ćwiczenia 1 z eksploracji danych: web scraping (requests, BeautifulSoup) – fake-jobs oraz Erasmus (UŁ)." name="description"/>
+<link href="../../assets/style.css" rel="stylesheet"/>
+</head>
+<body>
+<header>
+<div class="wrap brand">
+<a class="button" href="../../index.html">← Powrót do ćwiczeń</a>
+<span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+</div>
+</header>
+<main class="wrap">
+<h1>Ćwiczenia 1 – Eksploracja danych [0600-BFGC2C]</h1>
+<p class="callout">Wykonaj poniższe zadania. Pracuj w Google Colab lub lokalnie w Pythonie.</p>
+<ul class="links"><li><a href="https://colab.research.google.com/" rel="noreferrer noopener" target="_blank">Google Colab</a></li><li><a href="https://realpython.github.io/fake-jobs/" rel="noreferrer noopener" target="_blank">Fake Jobs (Real Python)</a></li><li><a href="https://pypi.org/project/requests/" rel="noreferrer noopener" target="_blank">requests (PyPI)</a></li><li><a href="https://pypi.org/project/beautifulsoup4/" rel="noreferrer noopener" target="_blank">beautifulsoup4 (PyPI)</a></li><li><a href="https://www.eksoc.uni.lodz.pl/erasmus" rel="noreferrer noopener" target="_blank">Erasmus – Wydział EKSOC UŁ</a></li></ul>
+<ol><li><strong>ZAD 1 – WEB SCRAPPING: fake-jobs</strong><ol class="substeps"><li>Zaloguj się na https://colab.research.google.com/</li><li>Utwórz nowy notatnik. W lewym górnym rogu, kliknij plik, nowy notatnik.</li><li>Zainstaluj biblioteki. W zakładce Shell wpisz kolejno i potwierdź enterem:</li><pre><code>!pip install requests
+!pip install beautifulsoup4</code></pre><li>W edytorze kodu po lewej stronie (main.py) importuj biblioteki:</li><li>Zadeklaruj zmienną URL. Przypisz do niej adres strony z fałszywymi ofertami pracy. Obejrzyj stronę pod adresem: https://realpython.github.io/fake-jobs/</li><li>Z pomocą biblioteki requests, przypisz zawartość strony do zmiennej page. Obejrzyj wynik instrukcji print. Potem wykomentuj instrukcję print() poprzedzając ją znakiem #.</li><li>Utwórz obiekty typu Beautiful Soup który pozwoli na bardziej precyzyjną manipulację danymi.</li><li>W „zupie” znajdź obiekt o id=”ResultsContainer” i przypisz do zmiennej results. Obejrzyj wynik instrukcji print(). Potem wykomentuj instrukcję print() poprzedzając ją znakiem #.</li><li>W „result” odnajdź wszystkie tagi HTML &lt;h2&gt; zawierające słowo „python”. Funkcja lambda przegląda tekst każdego elementu &lt;h2&gt;, konwertuje go na małe litery text.lower() i sprawdza, czy gdzieś można znaleźć ciąg znaków „python”.</li><li>Możesz teraz policz ilość ofert pracy w Pythonie za pomocą funkcji len() oraz wyświetlić wszystkie elementy &lt;h2&gt; dotyczące tej pracy. Uruchom poniższy kod  i obejrzyj wyniki. Potem wykomentuj obie instrukcje print() poprzedzając je znakiem #.</li><li>Link do oferty pracy jest zagnieżdżony wewnątrz kilku tagów. Aby wydobyć informację z wnętrza elementu &lt;h2&gt; musimy przejść przez 3 generacje: parent.parent.parent .</li><li>Teraz możemy iterować po elementach HTML przypisanych do python_job_elements za pomocą pętli for .  Z każdego elementu wydobywamy drugi link job_element.find_all(„a”)[1][„href”] i wyświetlamy za pomocą instrukcji print(). Po uruchomieniu powinna pojawić się lista linków do ofert pracy w Pythonie.</li></ol><p>Po wykonaniu kroków 9–12 wypisz listę linków do ofert pracy związanych z Pythonem.</p></li><li><strong>ZAD 2 – WEB SCRAPPING: Erasmus (UŁ)</strong><ol><li>Wykomentuj cały kod za pomocą „”” &lt;kod&gt; „””.</li><li>Otwórz: https://www.eksoc.uni.lodz.pl/erasmus . Obejrzyj kod HTML strony. Odnajdź id kontenera w którym znajduje się lista dostępnych krajów:</li><li>Na podstawie informacji z pierwszych ćwiczeń, napisz kod, który policzy ilość dostępnych krajów oraz wyświetli ich nazwy. Przy wyszukiwaniu krajów metodą find_all() , oprócz znacznika html takiego jak „h2” czy „ span” możesz wykorzystać klasę, w której znajduje się szukana informacja. Na stronie UŁ nazwy krajów są oznaczone jako klasa: „btn-text” . Możemy dodać argument attrs = {’class’ : 'btn-text’} , aby zawęzić wyszukiwanie do znaczników „ span” zawierających klasę „ btn-text” .</li></ol></li></ol>
+<section class="box">
+<h2>Kod Teams</h2>
+<p><strong>zatn2zw</strong>
+<!-- TODO: podmień kod Teams w razie potrzeby --></p>
+</section>
+</main>
+<footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
