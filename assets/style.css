@@ -129,3 +129,7 @@ s{ color:#6b7280 }
   transform: rotate(90deg);
 }
 
+/* hide entire category block */
+.category.is-hidden {
+  display: none !important;
+}
