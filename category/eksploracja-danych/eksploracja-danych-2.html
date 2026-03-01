@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Ćwiczenia 2 – Eksploracja danych [0600-BFGC2C]</title>
+<meta name="description" content="Ćwiczenia 2 z eksploracji danych: regresja liniowa (scikit-learn, pandas, numpy, matplotlib)."/>
+<link rel="stylesheet" href="../../assets/style.css"/>
+</head>
+<body>
+
+<header>
+<div class="wrap brand">
+<a class="button" href="../../index.html">← Powrót do ćwiczeń</a>
+<span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+</div>
+</header>
+
+<main class="wrap">
+
+<h1>Ćwiczenia 2 – Eksploracja danych [0600-BFGC2C]</h1>
+
+<p class="callout">
+Wykonaj poniższe zadania w Google Colab lub lokalnie w Pythonie https://colab.research.google.com/.
+</p>
+
+<h2>Linear Regression</h2>
+
+<ol>
+
+<li>Utwórz nowy zeszyt w Colab. Kliknij „Plik” w lewym górnym rogu, a następnie „Nowy notatnik”.</li>
+
+<li>Zainstaluj biblioteki. W zeszycie wpisz kolejno i potwierdź Enterem:
+<pre><code>!pip install scikit-learn
+!pip install pandas
+!pip install numpy</code></pre>
+</li>
+
+<li>W pliku main.py, na samym początku kodu, zaimportuj biblioteki:
+<pre><code>import pandas as pd
+import numpy as np
+import sklearn
+from sklearn import linear_model
+from sklearn.utils import shuffle</code></pre>
+</li>
+
+<li>
+Pobierz pliki <strong>student.txt</strong> oraz <strong>student-mat.csv</strong> z Teams. 
+W eksploratorze plików po lewej stronie kliknij ikonę folderu, następnie kliknij prawym przyciskiem myszy w pusty obszar i wybierz „Prześlij”. 
+Wybierz plik student-mat.csv oraz student.txt.
+
+Przypisz zawartość pliku do zmiennej <strong>data</strong>. Jako znak separacji (<em>sep</em>) wpisz „;”. 
+Wypisz dane dotyczące 5 pierwszych studentów za pomocą metody <code>.head()</code> i instrukcji <code>print()</code>. Uruchom program.
+<pre><code>data = pd.read_csv("student-mat.csv", sep=";")
+print(data.head())</code></pre>
+</li>
+
+<li>
+Zbiór danych zawiera 33 kolumny. Możemy ograniczyć ich liczbę, przypisując do zmiennej <strong>data</strong> jedynie wybrane kolumny. 
+Sprawdź ponownie zawartość 5 pierwszych wierszy w <strong>data</strong>, przenosząc instrukcję <code>print(data.head())</code> na koniec kodu.
+<pre><code>data = data[["G1", "G2", "G3", "studytime", "failures", "absences"]]
+print(data.head())</code></pre>
+</li>
+
+<li>
+Teraz podziel dane na dwa zbiory. <strong>y</strong> oznacza dane, które chcemy przewidzieć za pomocą regresji liniowej. 
+Przypisz do <strong>y</strong> wartości z kolumny „G3” przypisane do <strong>data</strong>. 
+Do zmiennej <strong>x</strong> przypisz zbiór <strong>data</strong> pozbawiony kolumny „G3”, 
+za pomocą metody <code>.drop(["G3"], 1)</code>. 
+<strong>x</strong> i <strong>y</strong> powinny przechowywać wartości w formie tablic <code>np.array()</code>. 
+Wyświetl <strong>x</strong> i <strong>y</strong> za pomocą instrukcji <code>print()</code>.
+<pre><code>x = np.array(data.drop(["G3"], 1))
+y = np.array(data["G3"])</code></pre>
+</li>
+
+<li>
+Utwórz zmienną <strong>data2</strong> i przypisz do niej dane dotyczące konsumpcji alkoholu w tygodniu, nieobecności oraz ocenę końcoworoczną uczniów. 
+Posortuj <strong>data2</strong> według konsumpcji alkoholu (kod poniżej). 
+Wyświetl 10 pierwszych wierszy za pomocą instrukcji <code>print()</code> oraz <code>head()</code>.
+<pre><code>data2.sort_values(by=['Dalc'], ascending=False)</code></pre>
+</li>
+
+<li>
+Podziel dane na zbiór treningowy oraz testowy. Proporcje podziału wyznacza liczba przypisana do zmiennej <strong>test_size</strong> (w tym przypadku 0.1). 
+Liczba ta powinna być dobrana w taki sposób, aby osiągnąć jak największą dokładność (<em>accuracy</em>) prognozy.
+<pre><code>x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(x, y, test_size=0.1)</code></pre>
+</li>
+
+<li>
+Zdefiniuj model regresji liniowej z wykorzystaniem biblioteki sklearn.
+<pre><code>model = linear_model.LinearRegression()</code></pre>
+</li>
+
+<li>
+Instrukcja <code>model.fit()</code> dopasowuje dane do modelu. Metoda <code>.score()</code> zwraca wartość oznaczającą dokładność prognozy (accuracy).
+<pre><code>model.fit(x_train, y_train)
+model_score = model.score(x_test, y_test)</code></pre>
+</li>
+
+<li>
+Wyświetl informacje na temat modelu regresji liniowej. 
+Im bliżej wartości 1 jest accuracy, tym dokładniejsza prognoza. 
+Przetestuj różne wartości <strong>test_size</strong>, aby uzyskać jak największą dokładność.
+<pre><code>print('Accuracy: ', model_score)
+print('Coefficient: ', model.coef_)
+print('Intercept: ', model.intercept_)</code></pre>
+</li>
+
+<li>
+Aby zwizualizować zależności między badanymi zmiennymi, zainstaluj bibliotekę matplotlib:
+<pre><code>!pip install matplotlib</code></pre>
+Następnie zaimportuj biblioteki na początku kodu:
+<pre><code>import matplotlib.pyplot as plot
+from matplotlib import style</code></pre>
+</li>
+
+<li>
+Wykorzystaj bibliotekę matplotlib do generowania wykresów.
+<pre><code>plot.scatter(data["G1"], data["G3"])
+plot.xlabel("First year grade")
+plot.ylabel("Final Grade")
+plot.show()</code></pre>
+</li>
+
+<li>
+Wykomentuj kod dotyczący generowania wykresów.
+Przypisz do zmiennej <strong>predictions</strong> wynik działania metody <code>.predict()</code>.
+<pre><code>predictions = model.predict(x_test)</code></pre>
+</li>
+
+<li>
+Za pomocą pętli <code>for</code> wypisz w konsoli wynik predykcji (<em>predicted grade</em>),
+zaokrąglony funkcją <code>round()</code>, wraz z realną oceną oraz zestawem danych.
+<pre><code>for x in range(len(predictions)):
+    print('predicted grade: ', round(predictions[x], 0),
+          '| real grade: ', y_test[x],
+          '| data_set: ', x_test[x])</code></pre>
+</li>
+
+<li>
+Za pomocą wykresów biblioteki matplotlib spróbuj odnaleźć zależność zbliżoną do liniowej pomiędzy innymi zmiennymi w zbiorze danych.
+</li>
+
+<li>
+Podstaw wybrane zmienne do <strong>data</strong> i sprawdź accuracy utworzonego modelu.
+Jedną z wybranych zmiennych zawsze musi być „G3”, ponieważ zostaje ona przypisana do <strong>y</strong>
+i stanowi wartość, którą chcemy przewidzieć.
+<pre><code>data = data_raw[["G3", "famsize", "Walc", "health"]]</code></pre>
+</li>
+
+</ol>
+
+</main>
+
+<footer>
+© 2025 Arkadiusz Iwanicki • Strona ćwiczeń
+</footer>
+
+</body>
+</html>
