@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 1 – Bazy Danych [0600-BFIF4B]</title>
+  <meta name="description" content="Ćwiczenia 1 – Bazy Danych [0600-BFIF4B].">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+  <main class="wrap">
+    <h1>Ćwiczenia 1 – Bazy Danych [0600-BFIF4B]</h1>
+    <p class="callout">Wykonaj poniższe zadania z użyciem zapytań SQL. Pobierz skrypt <strong>instwind.sql</strong> z platformy Teams.</p>
+    
+<h2>Za pomocą zapytań SQL</h2>
+<ol>
+<li>Z tabeli <strong>Customers</strong> pozyskaj listę klientów z Polski.
+<ul class="links"><li><a href="https://www.w3schools.com/sql/sql_select.asp" target="_blank" rel="noreferrer noopener">SQL SELECT</a></li><li><a href="https://www.w3schools.com/sql/sql_where.asp" target="_blank" rel="noreferrer noopener">SQL WHERE</a></li></ul></li>
+<li>Z tabeli <strong>Customers</strong> pozyskaj listę imion klientów mieszkających w Berlinie.
+<ul class="links"><li>Aby pozyskać same imiona, wpisz nazwę kolumny po <strong>SELECT</strong>.</li></ul></li>
+<li>Znajdź nazwę najdroższego produktu w tabeli <strong>Products</strong>.
+<ul class="links"><li><a href="https://www.w3schools.com/sql/sql_orderby.asp" target="_blank" rel="noreferrer noopener">SQL ORDER BY</a></li><li>Aby ograniczyć liczbę rekordów do 1, dodaj <strong>LIMIT 1</strong> na końcu zapytania.</li></ul></li>
+<li>Znajdź numer ID najstarszego zamówienia w tabeli <strong>Orders</strong>.</li>
+<li>W tabeli <strong>Products</strong> zaktualizuj cenę produktu <strong>Chocolade</strong> do 30.
+<ul class="links"><li><a href="https://www.w3schools.com/sql/sql_update.asp" target="_blank" rel="noreferrer noopener">SQL UPDATE</a></li></ul></li>
+<li>W tabeli <strong>Products</strong> podnieś cenę wszystkich produktów pochodzących od dostawcy <strong>Exotic Liquid</strong> o 10. Najpierw znajdź ID dostawcy w tabeli <strong>Suppliers</strong>.</li>
+<li>Utwórz tabelę <strong>ProductsInfo</strong> z kolumnami: <strong>ProductID</strong> (int), <strong>Note</strong> (varchar(200)), <strong>Warning</strong> (text).
+<ul class="links"><li><a href="https://www.w3schools.com/sql/sql_create_table.asp" target="_blank" rel="noreferrer noopener">SQL CREATE TABLE</a></li></ul></li>
+<li>Oblicz średnią cenę produktu w tabeli <strong>Products</strong>.
+<ul class="links"><li><a href="https://www.w3schools.com/sql/sql_count_avg_sum.asp" target="_blank" rel="noreferrer noopener">COUNT, AVG, SUM</a></li></ul></li>
+<li>Policz Niemców w tabeli <strong>Customers</strong>.</li>
+<li>Dodaj kolumnę <strong>isShipped</strong> (tinyint) do tabeli <strong>Orders</strong>.
+<ul class="links"><li><a href="https://www.w3schools.com/sql/sql_alter.asp" target="_blank" rel="noreferrer noopener">SQL ALTER TABLE</a></li></ul></li>
+</ol>
+<h2>Dodatkowo</h2>
+<ul class="links"><li><a href="https://www.w3schools.com/sql/trysql.asp?filename=trysql_select_all" target="_blank" rel="noreferrer noopener">Baza danych online (W3Schools SQL Tryit)</a></li></ul>
+
+  </main>
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>

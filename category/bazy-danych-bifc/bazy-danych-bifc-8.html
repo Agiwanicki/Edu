@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 8 – Bazy Danych [0600-BFIF4B]</title>
+  <meta name="description" content="Ćwiczenia 8 – Bazy Danych [0600-BFIF4B].">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+  <main class="wrap">
+    <h1>Ćwiczenia 8 – Bazy Danych [0600-BFIF4B]</h1>
+    <p class="callout">Przed wykonaniem zadań uruchom polecenie: <strong>SET XACT_ABORT ON</strong>.</p>
+    
+<ul class="links"><li><a href="https://stackoverflow.com/questions/43192298/why-does-sql-server-default-xact-abort-to-off-can-it-be-set-to-on-globally" target="_blank" rel="noreferrer noopener">Dlaczego XACT_ABORT</a></li><li><a href="https://learn.microsoft.com/en-us/sql/t-sql/statements/set-xact-abort-transact-sql?view=sql-server-ver16" target="_blank" rel="noreferrer noopener">Dokumentacja SET XACT_ABORT</a></li></ul>
+<ol>
+<li>Utwórz transakcję, która doda do bazy <strong>Northwind</strong> nowy produkt z nowej kategorii. Produkt ma być oferowany przez dostawcę <strong>Exotic Liquids</strong>, a <strong>SupplierID</strong> ma być pobrane zapytaniem.
+<ul class="links"><li>Pomocne będzie przypisanie wartości z zapytań do zmiennych, np. <code>DECLARE @CATEGORYID int</code>.</li></ul></li>
+<li>Utwórz transakcję, która usunie z bazy kategorię, produkt oraz rekordy z tabeli <strong>Order Details</strong> powiązane z tym produktem.
+<ul class="links"><li>Ostateczna kolejność poleceń DML: <strong>ORDER DETAILS → PRODUCTS → CATEGORIES</strong>.</li><li>Ma to na celu zachowanie spójności bazy.</li></ul></li>
+<li>Utwórz transakcję, która usunie z bazy wszystkich pracowników z miasta <strong>London</strong> oraz wszystkie rekordy z pozostałych tabel, które są z nimi powiązane ograniczeniami.
+<ul class="links"><li>W razie potrzeby wykorzystaj zapytania zagnieżdżone.</li><li>Postępuj analogicznie do poprzedniego zadania. Czytaj błędy i wyciągaj wnioski.</li></ul></li>
+</ol>
+
+  </main>
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>

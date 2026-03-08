@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 2 – Bazy Danych [0600-BFIF4B]</title>
+  <meta name="description" content="Ćwiczenia 2 – Bazy Danych [0600-BFIF4B].">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+  <main class="wrap">
+    <h1>Ćwiczenia 2 – Bazy Danych [0600-BFIF4B]</h1>
+    <p class="callout">Wykonaj poniższe zadania w środowisku <strong>SQL Server Management Studio (SSMS)</strong>.</p>
+    
+<ol>
+<li>Utwórz nową pustą bazę o nazwie <strong>PROG</strong>.
+<ul class="links"><li>Kliknij prawym przyciskiem myszy na <strong>Database</strong>.</li><li>Wybierz <strong>New Database…</strong>.</li><li>W polu <strong>Database name</strong> wpisz <strong>PROG</strong>.</li></ul></li>
+<li>Utwórz tabele w bazie <strong>PROG</strong> przy pomocy skryptu <strong>Lab2.1.PROG.struktura_bazy.sql</strong> (do pobrania na Teams).
+<ul class="links"><li><strong>File</strong> → <strong>Open</strong> → <strong>File…</strong></li><li>Wskaż lokalizację pobranego skryptu.</li><li>Uruchom skrypt klawiszem <strong>F5</strong> lub przyciskiem <strong>Execute</strong>.</li></ul></li>
+<li>Wygeneruj diagram bazy danych.
+<ul class="links"><li>Rozwiń bazę <strong>PROG</strong>.</li><li>Kliknij prawym przyciskiem myszy na <strong>Database Diagrams</strong> i wybierz <strong>New Database Diagram</strong>.</li><li>Trzymając klawisz <strong>Shift</strong>, zaznacz wszystkie tabele i kliknij <strong>Add</strong>.</li><li>Zamknij okno przyciskiem <strong>Close</strong>.</li><li>Zapisz diagram skrótem <strong>Ctrl + S</strong>.</li></ul></li>
+<li>Wypełnij tabele danymi przy pomocy skryptu <strong>Lab2.2.PROG.dane.sql</strong> (do pobrania na Teams).</li>
+<li>Obejrzyj zawartość wszystkich tabel.
+<ul class="links"><li><strong>Select Top 1000 Rows</strong></li><li><strong>Edit Top 200 Rows</strong></li><li><strong>Design</strong></li></ul></li>
+<li>Napisz polecenia <strong>DML</strong> wykonujące następujące akcje:
+<ol><li>Dodanie siebie jako pracownika.</li><li>Dodanie trzech pracowników (dane dowolne, w jednym poleceniu).</li><li>Dodanie nowego stanowiska.</li><li>Aktualizacja pracowników z pkt 2 do stanowiska z pkt 3 i ustawienie pracownika z pkt 1 jako ich szefa.</li><li>Usunięcie wszystkich kar powyżej 500 zł.</li><li>Dodanie każdemu pracownikowi, poza prezesem, nagrody w kwocie 10% jego pensji.</li><li>Ustawienie wszystkim pracownikom pensji wyliczonej jako: <strong>dodatek * 2 + 1000</strong>.</li></ol></li>
+</ol>
+<h2>Dodatkowe materiały</h2>
+<ul class="links"><li><a href="https://www.eksocnet.uni.lodz.pl/oprogramowanie/azure/" target="_blank" rel="noreferrer noopener">Link do pobrania oprogramowania</a></li><li><a href="https://www.youtube.com/watch?app=desktop&amp;v=2A5FJlVWPlU" target="_blank" rel="noreferrer noopener">Instrukcja instalacji</a></li><li><a href="https://www.youtube.com/watch?v=Q8gBvsUjTLw&amp;t=108s" target="_blank" rel="noreferrer noopener">Dokładne przedstawienie SSMS</a></li><li><a href="https://www.youtube.com/watch?v=m1KcNV-Zhmc" target="_blank" rel="noreferrer noopener">Sub-queries / nested query</a></li></ul>
+
+  </main>
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>

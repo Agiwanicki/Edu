@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 7 – Bazy Danych [0600-BFIF4B]</title>
+  <meta name="description" content="Ćwiczenia 7 – Bazy Danych [0600-BFIF4B].">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+  <main class="wrap">
+    <h1>Ćwiczenia 7 – Bazy Danych [0600-BFIF4B]</h1>
+    <p class="callout">Temat: <strong>T-SQL i funkcje skalarne</strong>.</p>
+    
+<p>Pobierz z Teams skrypt <strong>instwnd.sql</strong>. Uruchom skrypt w SSMS, aby odtworzyć bazę <strong>Northwind</strong>.</p>
+<ol>
+<li>Utwórz nowy skrypt i zadeklaruj zmienne:
+<ul class="links"><li><a href="https://learn.microsoft.com/en-us/sql/t-sql/data-types/data-types-transact-sql?view=sql-server-ver16" target="_blank" rel="noreferrer noopener">Typy danych T-SQL</a></li></ul>
+<pre><code>DECLARE @napis varchar(50) = 'Hello World!'
+DECLARE @liczba int = 5, @liczba1 int = 10
+SELECT @napis, @liczba</code></pre></li>
+<li>Utwórz funkcję:
+<pre><code>CREATE FUNCTION dbo.Divide(@x INT, @y INT)
+RETURNS INT AS
+BEGIN
+    DECLARE @RESULT INT
+    SELECT @RESULT = @x / @y
+RETURN @RESULT
+END</code></pre>
+Aby ją wywołać:
+<pre><code>SELECT dbo.Divide(10, 5) AS Result</code></pre></li>
+<li>Dodaj zabezpieczenie przed dzieleniem przez 0. Nazwij funkcję <strong>dbo.DivideSecure()</strong>.</li>
+<li>Utwórz funkcję, która sprawdza, czy liczba jest parzysta czy nieparzysta i zwraca komunikat <strong>'parzysta'</strong> lub <strong>'nieparzysta'</strong>.</li>
+<li>Utwórz funkcję, która wypisze n-ty wyraz ciągu Fibonacciego.
+<ul class="links"><li><a href="https://pl.wikipedia.org/wiki/Ci%C4%85g_Fibonacciego" target="_blank" rel="noreferrer noopener">Ciąg Fibonacciego</a></li></ul></li>
+</ol>
+
+  </main>
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 9 – Bazy Danych [0600-BFIF4B]</title>
+  <meta name="description" content="Ćwiczenia 9 – Bazy Danych [0600-BFIF4B].">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+  <main class="wrap">
+    <h1>Ćwiczenia 9 – Bazy Danych [0600-BFIF4B]</h1>
+    <p class="callout">Wykonaj poniższe zadania administracyjne w SQL Server.</p>
+    
+<ol>
+<li>Utwórz 2 nowe loginy:
+<ul class="links"><li><strong>Login1</strong>, hasło: <strong>Admin</strong></li><li><strong>Login2</strong>, hasło: <strong>admin</strong> (haszowane)</li><li><a href="https://www.sqlservertutorial.net/sql-server-administration/sql-server-create-login/" target="_blank" rel="noreferrer noopener">CREATE LOGIN</a></li></ul>
+<p>Do utworzenia drugiego loginu użyj wyniku:</p>
+<pre><code>SELECT PWDENCRYPT('admin')</code></pre></li>
+<li>Wyświetl listę wszystkich istniejących loginów wraz z ich typem.
+<ul class="links"><li>Źródło: <strong>sys.server_principals sp</strong></li><li>Kolumny: <strong>sp.name AS login</strong>, <strong>sp.type_desc AS login_type</strong></li></ul></li>
+<li>Usuń <strong>Login2</strong>. Następnie przypisz osieroconego użytkownika <strong>OtherUser</strong> do <strong>Login1</strong>.
+<ul class="links"><li><a href="https://www.sqlservertutorial.net/sql-server-administration/sql-server-drop-login/" target="_blank" rel="noreferrer noopener">DROP LOGIN</a></li></ul></li>
+<li>Utwórz rolę <strong>Salesman</strong>. Nadaj jej uprawnienia do <strong>SELECT</strong> i <strong>INSERT</strong>. Przypisz rolę do użytkownika <strong>NorthwindUser</strong>. Następnie wyświetl wszystkie istniejące role serwerowe.
+<ul class="links"><li><a href="https://www.sqlservertutorial.net/sql-server-administration/sql-server-create-role/" target="_blank" rel="noreferrer noopener">CREATE ROLE</a></li></ul></li>
+</ol>
+
+  </main>
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>

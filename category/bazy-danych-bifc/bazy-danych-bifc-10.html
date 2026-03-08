@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 10 – Bazy Danych [0600-BFIF4B]</title>
+  <meta name="description" content="Ćwiczenia 10 – Bazy Danych [0600-BFIF4B].">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+
+<body>
+
+<header>
+  <div class="wrap brand">
+    <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+    <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+  </div>
+</header>
+
+<main class="wrap">
+
+<h1>Ćwiczenia 10 – Bazy danych [0600-BFIF4B]</h1>
+
+<p class="callout">
+Odpowiedzi do poniższych zadań wyślij w <strong>jednym pliku</strong>.
+Aby uruchomić pojedyncze zapytanie z pliku zaznacz je, a następnie wciśnij klawisz <strong>F5</strong>.
+</p>
+
+<h2>DML</h2>
+
+<ol>
+
+<li>
+Wyświetl posortowaną alfabetycznie listę produktów (same nazwy produktów), 
+które nie są już oferowane w sprzedaży (<code>discontinued = 1</code>).
+</li>
+
+<li>
+Wyświetl liczbę dostawców (<strong>Suppliers</strong>).  
+Użyj aliasu do podpisania wyniku zapytania jako <strong>"Liczba dostawców"</strong>.
+</li>
+
+<li>
+Znajdź dostawcę produktu <strong>'Ipoh Coffee'</strong>.  
+W wyniku zapytania pokaż:
+<ul>
+<li>id dostawcy</li>
+<li>nazwę</li>
+<li>adres</li>
+<li>numer kontaktowy</li>
+</ul>
+</li>
+
+<li>
+Wyświetl listę produktów (tylko nazwa produktu i cena) o cenie przekraczającej
+średnią cenę produktu w tabeli <strong>Products</strong>.  
+Posortuj wynik według ceny.
+</li>
+
+<li>
+Wyświetl listę przedstawiającą podliczoną ilość zamówień z danej kategorii
+dla danego kraju.  
+Lista ma być posortowana alfabetycznie według nazwy kategorii.
+</li>
+
+</ol>
+
+<h2>DDL</h2>
+
+<ol start="6">
+
+<li>
+Utwórz nowy login o nazwie <strong>admin</strong> z hasłem <strong>1234</strong>.
+</li>
+
+<li>
+Utwórz perspektywę pokazującą listę terytoriów (ich id) wraz z przypisanymi do nich
+pracownikami (imię i nazwisko).
+</li>
+
+<li>
+Utwórz sekwencję, która będzie zwracała liczby nieparzyste z przedziału
+od 1 do 100 w cyklu.  
+Gdy wartość przekroczy 99, sekwencja ma zacząć liczyć od początku.  
+Uruchom sekwencję.
+</li>
+
+<li>
+Utwórz tabelę o nazwie <strong>Complaints</strong> w bazie <strong>Northwind</strong>.  
+Tabela ma posiadać następujące kolumny:
+<ul>
+<li><strong>id</strong> – klucz główny z autonumeracją</li>
+<li><strong>employeeid</strong> – klucz obcy z tabeli <strong>Employees</strong></li>
+<li><strong>description</strong> – tekst Unicode (maks. 200 znaków)</li>
+<li><strong>date</strong> – data zgłoszenia</li>
+<li><strong>type</strong> – jedna z wartości: <code>'P'</code>, <code>'R'</code>, <code>'S'</code></li>
+</ul>
+Żadna inna wartość w polu <strong>type</strong> nie jest dopuszczalna.
+</li>
+
+<li>
+Utwórz transakcję, która zwiększy cenę najtańszego produktu z kategorii
+<strong>'Produce'</strong> o <strong>15%</strong>.  
+Jeżeli cena produktu przekroczy <strong>16</strong>, transakcja ma zostać wycofana.
+</li>
+
+</ol>
+
+</main>
+
+<footer>
+© 2025 Arkadiusz Iwanicki • Strona ćwiczeń
+</footer>
+
+</body>
+</html>

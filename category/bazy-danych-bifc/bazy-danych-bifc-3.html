@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 3 – Bazy Danych [0600-BFIF4B]</title>
+  <meta name="description" content="Ćwiczenia 3 – Bazy Danych [0600-BFIF4B].">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+  <main class="wrap">
+    <h1>Ćwiczenia 3 – Bazy Danych [0600-BFIF4B]</h1>
+    <p class="callout">Wykonaj poniższe zadania <strong>za pomocą skryptów SQL</strong>.</p>
+    
+<ol>
+<li>Załóż nową bazę o nazwie <strong>PROG2</strong>.<pre><code>CREATE DATABASE [PROG2]</code></pre></li>
+<li>Załóż w bazie <strong>PROG2</strong> strukturę tabel zgodnie z bazą <strong>PROG</strong>. Skrypt tworzący jej strukturę to <strong>Lab2.1.PROG.struktura_bazy.sql</strong>.</li>
+<li>Przepisz dane z bazy <strong>PROG</strong> do bazy <strong>PROG2</strong> przy pomocy poleceń <strong>INSERT</strong>. Uwaga: należy użyć wyrażenia <strong>SET IDENTITY_INSERT</strong>.
+<ul class="links"><li><a href="https://skillstest.pl/library/question/68" target="_blank" rel="noreferrer noopener">SET IDENTITY_INSERT – przykład</a></li><li><a href="https://4programmers.net/Bazy_danych/W%C5%82asno%C5%9B%C4%87_identity_insert_t-sql" target="_blank" rel="noreferrer noopener">Opis IDENTITY_INSERT</a></li></ul>
+<pre><code>SET IDENTITY_INSERT &lt;nazwaTabeli&gt; ON
+INSERT INTO &lt;nazwaTabeli&gt;(kolumna1, kolumna2, ...)
+SELECT kolumna1, kolumna2, ...
+FROM nazwaBazy.nazwaTabeli
+SET IDENTITY_INSERT &lt;nazwaTabeli&gt; OFF</code></pre></li>
+<li>W bazie <strong>PROG2</strong> utwórz tabelę <strong>INFO</strong>. Typy i rozmiary pól dobierz samodzielnie.
+<ul class="links"><li><a href="https://learn.microsoft.com/en-us/sql/t-sql/statements/create-table-transact-sql-identity-property?view=sql-server-ver16" target="_blank" rel="noreferrer noopener">CREATE TABLE / IDENTITY</a></li><li><a href="https://learn.microsoft.com/en-us/sql/relational-databases/tables/create-primary-keys?view=sql-server-ver16" target="_blank" rel="noreferrer noopener">PRIMARY KEY</a></li></ul></li>
+<li>Utwórz perspektywę umożliwiającą wprowadzenie informacji dla pracownika o karze.</li>
+<li>Analogicznie wykonaj wprowadzenie informacji dla pracownika o karze oraz dla szefa o karze.</li>
+</ol>
+
+  </main>
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>

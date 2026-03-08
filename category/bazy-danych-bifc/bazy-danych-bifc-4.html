@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 4 – Bazy Danych [0600-BFIF4B]</title>
+  <meta name="description" content="Ćwiczenia 4 – Bazy Danych [0600-BFIF4B].">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+  <main class="wrap">
+    <h1>Ćwiczenia 4 – Bazy Danych [0600-BFIF4B]</h1>
+    <p class="callout">Wykonaj poniższe zadania <strong>za pomocą skryptów SQL</strong>.</p>
+    
+<ol>
+<li>Załóż bazę <strong>DOMY</strong>.</li>
+<li>Utwórz tabelę <strong>DOM</strong> o kolumnach:
+<ul class="links"><li><strong>Id</strong> – liczba całkowita, autonumerowana, klucz główny (<code>IDENTITY(1,1)</code>, <code>PRIMARY KEY</code>).</li><li><strong>Powierzchnia</strong> – pole typu <code>decimal(5,2) NOT NULL</code>.</li></ul></li>
+<li>Utwórz tabelę <strong>OSOBA</strong> o kolumnach:
+<ul class="links"><li><strong>Id</strong> – autonumerowane, klucz główny.</li><li><strong>Imie</strong> – tekst do 50 znaków, UNICODE, wymagane.</li><li><strong>Nazwisko</strong> – tekst do 50 znaków, UNICODE, wymagane.</li><li><strong>Pesel</strong> – 11 znaków, UNICODE, wymagane, unikalne (<strong>UNIQUE</strong>).</li></ul></li>
+<li>Utwórz tabelę <strong>UMOWA</strong> o kolumnach:
+<ul class="links"><li><strong>Id</strong> – autonumerowane, klucz główny.</li><li><strong>Nr</strong> – tekst do 10 znaków, UNICODE, wymagane i unikalne.</li><li><strong>Data</strong> – data, wymagane, domyślnie data bieżąca.</li><li><strong>Dom_id</strong> – klucz obcy do tabeli <strong>DOM</strong>.</li><li><strong>Osoba_id</strong> – klucz obcy do tabeli <strong>OSOBA</strong>.</li></ul></li>
+<li>Wprowadź dane o dwóch osobach, dwóch domach i dwóch umowach. Pola ID mają być nadawane automatycznie.
+<ul class="links"><li>Wykorzystaj <strong>UNION</strong>, aby wykonać <strong>INSERT</strong> wielu rekordów jednocześnie.</li><li><a href="https://www.w3schools.com/sql/sql_ref_union.asp" target="_blank" rel="noreferrer noopener">SQL UNION</a></li></ul>
+<pre><code>INSERT INTO [dbo].osoba (imie, nazwisko, pesel)
+SELECT 'Jan', 'Kowalski', '85021012345' UNION ALL
+SELECT 'Adam', 'Nowak', '76031523456'</code></pre></li>
+<li>Utwórz perspektywę zwracającą listę miast, w których są zarejestrowane domy (bez powtórek).
+<ul class="links"><li><code>CREATE VIEW [dbo].[vmiasta] AS SELECT DISTINCT(miasto) nazwa FROM dbo.dom</code></li><li><a href="https://www.w3schools.com/sql/sql_distinct.asp" target="_blank" rel="noreferrer noopener">SQL DISTINCT</a></li></ul></li>
+<li>Utwórz skrypt usuwający wszystkie tabele i perspektywę z bazy <strong>DOMY</strong>.
+<ul class="links"><li><code>DROP TABLE [nazwaTabeli]</code></li><li><code>DROP VIEW [nazwaPerspektywy]</code></li></ul></li>
+</ol>
+
+  </main>
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
