@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 3 – Implementacja modelu bazy danych w SQL Server</title>
+  <meta name="description" content="Ćwiczenia 3 – Implementacja modelu bazy danych w SQL Server z użyciem T-SQL i mechanizmów SQL Server.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Ćwiczenia 3 – Implementacja modelu bazy danych w SQL Server</h1>
+
+    <p class="callout">
+      Celem ćwiczenia jest implementacja zaprojektowanego wcześniej modelu bazy danych
+      w środowisku <strong>Microsoft SQL Server Management Studio (SSMS)</strong>
+      przy użyciu języka <strong>T-SQL</strong>.
+    </p>
+
+    <p>
+      Podczas implementacji należy wykorzystać wybrane mechanizmy dostępne w SQL Server,
+      które wspierają:
+    </p>
+
+    <ul>
+      <li>strukturę danych,</li>
+      <li>integralność danych,</li>
+      <li>automatyzację operacji,</li>
+      <li>przetwarzanie danych.</li>
+    </ul>
+
+    <p>
+      Poniżej przedstawiono przykładowe elementy, które można zastosować w projekcie.
+    </p>
+
+    <h2>1. Tworzenie tabel z kluczami głównymi i obcymi</h2>
+
+    <p>
+      Relacyjna baza danych opiera się na relacjach między tabelami.
+      Relacje te definiuje się za pomocą kluczy głównych (<code>PRIMARY KEY</code>)
+      oraz kluczy obcych (<code>FOREIGN KEY</code>).
+    </p>
+
+    <h3>Przykład – dwie powiązane tabele</h3>
+
+    <pre><code>CREATE TABLE Customers (
+    CustomerID INT PRIMARY KEY IDENTITY(1,1),
+    Name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Orders (
+    OrderID INT PRIMARY KEY IDENTITY(1,1),
+    CustomerID INT,
+    OrderDate DATE,
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+);</code></pre>
+
+    <p>W powyższym przykładzie:</p>
+    <ul>
+      <li><code>CustomerID</code> jest kluczem głównym w tabeli <code>Customers</code>,</li>
+      <li><code>CustomerID</code> w tabeli <code>Orders</code> jest kluczem obcym,</li>
+      <li>oznacza to, że zamówienie musi odnosić się do istniejącego klienta.</li>
+    </ul>
+
+    <h2>2. Ograniczenia integralności danych</h2>
+
+    <p>
+      Ograniczenia (<em>constraints</em>) służą do zapewnienia poprawności danych
+      przechowywanych w bazie.
+    </p>
+
+    <h3>a) CHECK</h3>
+
+    <p>Ograniczenie <code>CHECK</code> wymusza spełnienie określonego warunku.</p>
+
+    <p><strong>Przykład – cena produktu musi być dodatnia:</strong></p>
+
+    <pre><code>CREATE TABLE Products (
+    ProductID INT PRIMARY KEY,
+    Price DECIMAL(10,2),
+    CHECK (Price &gt; 0)
+);</code></pre>
+
+    <p><strong>Można także ograniczyć wartości do określonego zbioru:</strong></p>
+
+    <pre><code>CREATE TABLE Orders (
+    OrderID INT PRIMARY KEY,
+    Status VARCHAR(20),
+    CHECK (Status IN ('New','Processing','Completed','Cancelled'))
+);</code></pre>
+
+    <p><strong>Przykład – wiek użytkownika musi mieścić się w określonym zakresie:</strong></p>
+
+    <pre><code>CREATE TABLE Users (
+    UserID INT PRIMARY KEY,
+    Age INT,
+    CHECK (Age BETWEEN 18 AND 120)
+);</code></pre>
+
+    <h3>b) UNIQUE</h3>
+
+    <p>Ograniczenie <code>UNIQUE</code> zapewnia, że wartości w kolumnie są unikalne.</p>
+
+    <p><strong>Przykład – adres e-mail nie może się powtarzać:</strong></p>
+
+    <pre><code>CREATE TABLE Users (
+    UserID INT PRIMARY KEY,
+    Email VARCHAR(100) UNIQUE
+);</code></pre>
+
+    <h3>c) DEFAULT</h3>
+
+    <p>Ograniczenie <code>DEFAULT</code> przypisuje wartość domyślną.</p>
+
+    <p><strong>Przykład – automatyczne ustawienie bieżącej daty:</strong></p>
+
+    <pre><code>CREATE TABLE Orders (
+    OrderID INT PRIMARY KEY,
+    OrderDate DATE DEFAULT GETDATE()
+);</code></pre>
+
+    <p>
+      Jeżeli data nie zostanie podana przy wstawianiu rekordu,
+      zostanie użyta aktualna data systemowa.
+    </p>
+
+    <h2>3. Typy danych w SQL Server</h2>
+
+    <p>
+      Dobór odpowiednich typów danych jest istotny dla poprawnego działania bazy.
+    </p>
+
+    <h3>a) Typy liczbowe</h3>
+    <p>
+      Typy liczbowe służą do przechowywania wartości całkowitych, dziesiętnych
+      oraz pieniężnych. Dobór konkretnego typu zależy od zakresu wartości
+      i wymaganej dokładności.
+    </p>
+
+    <p><strong>Najczęściej używane typy liczbowe:</strong></p>
+    <ul>
+      <li><code>TINYINT</code> – małe liczby całkowite od 0 do 255, np. liczba gwiazdek w ocenie produktu,</li>
+      <li><code>SMALLINT</code> – mniejsze liczby całkowite, np. liczba punktów lub stan magazynowy małych zbiorów,</li>
+      <li><code>INT</code> – podstawowy typ dla liczb całkowitych, np. identyfikatory rekordów, liczba produktów, liczba zamówień,</li>
+      <li><code>BIGINT</code> – bardzo duże liczby całkowite; można go traktować jako odpowiednik „long” znany z innych języków programowania, np. duże identyfikatory lub liczniki zdarzeń,</li>
+      <li><code>DECIMAL(p,s)</code> / <code>NUMERIC(p,s)</code> – liczby dziesiętne o określonej precyzji, np. ceny, stawki VAT, wartości rabatów,</li>
+      <li><code>FLOAT</code> – liczby zmiennoprzecinkowe przybliżone, np. wyniki pomiarów, współczynniki lub wartości statystyczne,</li>
+      <li><code>REAL</code> – podobny do <code>FLOAT</code>, ale o mniejszej precyzji,</li>
+      <li><code>MONEY</code> – typ przeznaczony do przechowywania wartości pieniężnych,</li>
+      <li><code>SMALLMONEY</code> – typ pieniężny o mniejszym zakresie.</li>
+    </ul>
+
+    <p><strong>Przykłady:</strong></p>
+    <pre><code>CustomerID INT
+OrderCounter BIGINT
+Price DECIMAL(10,2)
+Discount FLOAT
+TotalAmount MONEY</code></pre>
+
+    <p>
+      W przypadku <code>DECIMAL(10,2)</code>:
+    </p>
+    <ul>
+      <li>pierwsza liczba oznacza łączną liczbę cyfr,</li>
+      <li>druga oznacza liczbę miejsc po przecinku.</li>
+    </ul>
+
+    <h3>b) Typy tekstowe</h3>
+    <p>
+      Typy tekstowe służą do przechowywania napisów o stałej lub zmiennej długości.
+    </p>
+
+    <ul>
+      <li><code>CHAR(n)</code> – tekst o stałej długości; przydatny np. dla kodów pocztowych, skrótów lub stałych identyfikatorów,</li>
+      <li><code>VARCHAR(n)</code> – tekst o zmiennej długości; dobry np. dla nazw, e-maili, adresów,</li>
+      <li><code>NCHAR(n)</code> – tekst stałej długości w standardzie Unicode,</li>
+      <li><code>NVARCHAR(n)</code> – tekst zmiennej długości w standardzie Unicode,</li>
+      <li><code>TEXT</code> – starszy typ do przechowywania długiego tekstu,</li>
+      <li><code>NTEXT</code> – starszy odpowiednik <code>TEXT</code> dla Unicode.</li>
+    </ul>
+
+    <p>
+      Litera <strong>N</strong> w typach <code>NCHAR</code> i <code>NVARCHAR</code> oznacza obsługę
+      <strong>Unicode</strong>, czyli możliwość poprawnego przechowywania znaków narodowych
+      i wielu alfabetów, np. polskich liter: ą, ć,ę, ł, ń, ó, ś, ź, ż.
+      W praktyce <code>NVARCHAR</code> warto stosować wszędzie tam, gdzie tekst może zawierać
+      znaki spoza podstawowego alfabetu ASCII.
+    </p>
+
+    <p><strong>Przykłady:</strong></p>
+    <pre><code>PostalCode CHAR(6)
+Name VARCHAR(100)
+City NVARCHAR(100)
+Description TEXT</code></pre>
+
+    <h3>c) Typy daty i czasu</h3>
+    <p>
+      Typy tej grupy służą do przechowywania dat, czasu lub obu tych elementów jednocześnie.
+    </p>
+
+    <ul>
+      <li><code>DATE</code> – przechowuje tylko datę,</li>
+      <li><code>DATETIME</code> – przechowuje datę i czas,</li>
+      <li><code>DATETIME2</code> – nowszy typ daty i czasu o większej precyzji,</li>
+      <li><code>SMALLDATETIME</code> – data i czas w mniejszym zakresie i z mniejszą dokładnością,</li>
+      <li><code>TIME</code> – przechowuje wyłącznie czas, np. godzinę, minuty i sekundy.</li>
+    </ul>
+
+    <p><strong>Przykłady:</strong></p>
+    <pre><code>BirthDate DATE          -- 2024-10-10
+OrderDate DATETIME      -- 2024-10-10 14:30:00
+EventTime TIME          -- 14:30:00</code></pre>
+
+    <p>
+      Typ <code>TIME</code> jest przydatny np. wtedy, gdy chcemy przechować jedynie godzinę rozpoczęcia zajęć,
+      czas wizyty albo porę dostawy bez konkretnej daty.
+    </p>
+
+    <h3>d) Typy logiczne</h3>
+    <p>
+      W SQL Server do przechowywania wartości logicznych używa się przede wszystkim typu <code>BIT</code>.
+      Można go traktować jako odpowiednik typu <strong>bool / boolean</strong> znanego z innych języków programowania.
+    </p>
+
+    <ul>
+      <li><code>BIT</code> – przechowuje wartości <code>0</code> lub <code>1</code>, interpretowane odpowiednio jako <strong>fałsz</strong> i <strong>prawda</strong>.</li>
+    </ul>
+
+    <p><strong>Przykłady zastosowania:</strong></p>
+    <ul>
+      <li>aktywność użytkownika,</li>
+      <li>status zamówienia,</li>
+      <li>informacja, czy produkt jest dostępny,</li>
+      <li>informacja, czy rekord został zatwierdzony.</li>
+    </ul>
+
+    <p><strong>Przykład:</strong></p>
+    <pre><code>IsActive BIT
+IsPaid BIT
+IsArchived BIT</code></pre>
+
+    <h2>4. Kolumny obliczane (Computed Columns)</h2>
+
+    <p>
+      Kolumna obliczana to kolumna, której wartość jest automatycznie wyliczana
+      na podstawie innych kolumn.
+    </p>
+
+    <p><strong>Przykład – obliczenie podatku:</strong></p>
+
+    <pre><code>CREATE TABLE Products (
+    ProductID INT PRIMARY KEY,
+    Price DECIMAL(10,2),
+    Tax AS (Price * 0.23)
+);</code></pre>
+
+    <p>
+      Kolumna <code>Tax</code> będzie automatycznie wyliczana na podstawie ceny.
+    </p>
+
+    <p><strong>Inne przykłady:</strong></p>
+
+    <h3>a) Wartość brutto</h3>
+    <pre><code>GrossPrice AS (Price * 1.23)</code></pre>
+
+    <h3>b) Pełne imię i nazwisko</h3>
+    <pre><code>FullName AS (FirstName + ' ' + LastName)</code></pre>
+
+    <h3>c) Wartość zamówienia</h3>
+    <pre><code>TotalValue AS (Quantity * UnitPrice)</code></pre>
+
+    <h2>5. Widoki (Views)</h2>
+
+    <p>
+      Widok jest wirtualną tabelą opartą na zapytaniu SQL.
+      Może służyć do uproszczenia zapytań lub prezentacji danych.
+    </p>
+
+    <h3>a) Widok wykonujący obliczenia</h3>
+
+    <pre><code>CREATE VIEW ProductPrices AS
+SELECT
+    ProductID,
+    Price,
+    Price * 1.23 AS GrossPrice
+FROM Products;</code></pre>
+
+    <p>Widok wyświetla cenę netto oraz cenę brutto.</p>
+
+    <h3>b) Widok łączący tekst</h3>
+
+    <pre><code>CREATE VIEW CustomerNames AS
+SELECT
+    CustomerID,
+    FirstName + ' ' + LastName AS FullName
+FROM Customers;</code></pre>
+
+    <h3>c) Widok łączący dane z wielu tabel</h3>
+
+    <pre><code>CREATE VIEW OrdersView AS
+SELECT
+    Orders.OrderID,
+    Customers.Name,
+    Orders.OrderDate
+FROM Orders
+JOIN Customers
+ON Orders.CustomerID = Customers.CustomerID;</code></pre>
+
+    <p>Widok łączy informacje o zamówieniu i kliencie.</p>
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
