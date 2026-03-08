@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Ćwiczenia 5 – Eksploracja danych [0600-BFGC2C]</title>
+<meta name="description" content="Ćwiczenia 5 z eksploracji danych: TextMining i Regex."/>
+<link rel="stylesheet" href="../../assets/style.css"/>
+</head>
+<body>
+
+<header>
+<div class="wrap brand">
+<a class="button" href="../../index.html">← Powrót do ćwiczeń</a>
+<span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+</div>
+</header>
+
+<main class="wrap">
+
+<h1>Ćwiczenia 5 – Eksploracja danych [0600-BFGC2C]</h1>
+
+<p class="callout">
+Wykonaj poniższe zadania w Google Colab lub lokalnie w Pythonie.
+</p>
+
+
+<h2>Zadanie 1 – TextMining</h2>
+
+<ol>
+<li>Utwórz nowy Colab Pythona o nazwie <strong>TextMining</strong>. Pobierz z Teams plik <strong>manifest.pdf</strong> i umieść go w zeszycie. Zainstaluj biblioteki i pobierz moduły biblioteki NLTK:
+<pre><code>!pip install PyPDF2
+nltk.download('punkt')
+nltk.download('vader_lexicon')</code></pre>
+</li>
+
+<li>Dodaj importy bibliotek i uruchom kod. Następnie wykomentuj <code>nltk.download('punkt')</code> oraz <code>nltk.download('vader_lexicon')</code>.
+<pre><code>import PyPDF2
+import pandas as pd
+import numpy as np
+import nltk
+import os
+from nltk.tokenize import word_tokenize
+from nltk.probability import FreqDist
+from nltk.sentiment import SentimentIntensityAnalyzer
+from nltk.util import ngrams
+import re</code></pre>
+</li>
+
+<li>Utwórz funkcję, która przeczyta plik PDF i przypisze jego tekst do zmiennej.</li>
+
+<li>Z pomocą biblioteki NLTK podziel tekst na tokeny. Obejrzyj wynik podziału instrukcją <code>print()</code>.</li>
+
+<li>Sprawdź rozkład częstotliwości występowania 20 najczęściej występujących w tekście słów. Wykomentuj instrukcję <code>print()</code> z podpunktu 4 i obejrzyj wyniki. Część wyrazów może zostać błędnie podzielona na tokeny, co może zaburzać wyniki.</li>
+
+<li>Biblioteka NLTK domyślnie uznaje słowa napisane małą i wielką literą za dwa różne tokeny. Znormalizuj tekst przed podziałem na tokeny przy pomocy funkcji <code>.lower()</code>. Wyświetl wyniki.</li>
+
+<li>Utwórz własną funkcję, która usunie słowa krótsze niż 3 znaki.</li>
+
+<li>Zwizualizuj rozkład słów prostym wykresem bez instalacji dodatkowych bibliotek:
+<pre><code>frequency_distribution.plot(10, title='Top 10 Most Common Words in Corpus')
+plt.show()</code></pre>
+</li>
+
+<li>Ręcznie usuń słowa, które nie mają znaczenia dla analizy, np. „that”, „this”, poprzez utworzenie czarnej listy.</li>
+
+<li>Przeprowadź analizę sentymentu dowolnego tekstu w formacie PDF.</li>
+</ol>
+
+<h2>Zadanie 2 – Regex</h2>
+
+<ol>
+<li>Zapoznaj się z formułami:
+<ul class="links">
+<li><a href="https://www.w3schools.com/python/python_regex.asp" target="_blank" rel="noreferrer noopener">Python Regex</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Cheatsheet" target="_blank" rel="noreferrer noopener">Regex Cheat Sheet</a></li>
+</ul>
+</li>
+
+<li>Wykomentuj kod dotyczący Zadania 1 (bez bibliotek). Pod komentarzem dodaj:
+<pre><code>txt = "Tutaj wpisz sprawdzany tekst"
+x = re.sub('[tutaj wpisz wyrażenie]', txt)
+print(x)  # zwróci 'match' po uruchomieniu kodu</code></pre>
+</li>
+
+<li>Napisz REGEX, który sprawdza, czy tekst:
+<ol>
+<li>zawiera cyfry,</li>
+<li>zawiera spacje,</li>
+<li>zawiera znaki specjalne,</li>
+<li>zaczyna się od słowa „The” i kończy słowem „End”,</li>
+<li>stanowi adres e-mail.</li>
+</ol>
+</li>
+</ol>
+
+
+</main>
+
+<footer>
+© 2025 Arkadiusz Iwanicki • Strona ćwiczeń
+</footer>
+
+</body>
+</html>

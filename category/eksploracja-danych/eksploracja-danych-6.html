@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Ćwiczenia 6 – Eksploracja danych [0600-BFGC2C]</title>
+<meta name="description" content="Ćwiczenia 6 z eksploracji danych: analiza stóp zwrotu i współczynnik beta."/>
+<link rel="stylesheet" href="../../assets/style.css"/>
+</head>
+<body>
+
+<header>
+<div class="wrap brand">
+<a class="button" href="../../index.html">← Powrót do ćwiczeń</a>
+<span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+</div>
+</header>
+
+<main class="wrap">
+
+<h1>Ćwiczenia 6 – Eksploracja danych [0600-BFGC2C]</h1>
+
+<p class="callout">
+Wykonaj poniższe zadania w Google Colab lub lokalnie w Pythonie.
+</p>
+
+
+<p>Pobierz ze strony <a href="https://stooq.pl/" target="_blank" rel="noreferrer noopener">https://stooq.pl/</a> dane dotyczące kursu akcji dowolnej spółki oraz indeksu giełdowego z ostatnich 5–10 lat. Dane muszą być dokładnie z tego samego przedziału dat. Podpisz pliki <strong>stock.csv</strong> oraz <strong>market.csv</strong> i umieść je w nowym zeszycie. Przykładowe pliki z danymi znajdziesz też na Teams.</p>
+
+<ol>
+<li>Zaimportuj biblioteki na początku kodu:
+<pre><code>import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sb</code></pre>
+</li>
+
+<li>Przeczytaj pliki i przypisz je do zmiennych:
+<pre><code>stockData = pd.read_csv('stock.csv')
+marketData = pd.read_csv('market.csv')</code></pre>
+</li>
+
+<li>Sprawdź formatowanie danych w obu plikach oraz liczbę wierszy w plikach.
+<ul>
+<li>Podgląd danych umożliwia instrukcja <code>head()</code>.</li>
+</ul>
+</li>
+
+<li>Wydobądź z obu tabel ceny zamknięcia i przypisz je do osobnych zmiennych.</li>
+
+<li>Sprawdź, czy w obu zbiorach liczba obserwacji jest zgodna oraz czy dane obejmują ten sam zakres dat.</li>
+
+<li>Oblicz dzienne stopy zwrotu dla akcji i indeksu.</li>
+
+<li>Wizualnie porównaj zachowanie obu szeregów czasowych przy pomocy wykresów.</li>
+
+<li>Sprawdź zależność pomiędzy stopami zwrotu spółki i rynku.</li>
+
+<li>Przygotuj dane do obliczeń kowariancji i wariancji.</li>
+
+<li>Do obliczenia stopy zwrotu dla wszystkich wierszy wykorzystaj pętlę <strong>for</strong>. Jako ogranicznik pętli użyj: <strong>len(stockClosePrice)</strong>.</li>
+
+<li>Oblicz wskaźnik <strong>BETA</strong>:
+<pre><code>covariation = np.cov(stockClosePriceChange, marketClosePriceChange, ddof = 1)[0][1]
+print("kowariancja: ", covariation) 
+variation = np.var(marketClosePriceChange, ddof = 1)
+print("wariancja: ", variation)    
+beta = round(covariation/variation, 4)
+print("beta: ", beta)</code></pre>
+</li>
+</ol>
+
+<p class="hint">
+Dodatnia Beta świadczy o tym, że akcje reagują na zmiany agresywniej niż rynek. Ujemna Beta oznacza, że akcje zachowują się w sposób odwrotny niż rynek.
+</p>
+
+
+</main>
+
+<footer>
+© 2025 Arkadiusz Iwanicki • Strona ćwiczeń
+</footer>
+
+</body>
+</html>

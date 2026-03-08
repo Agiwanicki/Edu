@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Ćwiczenia 3 – Eksploracja danych [0600-BFGC2C]</title>
+<meta name="description" content="Ćwiczenia 3 z eksploracji danych: K-means i K-neighbours."/>
+<link rel="stylesheet" href="../../assets/style.css"/>
+</head>
+<body>
+
+<header>
+<div class="wrap brand">
+<a class="button" href="../../index.html">← Powrót do ćwiczeń</a>
+<span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+</div>
+</header>
+
+<main class="wrap">
+
+<h1>Ćwiczenia 3 – Eksploracja danych [0600-BFGC2C]</h1>
+
+<p class="callout">
+Wykonaj poniższe zadania w Google Colab lub lokalnie w Pythonie.
+</p>
+
+
+<h2>K-means</h2>
+
+<p>Celem ćwiczenia jest graficzne przedstawienie efektu działania algorytmu K-means na przykładowym zbiorze współrzędnych.</p>
+
+<ol>
+<li>Utwórz nowy Repl Pythona o nazwie <strong>Clustering</strong> i zainstaluj biblioteki:
+<pre><code>!pip install scikit-learn
+!pip install pandas
+!pip install numpy
+!pip install matplotlib</code></pre>
+</li>
+
+<li>Na początku kodu zaimportuj biblioteki:
+<pre><code>import sklearn
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans</code></pre>
+</li>
+
+<li>Dodaj przykładowy zbiór współrzędnych <strong>x</strong> i <strong>y</strong>:
+<pre><code>data = {
+'x': [
+25, 34, 22, 27, 33, 33, 31, 22, 35, 34, 67, 54, 57, 43, 50, 57, 59, 52, 65,
+47, 49, 48, 35, 33, 44, 45, 38, 43, 51, 46
+],
+'y': [
+79, 51, 53, 78, 59, 74, 73, 57, 69, 75, 51, 32, 40, 47, 53, 36, 35, 58, 59,
+50, 25, 20, 14, 12, 20, 5, 29, 27, 8, 7
+]
+}</code></pre>
+</li>
+
+<li>Utwórz DataFrame z powyższego zbioru danych. Wyświetl współrzędne na wykresie za pomocą matplotlib. Uruchom program.</li>
+
+<li>Edytując wartość przypisaną do <code>n_clusters</code>, możesz określić, na ile grup algorytm ma podzielić dane. Zmienna <strong>centroids</strong> przechowuje listę punktów oznaczających „środki” wydzielonych grup.</li>
+
+<li>Wynik działania algorytmu zwizualizuj za pomocą biblioteki matplotlib. Centroidy zaznacz na czerwono. Każda grupa powinna stanowić odrębny kolor na wykresie.</li>
+
+<li>Podziel zbiór danych na co najmniej 4 grupy i obejrzyj wynik na wykresie.</li>
+</ol>
+
+<h2>K-neighbours</h2>
+
+<p>Celem ćwiczenia jest przyporządkowanie aut do odpowiednich kategorii za pomocą algorytmu K-neighbours.</p>
+
+<ol>
+<li>Wykomentuj kod dotyczący algorytmu K-means (poza importami). Dodaj nowe importy bibliotek na początku kodu:
+<pre><code>from sklearn.neighbors import KNeighborsClassifier
+from sklearn import preprocessing</code></pre>
+</li>
+
+<li>Pobierz z Teams pliki <strong>car.data</strong> oraz <strong>car.names</strong>. Umieść pliki w Colab i przeczytaj zawartość <strong>car.data</strong> instrukcją <code>pd.read_csv("nazwa_pliku")</code>.</li>
+
+<li>Obejrzyj dane w pliku <strong>car.data</strong>. Nie wszystkie wartości zostały przedstawione numerycznie, np. kolumna <strong>buying</strong> zawiera wartości: <strong>v-high, high, med, low</strong>. Aby umożliwić dalszą analizę, przekonwertuj te wartości na numeryczne przy pomocy modułu <strong>preprocessing</strong> z biblioteki sklearn. Wyświetl dane po konwersji za pomocą instrukcji <code>print(buying)</code>, a następnie wykomentuj tę instrukcję.</li>
+
+<li>Przypisz zmienne objaśniające do <strong>x</strong> i objaśniane do <strong>y</strong>. Do sformatowania wartości przypisanych do <strong>y</strong> wykorzystaj funkcję <code>zip()</code>.</li>
+
+<li>Podziel dane na zbiór testowy oraz treningowy. Proporcje podziału określa wartość przypisana do <strong>test_size</strong>.</li>
+
+<li>Wykorzystanie KNN w kodzie Pythona jest bardzo zbliżone do regresji liniowej. Jedyna różnica polega na tym, że możemy określić, ilu „sąsiadów” ma szukać algorytm, poprzez przypisanie wartości do <strong>n_neighbors</strong>. Uruchom kod, aby zobaczyć <strong>model.score</strong>. Zmodyfikuj wartości <strong>test_size</strong> oraz <strong>n_neighbors</strong>, aby uzyskać jak najlepsze <strong>accuracy</strong>.</li>
+
+<li>Przypisz wynik predykcji do zmiennej <strong>predicted</strong>. Utwórz listę przechowującą klasy aut. Lista posłuży do „przetłumaczenia” nadanych wcześniej wartości numerycznych na opisy sprzed modyfikacji w punkcie 3.</li>
+
+<li>Za pomocą pętli <code>for</code> wypisz wynik prognozy, rzeczywistą klasę auta oraz dane, na podstawie których sporządzono prognozę klasy.</li>
+</ol>
+
+
+</main>
+
+<footer>
+© 2025 Arkadiusz Iwanicki • Strona ćwiczeń
+</footer>
+
+</body>
+</html>

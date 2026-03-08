@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Ćwiczenia 4 – Eksploracja danych [0600-BFGC2C]</title>
+<meta name="description" content="Ćwiczenia 4 z eksploracji danych: uczenie maszynowe i zapisywanie modeli."/>
+<link rel="stylesheet" href="../../assets/style.css"/>
+</head>
+<body>
+
+<header>
+<div class="wrap brand">
+<a class="button" href="../../index.html">← Powrót do ćwiczeń</a>
+<span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+</div>
+</header>
+
+<main class="wrap">
+
+<h1>Ćwiczenia 4 – Eksploracja danych [0600-BFGC2C]</h1>
+
+<p class="callout">
+Wykonaj poniższe zadania w Google Colab lub lokalnie w Pythonie.
+</p>
+
+
+<h2>Uczenie maszynowe</h2>
+
+<h2>Propozycja warsztatu</h2>
+<ul class="links">
+  <li><a href="https://www.python.org/downloads" target="_blank" rel="noreferrer noopener">Python</a></li>
+  <li><a href="https://notepad-plus-plus.org/downloads/" target="_blank" rel="noreferrer noopener">Notepad++</a></li>
+  <li><a href="https://virtualenvwrapper.readthedocs.io/en/latest/" target="_blank" rel="noreferrer noopener">virtualenvwrapper</a></li>
+</ul>
+
+<h2>Zadanie 1</h2>
+<p>W ramach pierwszego zadania kontynuuj pracę z notatnikiem <strong>Clustering</strong> / modelem klasyfikacji z poprzednich ćwiczeń i sprawdź wpływ doboru losowego ziarna na jakość modelu.</p>
+
+<ol>
+<li>Przetestuj różne wartości parametru <strong>random_state</strong> w metodzie <code>train_test_split</code> i obserwuj zmiany wartości <strong>model_score</strong>.</li>
+<li>Zastanów się, czy wybieranie „najlepszego” seeda rzeczywiście poprawia model, czy jedynie dopasowuje go do konkretnego podziału danych.</li>
+</ol>
+
+<p class="hint">
+Szukanie najlepszego <strong>seeda</strong> poprzez iteracyjną zmianę losowego ziarna w pętli <strong>for</strong> i wybór modelu z najlepszym wynikiem może w pewnych przypadkach poprawić skuteczność predykcji, ale generalnie <strong>nie jest dobrą praktyką</strong> w uczeniu maszynowym. W praktyce optymalizujesz model pod konkretny podział danych, zamiast pod rzeczywistą zależność między zmiennymi.
+</p>
+
+<h2>Zadanie 2 (do wykonania na podstawie zadania 1)</h2>
+
+<ol>
+<li>Otwórz zeszyt Colab dotyczący <strong>Clustering</strong>. Zaimportuj biblioteki:
+<pre><code>import pickle
+from random import randrange</code></pre>
+</li>
+
+<li>Utwórz pętlę, której zadaniem będzie odnalezienie modelu o najwyższym <strong>model_score</strong> i zapisanie go za pomocą <strong>pickle</strong>.</li>
+
+<li>Dodaj do metody <strong>train_test_split</strong> parametr <code>random_state</code> i przypisz do niego losową liczbę (<strong>seed</strong>). Liczba ma być generowana wewnątrz pętli <code>for</code> oraz wypisana do konsoli, gdy pętla odnajdzie wyższą wartość <strong>model_score</strong>.</li>
+
+<li>Wczytaj model i podziel dane metodą <strong>train_test_split</strong> z wykorzystaniem seeda z konsoli. Uruchom program dwukrotnie i sprawdź, czy zwraca za każdym razem te same wyniki.</li>
+</ol>
+
+
+</main>
+
+<footer>
+© 2025 Arkadiusz Iwanicki • Strona ćwiczeń
+</footer>
+
+</body>
+</html>
