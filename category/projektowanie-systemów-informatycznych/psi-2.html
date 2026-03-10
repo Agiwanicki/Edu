@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zajęcia 2 – Diagram przypadków użycia (UCD)</title>
+  <meta name="description" content="Ćwiczenia z projektowania systemów informatycznych: dwa case study do samodzielnego wykonania diagramów przypadków użycia (UCD).">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Ćwiczenia 2 – Diagram przypadków użycia (UCD)</h1>
+
+    <p class="callout">
+      Wykonaj poniższe zadania w narzędziu
+      <a href="https://app.diagrams.net/" target="_blank" rel="noreferrer noopener">app.diagrams.net</a>.
+    </p>
+
+    <h2>Case study 1: PARKING</h2>
+
+    <p>
+      Utwórz diagram przypadków użycia (UCD) dla systemu obsługi parkingu przed siedzibą korporacji międzynarodowej.
+      Na diagramie uwzględnij granicę systemu, aktorów, przypadki użycia, relacje asocjacji oraz – tam, gdzie to uzasadnione – relacje
+      <code>&lt;&lt;include&gt;&gt;</code> i <code>&lt;&lt;extend&gt;&gt;</code>.
+    </p>
+
+    <p>
+      Zarząd korporacji międzynarodowej postanowił zakupić system informatyczny w celu zarządzania obsługą placu parkingowego przed jego główną siedzibą.
+      Pracownicy firmy posiadają karty magnetyczne z indywidualnym numerem identyfikacyjnym. Parking jest podzielony na dwie części:
+      większą – dla ogółu pracowników, oraz mniejszą – dla zarządu firmy. System po włożeniu karty do czytnika i wprowadzeniu przez pracownika kodu PIN,
+      odczytuje informacje o stanowisku i otwiera odpowiednie barierki wjazdu, a następnie wydaje kartę. System dokonuje rejestracji wjazdów oraz wyjazdów.
+      Przy obsłudze parkingu pracuje również parkingowy. Jego zadaniem jest przyjąć opłatę za czas parkowania oraz zatwierdzić ją w systemie,
+      a następnie otworzyć bramkę wyjazdową. Jeżeli pracownik będzie potrzebował potwierdzenia parkowania, parkingowy jest zobowiązany je wydrukować.
+      Z racji tego, że parking jest bardzo duży, przy wyjeździe stoi patrol policyjny, który sprawdza w swoim systemie, czy wyjeżdżający samochód nie jest
+      samochodem kradzionym. System policyjny jest zintegrowany z systemem parkingowym.
+    </p>
+
+    <p class="hint">
+      Wskazówka: zastanów się, którzy uczestnicy procesu są aktorami zewnętrznymi wobec systemu parkingowego.
+      Pomyśl również, które czynności są obowiązkowe, a które wykonywane tylko warunkowo.
+    </p>
+
+    <h2>Case study 2: KSIĘGARNIA</h2>
+
+    <p>
+      Utwórz diagram przypadków użycia (UCD) dla systemu informatycznego obsługującego księgarnię stacjonarną.
+      Na diagramie uwzględnij granicę systemu, aktorów, przypadki użycia, relacje asocjacji oraz – tam, gdzie to uzasadnione – relacje
+      <code>&lt;&lt;include&gt;&gt;</code> i <code>&lt;&lt;extend&gt;&gt;</code>.
+    </p>
+
+    <p>
+      Właściciel sieci księgarni postanowił wdrożyć system informatyczny do obsługi sprzedaży książek, rezerwacji egzemplarzy oraz kontroli stanów magazynowych
+      w swojej głównej placówce. Klienci mogą samodzielnie wyszukiwać książki w katalogu, sprawdzać ich dostępność, a następnie rezerwować wybrane pozycje
+      na określony czas. Jeżeli klient zdecyduje się na zakup, sprzedawca wyszukuje rezerwację lub skanuje wybrane książki przy stanowisku kasowym,
+      rejestruje sprzedaż w systemie, nalicza należność i przyjmuje płatność gotówką albo kartą. Po zatwierdzeniu transakcji system aktualizuje stan magazynowy
+      i drukuje paragon. Jeżeli klient poprosi o fakturę, sprzedawca wprowadza dane nabywcy, a system wystawia i drukuje fakturę do zrealizowanego zakupu.
+      W księgarni pracuje również magazynier, którego zadaniem jest przyjmowanie dostaw od dostawców, wprowadzanie nowych egzemplarzy do systemu,
+      aktualizowanie liczby dostępnych sztuk oraz oznaczanie książek uszkodzonych lub wycofanych ze sprzedaży. Kierownik księgarni korzysta z systemu
+      do przeglądania raportów sprzedaży, kontroli liczby rezerwacji oraz weryfikacji stanów magazynowych. System księgarni jest dodatkowo zintegrowany
+      z zewnętrznym systemem płatności kartą, który autoryzuje transakcje bezgotówkowe.
+    </p>
+
+    <p class="hint">
+      Wskazówka: zwróć uwagę, że nie każda sprzedaż musi zawierać te same czynności dodatkowe.
+      Niektóre przypadki użycia będą obowiązkowe, a inne uruchamiane tylko w określonych sytuacjach.
+    </p>
+
+    <h2>Do oddania</h2>
+    <ol>
+      <li>Dwa diagramy UCD – osobny dla systemu PARKING i osobny dla systemu KSIĘGARNIA.</li>
+      <li>Eksport diagramów (PNG lub PDF).</li>
+      <li>(OPCJONALNIE) Pliki źródłowe (.drawio).</li>
+    </ol>
+
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
