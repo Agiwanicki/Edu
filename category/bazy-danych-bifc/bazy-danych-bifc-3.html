@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ćwiczenia 3 – Bazy Danych [0600-BFIF4B]</title>
-  <meta name="description" content="Ćwiczenia 3 – Bazy Danych [0600-BFIF4B].">
+  <meta name="description" content="Ćwiczenia 3 – Systemy zarządzania bazami danych (SQL Server, SSMS).">
   <link rel="stylesheet" href="../../assets/style.css">
 </head>
 <body>
@@ -14,27 +14,184 @@
       <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
     </div>
   </header>
+
   <main class="wrap">
     <h1>Ćwiczenia 3 – Bazy Danych [0600-BFIF4B]</h1>
-    <p class="callout">Wykonaj poniższe zadania <strong>za pomocą skryptów SQL</strong>.</p>
-    
-<ol>
-<li>Załóż nową bazę o nazwie <strong>PROG2</strong>.<pre><code>CREATE DATABASE [PROG2]</code></pre></li>
-<li>Załóż w bazie <strong>PROG2</strong> strukturę tabel zgodnie z bazą <strong>PROG</strong>. Skrypt tworzący jej strukturę to <strong>Lab2.1.PROG.struktura_bazy.sql</strong>.</li>
-<li>Przepisz dane z bazy <strong>PROG</strong> do bazy <strong>PROG2</strong> przy pomocy poleceń <strong>INSERT</strong>. Uwaga: należy użyć wyrażenia <strong>SET IDENTITY_INSERT</strong>.
-<ul class="links"><li><a href="https://skillstest.pl/library/question/68" target="_blank" rel="noreferrer noopener">SET IDENTITY_INSERT – przykład</a></li><li><a href="https://4programmers.net/Bazy_danych/W%C5%82asno%C5%9B%C4%87_identity_insert_t-sql" target="_blank" rel="noreferrer noopener">Opis IDENTITY_INSERT</a></li></ul>
-<pre><code>SET IDENTITY_INSERT &lt;nazwaTabeli&gt; ON
-INSERT INTO &lt;nazwaTabeli&gt;(kolumna1, kolumna2, ...)
-SELECT kolumna1, kolumna2, ...
-FROM nazwaBazy.nazwaTabeli
-SET IDENTITY_INSERT &lt;nazwaTabeli&gt; OFF</code></pre></li>
-<li>W bazie <strong>PROG2</strong> utwórz tabelę <strong>INFO</strong>. Typy i rozmiary pól dobierz samodzielnie.
-<ul class="links"><li><a href="https://learn.microsoft.com/en-us/sql/t-sql/statements/create-table-transact-sql-identity-property?view=sql-server-ver16" target="_blank" rel="noreferrer noopener">CREATE TABLE / IDENTITY</a></li><li><a href="https://learn.microsoft.com/en-us/sql/relational-databases/tables/create-primary-keys?view=sql-server-ver16" target="_blank" rel="noreferrer noopener">PRIMARY KEY</a></li></ul></li>
-<li>Utwórz perspektywę umożliwiającą wprowadzenie informacji dla pracownika o karze.</li>
-<li>Analogicznie wykonaj wprowadzenie informacji dla pracownika o karze oraz dla szefa o karze.</li>
-</ol>
+    <p class="callout"><strong>Cel:</strong> operacje kopiowania danych między bazami, tworzenie widoków oraz generowanie informacji tekstowych w SQL Server Management Studio (SSMS).</p>
 
+    <ol>
+      <li>
+        Załóż nową bazę o nazwie <strong>PROG2</strong>.
+        <ul class="links">
+          <li><code>CREATE DATABASE [PROG2];</code></li>
+        </ul>
+      </li>
+
+      <li>
+        Utwórz w bazie <strong>PROG2</strong> strukturę tabel zgodną z bazą <strong>PROG</strong>.
+        <ul class="links">
+          <li>Użyj skryptu <strong>Lab2.1.PROG.struktura_bazy.sql</strong> (dostępny na Teams).</li>
+        </ul>
+      </li>
+
+      <li>
+        Przepisz dane z bazy <strong>PROG</strong> do <strong>PROG2</strong> poleceniami <strong>INSERT</strong>. Uwaga: użyj <strong>SET IDENTITY_INSERT</strong>.
+        <ul class="links">
+          <li>Przykład (dla jednej tabeli):</li>
+        </ul>
+        <pre><code>SET IDENTITY_INSERT dbo.NazwaTabeli ON;
+
+INSERT INTO dbo.NazwaTabeli (kolumna1, kolumna2, ...)
+SELECT kolumna1, kolumna2, ...
+FROM PROG.dbo.NazwaTabeli;
+
+SET IDENTITY_INSERT dbo.NazwaTabeli OFF;</code></pre>
+      </li>
+
+      <li>
+        W bazie <strong>PROG2</strong> utwórz tabelę <strong>INFO</strong> o kolumnach (dobierz typy i rozmiary pól):
+        <ul>
+          <li>Id info – pole autonumerowane</li>
+          <li>Adresat</li>
+          <li>Treść</li>
+          <li>Data wystawienia</li>
+          <li>Email</li>
+        </ul>
+        <p>Dodaj klucz główny, np.:</p>
+        <pre><code>CREATE TABLE dbo.info (
+  in_id INT IDENTITY(1,1) NOT NULL,
+  in_adres NVARCHAR(200) NOT NULL,
+  in_tresc NVARCHAR(1000) NOT NULL,
+  in_data_wystawienia DATE NOT NULL,
+  in_email NVARCHAR(200) NOT NULL,
+  CONSTRAINT PK_info PRIMARY KEY CLUSTERED (in_id)
+);</code></pre>
+      </li>
+
+      <li>
+        Wypełnij tabelę <strong>INFO</strong> danymi o nagrodach i karach. Dla każdej nagrody/kary wystaw dwie informacje:
+        <ul>
+          <li>dla pracownika</li>
+          <li>dla jego przełożonego (jeśli istnieje)</li>
+        </ul>
+        <p>Formuły treści (przykłady):</p>
+        <ul>
+          <li>„Otrzymał Pan/Otrzymała Pani nagrodę w kwocie 9 999,99 zł z tytułu &lt;tytuł&gt;”.</li>
+          <li>„Nałożono na Pana/Panią karę w kwocie 9 999,99 zł z tytułu &lt;tytuł&gt;”.</li>
+          <li>„Pana/Pani podwładny otrzymał/podwładna otrzymała nagrodę w kwocie 9 999,99 zł z tytułu &lt;tytuł&gt;”.</li>
+          <li>„Na Pana/Pani podwładnego nałożono/podwładną nałożono karę w kwocie 9 999,99 zł z tytułu &lt;tytuł&gt;”.</li>
+        </ul>
+      </li>
+    </ol>
+
+    <h2>Informacje do zadania 5</h2>
+
+    <p><strong>Tekst „Pan/Pani” w zależności od płci adresata:</strong></p>
+    <pre><code>SELECT IIF(p.pr_plec = 'M', 'Pan', 'Pani')
+       + ' ' + p.pr_imie + ' ' + p.pr_nazwisko AS adresat
+FROM pracownik AS p;</code></pre>
+
+    <p><strong>Aktualna data:</strong></p>
+    <pre><code>SELECT CAST(GETDATE() AS date) AS data_wstawienia;</code></pre>
+
+    <p><strong>Usuwanie polskich znaków z tekstu (uwaga: w praktyce lepiej zrobić to w Pythonie):</strong></p>
+    <pre><code>SELECT REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
+         LOWER(p.pr_imie) + '.' + LOWER(p.pr_nazwisko)
+       ,' ',''),'ą','a'),'ć','c'),'ę','e'),'ł','l'),'ń','n'),'ó','o'),'ś','s'),'ź','z'),'ż','z')
+       + '.' + REPLACE(CAST(p.pr_id AS char),' ','')
+       + '@prog.pl' AS email
+FROM pracownik p;</code></pre>
+    <p><strong>Usuwanie polskich znaków z tekstu (inny sposób 2017+):</strong></p>
+    <pre><code>
+        SELECT
+      CONCAT(
+        TRANSLATE(LOWER(p.pr_imie),     N'ąćęłńóśźż', N'acelnoszz'), '.',
+        TRANSLATE(LOWER(p.pr_nazwisko), N'ąćęłńóśźż', N'acelnoszz'), '.',
+        p.pr_id, '@prog.pl'
+      ) AS email
+    FROM pracownik AS p;
+    </code></pre>
+
+    <p><strong>Widok pomocniczy:</strong></p>
+    <pre><code>CREATE VIEW dbo.vpracownik AS
+SELECT
+    p.pr_id       AS vpr_id,
+    p.pr_imie     AS vpr_imie,
+    p.pr_nazwisko AS vpr_nazwisko,
+    p.pr_pensja   AS vpr_pensja,
+    p.pr_plec     AS vpr_plec,
+    p.pr_st_id    AS vpr_st_id,
+    p.pr_szef_id  AS vpr_szef_id,
+    IIF(p.pr_plec = 'M','Pan','Pani') AS vpr_pan_pani,
+    REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
+        LOWER(p.pr_imie) + '.' + LOWER(p.pr_nazwisko)
+      ,' ',''),'ą','a'),'ć','c'),'ę','e'),'ł','l'),'ń','n'),'ó','o'),'ś','s'),'ź','z'),'ż','z')
+      + '.' + REPLACE(CAST(p.pr_id AS char),' ','')
+      + '@prog.pl' AS vpr_email
+FROM dbo.pracownik AS p;</code></pre>
+ 
+  <p><strong>Widok pomocniczy:</strong></p>
+  <pre><code>
+    CREATE OR ALTER VIEW dbo.vpracownik AS
+    SELECT
+        p.pr_id       AS vpr_id,
+        p.pr_imie     AS vpr_imie,
+        p.pr_nazwisko AS vpr_nazwisko,
+        p.pr_pensja   AS vpr_pensja,
+        p.pr_plec     AS vpr_plec,
+        p.pr_st_id    AS vpr_st_id,
+        p.pr_szef_id  AS vpr_szef_id,
+        IIF(p.pr_plec = 'M', 'Pan', 'Pani') AS vpr_pan_pani,
+        CONCAT(
+            TRANSLATE(LOWER(p.pr_imie),     N'ąćęłńóśźż', N'acelnoszz'), '.',
+            TRANSLATE(LOWER(p.pr_nazwisko), N'ąćęłńóśźż', N'acelnoszz'), '.',
+            p.pr_id, '@prog.pl'
+        ) AS vpr_email
+    FROM dbo.pracownik AS p;
+  </code></pre>
+
+    
+    <p><strong>Informacja dla pracownika o nagrodzie:</strong></p>
+    <pre><code>INSERT INTO dbo.info (in_adres, in_tresc, in_data_wystawienia, in_email)
+SELECT
+    vp.vpr_pan_pani + ' ' + vp.vpr_imie + ' ' + vp.vpr_nazwisko,
+    IIF(vp.vpr_plec='M','Otrzymał Pan','Otrzymała Pani') + ' '
+      + 'nagrodę w kwocie ' + CAST(n.na_kwota AS varchar(20)) + ' zł '
+      + 'z tytułu "' + n.na_z_tytulu + '".' AS tresc,
+    CAST(GETDATE() AS date) AS data_wystawienia,
+    vp.vpr_email
+FROM dbo.nagroda AS n
+JOIN dbo.vpracownik AS vp ON vp.vpr_id = n.na_pr_id;</code></pre>
+
+    <p><strong>Informacja dla szefa o nagrodzie:</strong></p>
+    <pre><code>INSERT INTO dbo.info (in_adres, in_tresc, in_data_wystawienia, in_email)
+SELECT
+    vszef.vpr_pan_pani + ' ' + vszef.vpr_imie + ' ' + vszef.vpr_nazwisko,
+    IIF(vszef.vpr_plec='M','Pana','Pani') + ' '
+      + IIF(vp.vpr_plec='M','podwładny otrzymał','podwładna otrzymała') + ' '
+      + 'nagrodę w kwocie ' + CAST(n.na_kwota AS varchar(20)) + ' zł z tytułu "' + n.na_z_tytulu + '".'
+      AS tresc,
+    CAST(GETDATE() AS date) AS data_wystawienia,
+    vszef.vpr_email
+FROM dbo.nagroda AS n
+JOIN dbo.vpracownik AS vp    ON vp.vpr_id      = n.na_pr_id
+JOIN dbo.vpracownik AS vszef ON vszef.vpr_id   = vp.vpr_szef_id;</code></pre>
+
+    <p><strong>Analogicznie wykonaj:</strong></p>
+    <ul>
+      <li>Informację dla pracownika o karze.</li>
+      <li>Informację dla szefa o karze.</li>
+    </ul>
+
+    <h2>Dodatkowe materiały</h2>
+    <ul class="links">
+      <li><a href="https://www.w3schools.com/sql/func_sqlserver_iif.asp" target="_blank" rel="noreferrer noopener">IIF (SQL Server)</a></li>
+      <li><a href="https://www.w3schools.com/sql/func_sqlserver_getdate.asp" target="_blank" rel="noreferrer noopener">GETDATE</a></li>
+      <li><a href="https://www.w3schools.com/sql/func_sqlserver_cast.asp" target="_blank" rel="noreferrer noopener">CAST</a></li>
+      <li><a href="https://www.w3schools.com/sql/sql_view.asp" target="_blank" rel="noreferrer noopener">CREATE VIEW</a></li>
+    </ul>
   </main>
+
   <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
 </body>
 </html>
