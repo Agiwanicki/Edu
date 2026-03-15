@@ -1,212 +1,181 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Zajęcia – Funkcje skalarne, tablicowe, procedury i dummy data</title>
-  <meta name="description" content="Ćwiczenia z SQL Server dotyczące funkcji skalarnych, funkcji tablicowych, procedur składowanych, prostych instrukcji INSERT oraz generowania losowych danych testowych.">
-  <link rel="stylesheet" href="../../assets/style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PSBD‑4 – Funkcje, obsługa błędów i transakcje w T‑SQL</title>
+<meta name="description" content="Ćwiczenia z SQL Server dotyczące funkcji, obsługi błędów TRY/CATCH oraz transakcji.">
+<link rel="stylesheet" href="../../assets/style.css">
 </head>
 <body>
-  <header>
-    <div class="wrap brand">
-      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
-      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
-    </div>
-  </header>
 
-  <main class="wrap">
-    <h1>Zajęcia – Funkcje skalarne, tablicowe, procedury i dummy data</h1>
+<header>
+<div class="wrap brand">
+<a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+<span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+</div>
+</header>
 
-    <p class="callout">
-      Wykonaj poniższe przykłady w środowisku <strong>SQL Server Management Studio</strong> na bazie danych Northwind.
-    </p>
+<main class="wrap">
 
-    <p>
-      Celem ćwiczenia jest demonstracja działania <strong>funkcji skalarnych</strong>,
-      <strong>funkcji tablicowych</strong>, <strong>procedur składowanych</strong>, w celu generowania przykładowych danych testowych
-      (<em>dummy data</em>) w języku T-SQL.
-    </p>
+<h1>Ćwiczenia 4 – Funkcje, obsługa błędów i transakcje w T‑SQL</h1>
 
-    <h2>Ograniczenia funkcji w T-SQL</h2>
+<p class="callout">
+Wykonaj poniższe zadania w środowisku <strong>SQL Server Management Studio</strong> na bazie danych nortwhind.
+</p>
 
-    <ul>
-      <li>W funkcjach nie można używać konstrukcji <code>TRY ... CATCH</code>.</li>
-      <li>W funkcjach nie należy używać <code>RAND()</code>, ponieważ jest to operator powodujący efekty uboczne.</li>
-      <li>Funkcja nie może rzucać wyjątków ani modyfikować danych poza własnym zakresem działania.</li>
-    </ul>
+<p>
+Celem ćwiczenia jest zapoznanie się z mechanizmem tworzenia <strong>funkcji skalarnych</strong>,
+wykorzystania funkcji w zapytaniach, obsługi błędów przy użyciu <strong>TRY / CATCH</strong>,
+generowania własnych komunikatów błędów oraz wykorzystania <strong>transakcji</strong> w języku T‑SQL.
+</p>
 
-    <h2>Przykład funkcji skalarnej</h2>
+<h2>Zadanie 1 – Funkcja sprawdzająca parzystość liczby</h2>
 
-    <p>
-      Funkcja skalarna zwraca jedną wartość. W poniższym przykładzie funkcja oblicza wiek
-      na podstawie daty urodzenia.
-    </p>
+<p>Utwórz funkcję skalarną w SQL Server, która:</p>
 
-    <pre><code>CREATE FUNCTION dbo.fn_ObliczWiek (@DataUrodzenia DATE)
-RETURNS INT
-AS
-BEGIN
-    DECLARE @Wiek INT;
+<ul>
+<li>przyjmuje jeden parametr typu <code>INT</code>,</li>
+<li>sprawdza czy liczba jest parzysta czy nieparzysta,</li>
+<li>zwraca tekst:</li>
+</ul>
 
-    SET @Wiek = DATEDIFF(YEAR, @DataUrodzenia, GETDATE());
+<ul>
+<li><code>PARZYSTA</code> – jeśli liczba jest parzysta</li>
+<li><code>NIEPARZYSTA</code> – jeśli liczba jest nieparzysta</li>
+</ul>
 
-    IF (MONTH(@DataUrodzenia) &gt; MONTH(GETDATE()))
-       OR (MONTH(@DataUrodzenia) = MONTH(GETDATE()) AND DAY(@DataUrodzenia) &gt; DAY(GETDATE()))
-    BEGIN
-        SET @Wiek = @Wiek - 1;
-    END
+<p>Następnie:</p>
 
-    RETURN @Wiek;
-END;
+<ol>
+<li>Wywołaj funkcję w zapytaniu <code>SELECT</code>.</li>
+<li>Sprawdź definicję utworzonej funkcji w systemowych tabelach SQL Server (<code>sys.sql_modules</code>).</li>
+</ol>
 
-SELECT dbo.fn_ObliczWiek('1997-05-03') AS Wiek;</code></pre>
+<h2>Zadanie 2 – Funkcja obliczająca liczby Fibonacciego</h2>
 
-    <h2>Przykłady funkcji tablicowych</h2>
+<p>Utwórz funkcję skalarną:</p>
 
-    <p>
-      Funkcja tablicowa zwraca tabelę, którą można wykorzystać np. w instrukcji <code>SELECT</code>,
-      <code>JOIN</code> lub w procedurze składowanej.
-    </p>
+<ul>
+<li>przyjmującą parametr <code>n</code>,</li>
+<li>zwracającą <strong>n‑tą liczbę ciągu Fibonacciego</strong>.</li>
+</ul>
 
-    <pre><code>CREATE OR ALTER FUNCTION fn_ListaImion()
-RETURNS TABLE
-AS
-RETURN
-    SELECT *
-    FROM (VALUES
-        (1, 'Jan'), (2, 'Anna'), (3, 'Marek'), (4, 'Ewa'),
-        (5, 'Piotr'), (6, 'Katarzyna'), (7, 'Tomasz'), (8, 'Agnieszka'),
-        (9, 'Paweł'), (10, 'Magdalena'), (11, 'Grzegorz'), (12, 'Joanna'),
-        (13, 'Michał'), (14, 'Zofia'), (15, 'Łukasz'), (16, 'Barbara'),
-        (17, 'Adam'), (18, 'Maria'), (19, 'Rafał'), (20, 'Natalia')
-    ) AS Imiona(ID, Imie);</code></pre>
+<p>W implementacji funkcji:</p>
 
-    <pre><code>CREATE OR ALTER FUNCTION fn_ListaNazwisk()
-RETURNS TABLE
-AS
-RETURN
-    SELECT *
-    FROM (VALUES
-        (1, 'Kowalski'), (2, 'Nowak'), (3, 'Wiśniewski'), (4, 'Wójcik'),
-        (5, 'Kamiński'), (6, 'Lewandowski'), (7, 'Zieliński'), (8, 'Szymański'),
-        (9, 'Woźniak'), (10, 'Dąbrowski'), (11, 'Lis'), (12, 'Król'),
-        (13, 'Górski'), (14, 'Jankowski'), (15, 'Mazur'), (16, 'Kaczmarek'),
-        (17, 'Krawczyk'), (18, 'Piotrowski'), (19, 'Grabowski'), (20, 'Michalski')
-    ) AS Nazwiska(ID, Nazwisko);</code></pre>
+<ul>
+<li>użyj pętli <code>WHILE</code>,</li>
+<li>wykorzystaj zmienne pomocnicze do przechowywania kolejnych wartości ciągu.</li>
+</ul>
 
-    <h2>Przykład procedury do generowania pracowników</h2>
+<p>Po utworzeniu funkcji:</p>
 
-    <p>
-      Procedura składowana może wykonywać wiele operacji, w tym pętle, losowanie danych,
-      pobieranie rekordów i wstawianie nowych wierszy do tabeli.
-    </p>
+<ol>
+<li>Przetestuj działanie funkcji dla różnych wartości parametru.</li>
+<li>Sprawdź wynik dla większych wartości, np. <code>n = 50</code>.</li>
+</ol>
 
-    <pre><code>CREATE PROCEDURE dbo.GenerujPracownikow
-    @ile INT
-AS
-BEGIN
-    DECLARE @i INT = 1;
-    DECLARE @Imie NVARCHAR(50), @Nazwisko NVARCHAR(50);
-    DECLARE @ImieID INT, @NazwiskoID INT;
-    DECLARE @Tytul NVARCHAR(50) = 'Sales Representative';
-    DECLARE @ReportsTo INT;
+<h2>Zadanie 3 – Wstawianie danych do tabeli przy użyciu funkcji</h2>
 
-    WHILE @i &lt;= @ile
-    BEGIN
-        BEGIN TRY
-            SET @ImieID = CAST(RAND(CHECKSUM(NEWID())) * 20 + 1 AS INT);
-            SET @NazwiskoID = CAST(RAND(CHECKSUM(NEWID())) * 20 + 1 AS INT);
+<ol>
+<li>Utwórz tabelę przechowującą liczby ciągu Fibonacciego.</li>
+</ol>
 
-            SELECT @Imie = Imie FROM dbo.fn_ListaImion() WHERE ID = @ImieID;
-            SELECT @Nazwisko = Nazwisko FROM dbo.fn_ListaNazwisk() WHERE ID = @NazwiskoID;
+<p>Tabela powinna zawierać:</p>
 
-            SELECT TOP 1 @ReportsTo = EmployeeID FROM Employees ORDER BY NEWID();
+<ul>
+<li>kolumnę <code>ID</code> typu <code>IDENTITY</code>,</li>
+<li>kolumnę przechowującą liczbę typu <code>BIGINT</code>.</li>
+</ul>
 
-            INSERT INTO Employees (FirstName, LastName, Title, ReportsTo)
-            VALUES (@Imie, @Nazwisko, @Tytul, @ReportsTo);
+<ol start="2">
+<li>Wstaw do tabeli kolejne wartości ciągu Fibonacciego od <strong>0 do 100</strong>.</li>
+<li>Do generowania wartości użyj wcześniej utworzonej funkcji.</li>
+<li>Wykorzystaj pętlę <code>WHILE</code>.</li>
+<li>Zastosuj blok <code>TRY / CATCH</code>.</li>
+<li>W przypadku błędu wyświetl komunikat oraz numer iteracji, w której wystąpił problem.</li>
+</ol>
 
-        END TRY
-        BEGIN CATCH
-            PRINT 'Błąd: ' + ERROR_MESSAGE();
-            PRINT 'Błąd numer: ' + CAST(ERROR_NUMBER() AS NVARCHAR);
-        END CATCH
+<h2>Zadanie 4 – Podstawowa obsługa błędów TRY / CATCH</h2>
 
-        SET @i += 1;
-    END
-END;
+<p>Utwórz blok <code>TRY / CATCH</code>, który:</p>
 
-EXEC dbo.GenerujPracownikow 5;</code></pre>
+<ol>
+<li>W części <code>TRY</code> wykonuje operację powodującą błąd (np. dzielenie przez zero).</li>
+<li>W części <code>CATCH</code> wyświetla szczegóły błędu przy użyciu funkcji:</li>
+</ol>
 
-    <h2>Przykłady prostych, nieautomatycznych INSERT-ów</h2>
+<ul>
+<li><code>ERROR_NUMBER()</code></li>
+<li><code>ERROR_SEVERITY()</code></li>
+<li><code>ERROR_STATE()</code></li>
+<li><code>ERROR_PROCEDURE()</code></li>
+<li><code>ERROR_LINE()</code></li>
+<li><code>ERROR_MESSAGE()</code></li>
+</ul>
 
-    <p>
-      Poniżej znajdują się trzy podstawowe sposoby wstawiania danych do tabeli.
-    </p>
+<p>Następnie spróbuj wykonać operację zmiany struktury tabeli <code>Products</code> i sprawdź reakcję systemu w przypadku wystąpienia błędu.</p>
 
-    <h3>1. INSERT bez podawania nazw kolumn</h3>
-    <pre><code>INSERT INTO dbo.Employees
-VALUES 
-('Kowalski', 'Jan', 'Sales Rep', 'Mr.', '1990-05-01', '2020-01-01', '123-456-789', 
- 'Warsaw', 'Mazowieckie', '00-001', 'Poland', 'ul. Testowa 1', NULL, NULL, NULL, 1, 0);</code></pre>
+<h2>Zadanie 5 – Obsługa konkretnego błędu</h2>
 
-    <h3>2. INSERT z jawnie wymienionymi kolumnami</h3>
-    <pre><code>INSERT INTO dbo.Employees (
-    LastName, FirstName, Title, TitleOfCourtesy, BirthDate, HireDate, 
-    HomePhone, City, Region, PostalCode, Country, Address, ReportsTo
-)
-VALUES (
-    'Nowak', 'Anna', 'Marketing Manager', 'Ms.', '1985-08-15', '2021-06-01', 
-    '987-654-321', 'Krakow', 'Małopolskie', '30-001', 'Poland', 'ul. Przykładowa 2', 2
-);</code></pre>
+<p>Utwórz blok <code>TRY / CATCH</code>, który:</p>
 
-    <h3>3. INSERT z SELECT i UNION ALL</h3>
-    <pre><code>INSERT INTO dbo.Employees (
-    LastName, FirstName, Title, TitleOfCourtesy, BirthDate, HireDate, 
-    HomePhone, City, Region, PostalCode, Country, Address, ReportsTo
-)
-SELECT 'Wiśniewski', 'Tomasz', 'Support Specialist', 'Mr.', '1988-11-10', '2022-02-01',
-       '555-000-111', 'Gdańsk', 'Pomorskie', '80-001', 'Poland', 'ul. Główna 3', 5
-UNION ALL
-SELECT 'Zielińska', 'Magda', 'HR Manager', 'Mrs.', '1979-03-22', '2018-09-15',
-       '555-222-333', 'Poznań', 'Wielkopolskie', '60-002', 'Poland', 'ul. HR-owa 5', 3;</code></pre>
+<ol>
+<li>Próbuje wstawić rekord do tabeli <code>Products</code>.</li>
+<li>Wartość jednego z pól ustaw jako <code>NULL</code>, mimo że kolumna nie dopuszcza wartości pustych.</li>
+</ol>
 
-    <h2>Generowanie losowych wartości w T-SQL</h2>
+<p>W części <code>CATCH</code>:</p>
 
-    <p>
-      W poniższym przykładzie tworzona jest prosta tabela testowa, a następnie losowana
-      jest wartość ceny z określonego przedziału.
-    </p>
+<ol>
+<li>Pobierz numer błędu przy użyciu <code>ERROR_NUMBER()</code>.</li>
+<li>Jeżeli numer błędu odpowiada błędowi <code>NULL w kolumnie NOT NULL</code>, wyświetl komunikat:</li>
+</ol>
 
-    <pre><code>CREATE TABLE ProduktyTestowe (
-    ID INT IDENTITY(1,1) PRIMARY KEY,
-    Nazwa NVARCHAR(100),
-    Cena INT
-);
+<pre><code>Nie możesz wprowadzić wartości pustej!</code></pre>
 
-DECLARE @Min INT = 10;
-DECLARE @Max INT = 100;
-DECLARE @LosowaCena INT;
+<h2>Zadanie 6 – Generowanie błędów i obsługa transakcji</h2>
 
-SET @LosowaCena = FLOOR(RAND() * (@Max - @Min + 1)) + @Min;
+<h3>Część 1 – Generowanie własnego błędu</h3>
 
-INSERT INTO ProduktyTestowe (Nazwa, Cena)
-VALUES ('Losowy produkt', @LosowaCena);</code></pre>
+<p>W bloku <code>TRY</code> wykonaj operację powodującą błąd.</p>
 
-    <h2>Zadania do wykonania</h2>
+<p>W bloku <code>CATCH</code>:</p>
 
-    <ol>
-      <li>Przetestuj działanie skryptów na bazie Northwind</li>
-      <li>Zaimplementuj mechanizmy generowania dummy data w swoim projekcie (z wykorzystaniem funkcji skalarnych/tablicowych i procedur składowych)</li>
-    </ol>
+<ul>
+<li>wygeneruj komunikat przy użyciu <code>RAISERROR</code>,</li>
+<li>wygeneruj komunikat przy użyciu <code>THROW</code>.</li>
+</ul>
 
-    <h2>Do oddania</h2>
-    <ol>
-      <li>Plik <code>.sql</code> zawierający definicje funkcji, procedury i przykładowe instrukcje <code>INSERT</code>.</li>
-    </ol>
+<h3>Część 2 – Obsługa błędu w transakcji</h3>
 
-  </main>
+<p>Utwórz blok <code>TRY / CATCH</code>, który:</p>
 
-  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+<ol>
+<li>Rozpoczyna transakcję (<code>BEGIN TRANSACTION</code>).</li>
+<li>Wykonuje operację powodującą błąd.</li>
+<li>Próbuje zatwierdzić transakcję (<code>COMMIT</code>).</li>
+</ol>
+
+<p>W przypadku wystąpienia błędu:</p>
+
+<ul>
+<li>sprawdź wartość <code>@@TRANCOUNT</code>,</li>
+<li>wykonaj <code>ROLLBACK TRANSACTION</code>,</li>
+<li>przekaż błąd dalej przy użyciu <code>THROW</code>.</li>
+</ul>
+
+<h2>Do oddania</h2>
+
+<ol>
+<li>Plik <code>.sql</code> zawierający definicje funkcji, skrypty tworzące tabelę, skrypty wstawiające dane oraz przykłady obsługi błędów.</li>
+</ol>
+
+</main>
+
+<footer>
+© 2026 Arkadiusz Iwanicki • Materiały dydaktyczne
+</footer>
+
 </body>
 </html>
