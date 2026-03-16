@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zajęcia 3 – Diagram aktywności (AD)</title>
+  <meta name="description" content="Ćwiczenia z projektowania systemów informatycznych: diagram aktywności (Activity Diagram) w diagrams.net na przykładzie procesu aukcji internetowej.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Zajęcia 3 – Diagram aktywności (AD)</h1>
+
+    <p class="callout">
+      Wykonaj poniższe zadania w narzędziu
+      <a href="https://app.diagrams.net/" target="_blank" rel="noreferrer noopener">app.diagrams.net</a>.
+    </p>
+
+    <p>
+      Diagram aktywności (Activity Diagram – <strong>AD</strong>) służy do modelowania
+      przebiegu procesu lub przepływu działań w systemie.
+      W przeciwieństwie do diagramu przypadków użycia nie koncentruje się
+      na funkcjach systemu, lecz na kolejności wykonywanych czynności
+      oraz decyzjach podejmowanych w trakcie procesu.
+    </p>
+
+    <h2>Różnice między diagramem aktywności a diagramem przypadków użycia</h2>
+
+    <ul>
+      <li><strong>Diagram przypadków użycia (UCD)</strong> pokazuje jakie funkcje oferuje system i kto z nich korzysta.</li>
+      <li><strong>Diagram aktywności (AD)</strong> pokazuje jak przebiega proces wykonywania danej funkcji.</li>
+      <li><strong>UCD</strong> koncentruje się na aktorach i usługach systemu.</li>
+      <li><strong>AD</strong> koncentruje się na kolejności działań, decyzjach oraz przepływie sterowania.</li>
+      <li><strong>UCD</strong> przedstawia relacje między funkcjami systemu (np. <code>&lt;&lt;include&gt;&gt;</code>, <code>&lt;&lt;extend&gt;&gt;</code>).</li>
+      <li><strong>AD</strong> przedstawia logikę procesu, w tym warunki, rozgałęzienia i synchronizacje.</li>
+    </ul>
+
+    <h2>Materiały pomocnicze</h2>
+
+    <p>
+      Instrukcja draw.io dotycząca diagramów aktywności UML:
+      <br>
+      <a href="https://www.drawio.com/blog/uml-activity-diagrams" target="_blank" rel="noreferrer noopener">
+        https://www.drawio.com/blog/uml-activity-diagrams
+      </a>
+    </p>
+
+    <h2>Zadanie główne – diagram aktywności dla aukcji internetowej</h2>
+
+    <p>
+      Wykonaj diagram aktywności przedstawiający proces zakupu przedmiotu
+      na portalu aukcyjnym (np. Allegro).
+    </p>
+
+    <ol>
+      <li>
+        Diagram powinien zawierać <strong>dwa baseny (swimlanes)</strong>:
+        <ul>
+          <li><strong>Kupujący</strong></li>
+          <li><strong>System aukcyjny (np. Allegro)</strong></li>
+        </ul>
+      </li>
+
+      <li>
+        Diagram powinien rozpoczynać się od <strong>zdarzenia początkowego</strong> (start).
+      </li>
+
+      <li>
+        W diagramie uwzględnij typowe kroki procesu aukcji, np.:
+        <ul>
+          <li>przeglądanie ofert</li>
+          <li>wybór aukcji</li>
+          <li>wyświetlenie szczegółów oferty</li>
+          <li>decyzję o zakupie</li>
+          <li>złożenie oferty lub kliknięcie „Kup teraz”</li>
+          <li>potwierdzenie zakupu przez system</li>
+          <li>wybór metody płatności</li>
+          <li>przekierowanie do systemu płatności</li>
+          <li>potwierdzenie płatności</li>
+          <li>zakończenie procesu</li>
+        </ul>
+      </li>
+	  <li>
+		Diagram powinien zawierać co najmniej jedną decyzję (decision node), np.:czy użytkownik jest zalogowany, czy płatność została zakończona powodzeniem?
+	  </li>
+	  <li>
+        W przypadku decyzji zastosuj warunki logiczne na strzałkach (tak/nie, płatność poprawna/odrzucona etc.).
+      </li>
+      <li>
+        Diagram powinien kończyć się <strong>zdarzeniem końcowym</strong> (final node).
+      </li>
+    </ol>
+
+    <h2>Do oddania</h2>
+    <ol>
+      <li>Eksport diagramu (PNG lub JPG).</li>
+      <li>(Opcjonalnie) Plik źródłowy .drawio.</li>
+    </ol>
+
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
