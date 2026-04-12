@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Ćwiczenia 5 – Eksploracja danych [0600-BFGC2C]</title>
-<meta name="description" content="Ćwiczenia 5 z eksploracji danych: TextMining i Regex."/>
+<meta name="description" content="Ćwiczenia 5 z eksploracji danych: analiza tekstu PDF w Pythonie z użyciem NLTK."/>
 <link rel="stylesheet" href="../../assets/style.css"/>
 </head>
 <body>
@@ -21,79 +21,64 @@
 <h1>Ćwiczenia 5 – Eksploracja danych [0600-BFGC2C]</h1>
 
 <p class="callout">
-Wykonaj poniższe zadania w Google Colab lub lokalnie w Pythonie.
+Wykonaj poniższe zadania w Google Colab lub lokalnie w Pythonie. Celem ćwiczenia jest przygotowanie prostego pipeline'u do analizy tekstu z pliku PDF: wczytanie dokumentu, czyszczenie tekstu, tokenizacja, lematyzacja, analiza częstotliwości, n-gramów, sentymentu oraz wygenerowanie chmury słów.
 </p>
 
-
-<h2>Zadanie 1 – TextMining</h2>
+<h2>Zadanie 1 – Text Mining w Pythonie</h2>
 
 <ol>
-<li>Utwórz nowy Colab Pythona o nazwie <strong>TextMining</strong>. Pobierz z Teams plik <strong>manifest.pdf</strong> i umieść go w zeszycie. Zainstaluj biblioteki i pobierz moduły biblioteki NLTK:
-<pre><code>!pip install PyPDF2
-nltk.download('punkt')
-nltk.download('vader_lexicon')</code></pre>
+<li>Utwórz nowy notatnik Google Colab o nazwie <strong>TextMining</strong>. Pobierz z Teams plik <strong>Manifesto.pdf</strong> i dodaj go do środowiska Colab.</li>
+
+<li>Zainstaluj wymagane biblioteki:
+<pre><code>!pip install PyPDF2 nltk matplotlib wordcloud</code></pre>
 </li>
 
-<li>Dodaj importy bibliotek i uruchom kod. Następnie wykomentuj <code>nltk.download('punkt')</code> oraz <code>nltk.download('vader_lexicon')</code>.
-<pre><code>import PyPDF2
-import pandas as pd
-import numpy as np
+<li>Zaimportuj biblioteki potrzebne do analizy tekstu:
+<pre><code>import re
+import PyPDF2
 import nltk
-import os
+import matplotlib.pyplot as plt
+
+from wordcloud import WordCloud
 from nltk.tokenize import word_tokenize
 from nltk.probability import FreqDist
 from nltk.sentiment import SentimentIntensityAnalyzer
 from nltk.util import ngrams
-import re</code></pre>
+from nltk.stem import WordNetLemmatizer</code></pre>
 </li>
 
-<li>Utwórz funkcję, która przeczyta plik PDF i przypisze jego tekst do zmiennej.</li>
-
-<li>Z pomocą biblioteki NLTK podziel tekst na tokeny. Obejrzyj wynik podziału instrukcją <code>print()</code>.</li>
-
-<li>Sprawdź rozkład częstotliwości występowania 20 najczęściej występujących w tekście słów. Wykomentuj instrukcję <code>print()</code> z podpunktu 4 i obejrzyj wyniki. Część wyrazów może zostać błędnie podzielona na tokeny, co może zaburzać wyniki.</li>
-
-<li>Biblioteka NLTK domyślnie uznaje słowa napisane małą i wielką literą za dwa różne tokeny. Znormalizuj tekst przed podziałem na tokeny przy pomocy funkcji <code>.lower()</code>. Wyświetl wyniki.</li>
-
-<li>Utwórz własną funkcję, która usunie słowa krótsze niż 3 znaki.</li>
-
-<li>Zwizualizuj rozkład słów prostym wykresem bez instalacji dodatkowych bibliotek:
-<pre><code>frequency_distribution.plot(10, title='Top 10 Most Common Words in Corpus')
-plt.show()</code></pre>
+<li>Pobierz zasoby biblioteki NLTK wymagane do tokenizacji, lematyzacji i analizy sentymentu:
+<pre><code>nltk.download('punkt')         # tokenizacja tekstu
+nltk.download('punkt_tab')     # dodatkowe dane tokenizera wymagane w części środowisk
+nltk.download('wordnet')       # baza słów do lematyzacji
+nltk.download('omw-1.4')       # rozszerzenie WordNet
+nltk.download('vader_lexicon') # słownik do analizy sentymentu</code></pre>
 </li>
 
-<li>Ręcznie usuń słowa, które nie mają znaczenia dla analizy, np. „that”, „this”, poprzez utworzenie czarnej listy.</li>
+<li>Utwórz zmienną ze ścieżką do pliku PDF.</li>
 
-<li>Przeprowadź analizę sentymentu dowolnego tekstu w formacie PDF.</li>
+<li>Wczytaj tekst ze wszystkich stron pliku PDF przy użyciu biblioteki <code>PyPDF2</code>. Zapisz kolejne strony do listy, a następnie połącz je w jeden łańcuch znaków.</li>
+
+<li>Zamień cały tekst na małe litery przy pomocy <code>.lower()</code>, aby te same słowa zapisane różną wielkością liter nie były traktowane jako osobne tokeny.</li>
+
+<li>Odfiltruj z tekstu bardzo krótkie słowa, pozostawiając tylko wyrazy o długości co najmniej 4 znaków. W tym celu użyj wyrażenia regularnego:
+<pre><code>words = re.findall(r'\b\w{4,}\b', text)
+text = ' '.join(words)</code></pre>
+</li>
+
+<li>Dokonaj tokenizacji tekstu za pomocą <code>word_tokenize()</code>, a następnie usuń z listy tokenów wybrane słowa niewnoszące istotnej informacji.</li>
+
+<li>Przeprowadź lematyzację tokenów z użyciem klasy <code>WordNetLemmatizer</code>.</li>
+
+<li>Oblicz rozkład częstości występowania słów przy pomocy <code>FreqDist</code>. Wyświetl 10 najczęściej występujących słów oraz przedstaw je na wykresie.</li>
+
+<li>Wygeneruj listę bigramów i trigramów przy użyciu funkcji <code>ngrams()</code>. Następnie wyświetl 20 najczęściej występujących bigramów i 20 najczęściej występujących trigramów.</li>
+
+<li>Przeprowadź analizę sentymentu tekstu z użyciem <code>SentimentIntensityAnalyzer</code>. Wyświetl słownik z wynikami oraz zinterpretuj wynik na podstawie wartości <code>compound</code> jako tekst pozytywny, negatywny albo neutralny.</li>
+
+<li>Na końcu wygeneruj chmurę słów na podstawie przetworzonych tokenów z użyciem biblioteki <code>wordcloud</code> i wyświetl ją za pomocą <code>matplotlib</code>.</li>
+
 </ol>
-
-<h2>Zadanie 2 – Regex</h2>
-
-<ol>
-<li>Zapoznaj się z formułami:
-<ul class="links">
-<li><a href="https://www.w3schools.com/python/python_regex.asp" target="_blank" rel="noreferrer noopener">Python Regex</a></li>
-<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Cheatsheet" target="_blank" rel="noreferrer noopener">Regex Cheat Sheet</a></li>
-</ul>
-</li>
-
-<li>Wykomentuj kod dotyczący Zadania 1 (bez bibliotek). Pod komentarzem dodaj:
-<pre><code>txt = "Tutaj wpisz sprawdzany tekst"
-x = re.sub('[tutaj wpisz wyrażenie]', txt)
-print(x)  # zwróci 'match' po uruchomieniu kodu</code></pre>
-</li>
-
-<li>Napisz REGEX, który sprawdza, czy tekst:
-<ol>
-<li>zawiera cyfry,</li>
-<li>zawiera spacje,</li>
-<li>zawiera znaki specjalne,</li>
-<li>zaczyna się od słowa „The” i kończy słowem „End”,</li>
-<li>stanowi adres e-mail.</li>
-</ol>
-</li>
-</ol>
-
 
 </main>
 
