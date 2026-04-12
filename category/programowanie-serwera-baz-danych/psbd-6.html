@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 6 – Triggery w SQL Server</title>
+  <meta name="description" content="Ćwiczenia z SQL Server dotyczące triggerów AFTER i INSTEAD OF na bazie danych Northwind, wraz z mechanizmem logowania zmian i blokowania modyfikacji danych.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Zajęcia – Triggery w SQL Server</h1>
+
+    <p class="callout">
+      Wykonaj poniższe przykłady w środowisku <strong>SQL Server Management Studio</strong> na bazie danych Northwind.
+    </p>
+
+    <p>
+      Celem ćwiczenia jest poznanie działania <strong>triggerów</strong> w języku <strong>T-SQL</strong>.
+      Przykłady obejmują rejestrowanie zmian w tabeli oraz blokowanie wybranych operacji modyfikujących dane.
+    </p>
+
+    <h2>Czym jest trigger?</h2>
+
+    <p>
+      Trigger to specjalny obiekt bazy danych, który uruchamia się automatycznie w odpowiedzi na określone zdarzenie,
+      takie jak <code>INSERT</code>, <code>UPDATE</code> lub <code>DELETE</code>. Triggery mogą służyć m.in. do:
+    </p>
+
+    <ul>
+      <li>logowania zmian w danych,</li>
+      <li>wymuszania dodatkowych reguł biznesowych,</li>
+      <li>blokowania niepożądanych operacji,</li>
+      <li>automatycznego wykonywania dodatkowych instrukcji po zmianie danych.</li>
+    </ul>
+
+    <h2>Tabele <code>inserted</code> i <code>deleted</code></h2>
+
+    <p>
+      W triggerach SQL Server automatycznie udostępnia dwie specjalne, tymczasowe tabele logiczne:
+      <code>inserted</code> oraz <code>deleted</code>.
+    </p>
+
+    <ul>
+      <li><code>inserted</code> zawiera nowe wersje rekordów,</li>
+      <li><code>deleted</code> zawiera stare wersje rekordów.</li>
+    </ul>
+
+    <p>
+      Dzięki nim można porównywać stan danych przed i po wykonaniu operacji modyfikującej.
+    </p>
+
+    <h2>Przykład 1 – tabela logów</h2>
+
+    <p>
+      Pierwszym krokiem jest utworzenie tabeli, która będzie przechowywała informacje o wykonanych zmianach.
+    </p>
+
+    <pre><code>CREATE TABLE dbo.Logs (
+    LogID INT IDENTITY PRIMARY KEY,
+    TableName NVARCHAR(100),
+    Operation NVARCHAR(10),
+    OldValue NVARCHAR(MAX),
+    NewValue NVARCHAR(MAX),
+    ChangeDate DATETIME DEFAULT GETDATE()
+);</code></pre>
+
+    <h2>Przykład 2 – trigger logujący zmiany w tabeli Employees</h2>
+
+    <p>
+      Poniższy trigger reaguje na operacje <code>INSERT</code>, <code>UPDATE</code> i <code>DELETE</code>
+      wykonywane na tabeli <code>Employees</code>. W zależności od typu operacji zapisuje odpowiedni wpis do tabeli <code>Logs</code>.
+    </p>
+
+    <pre><code>CREATE OR ALTER TRIGGER trg_Log_Employee_Changes
+ON dbo.Employees
+AFTER INSERT, UPDATE, DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO dbo.Logs (TableName, Operation, OldValue, NewValue)
+    SELECT 
+        'Employees',
+        'UPDATE',
+        CONCAT('FirstName: ', d.FirstName, ', LastName: ', d.LastName),
+        CONCAT('FirstName: ', i.FirstName, ', LastName: ', i.LastName)
+    FROM inserted i
+    JOIN deleted d ON i.EmployeeID = d.EmployeeID;
+
+    INSERT INTO dbo.Logs (TableName, Operation, OldValue, NewValue)
+    SELECT 
+        'Employees',
+        'INSERT',
+        NULL,
+        CONCAT('FirstName: ', i.FirstName, ', LastName: ', i.LastName)
+    FROM inserted i
+    WHERE NOT EXISTS (
+        SELECT 1 FROM deleted d WHERE d.EmployeeID = i.EmployeeID
+    );
+
+    INSERT INTO dbo.Logs (TableName, Operation, OldValue, NewValue)
+    SELECT 
+        'Employees',
+        'DELETE',
+        CONCAT('FirstName: ', d.FirstName, ', LastName: ', d.LastName),
+        NULL
+    FROM deleted d
+    WHERE NOT EXISTS (
+        SELECT 1 FROM inserted i WHERE i.EmployeeID = d.EmployeeID
+    );
+END;</code></pre>
+
+    <h2>Przykład 3 – trigger blokujący zmiany w tabeli Categories</h2>
+
+    <p>
+      Trigger typu <code>INSTEAD OF</code> przechwytuje operację i wykonuje własny kod zamiast pierwotnego działania.
+      W tym przykładzie każda próba aktualizacji lub usunięcia danych z tabeli <code>Categories</code> zostaje zablokowana.
+    </p>
+
+    <pre><code>CREATE OR ALTER TRIGGER trg_Block_Categories_Modifications
+ON dbo.Categories
+INSTEAD OF DELETE, UPDATE
+AS
+BEGIN
+    RAISERROR ('Zmiany i usuwanie danych w tabeli Categories są zabronione.', 16, 1);
+END;</code></pre>
+
+    <h2>Test działania triggera logującego</h2>
+
+    <p>
+      Aby sprawdzić działanie triggera, wykonaj kolejno operacje dodania, modyfikacji i usunięcia przykładowego pracownika.
+    </p>
+
+    <pre><code>INSERT INTO dbo.Employees (LastName, FirstName, Title, HireDate, City, Country)
+VALUES ('Kowalski', 'Jan', 'Sales Representative', '2020-01-15', 'Warsaw', 'Poland');
+
+UPDATE dbo.Employees
+SET City = 'Krakow', Title = 'Regional Sales Manager'
+WHERE FirstName = 'Jan' AND LastName = 'Kowalski';
+
+DELETE FROM dbo.Employees
+WHERE FirstName = 'Jan' AND LastName = 'Kowalski';
+
+SELECT * FROM dbo.Logs
+ORDER BY ChangeDate DESC;</code></pre>
+
+    <h2>Test działania triggera blokującego</h2>
+
+    <p>
+      Poniższe przykłady pokazują, jak przetestować blokowanie operacji <code>UPDATE</code> i <code>DELETE</code>
+      na tabeli <code>Categories</code> z wykorzystaniem bloku <code>TRY ... CATCH</code>.
+    </p>
+
+    <pre><code>BEGIN TRY
+    UPDATE dbo.Categories
+    SET CategoryName = 'Nowa nazwa testowa'
+    WHERE CategoryID = 1;
+END TRY
+BEGIN CATCH
+    PRINT 'Błąd (oczekiwany): ' + ERROR_MESSAGE();
+END CATCH
+
+BEGIN TRY
+    DELETE FROM dbo.Categories
+    WHERE CategoryID = 1;
+END TRY
+BEGIN CATCH
+    PRINT 'Błąd (oczekiwany): ' + ERROR_MESSAGE();
+END CATCH</code></pre>
+
+    <h2>Do oddania</h2>
+    <ol>
+      <li>Plik <code>.sql</code> zawierający definicję tabeli np. <code>Logs</code> oraz triggery założone na własnej bazie.</li>
+      <li>Krótki zestaw poleceń testujących działanie triggerów.</li>
+    </ol>
+
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
