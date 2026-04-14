@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zajęcia 5 – Diagram klas (CD)</title>
+  <meta name="description" content="Ćwiczenia z projektowania systemów informatycznych: diagram klas UML na przykładzie portalu Allegro.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Zajęcia 5 – Diagram klas (CD)</h1>
+
+    <p class="callout">
+      Wykonaj poniższe zadania w narzędziu
+      <a href="https://app.diagrams.net/" target="_blank" rel="noreferrer noopener">app.diagrams.net</a>.
+    </p>
+
+    <p>
+      Diagram klas (Class Diagram – <strong>CD</strong>) służy do modelowania struktury systemu. Przedstawia klasy, ich atrybuty,
+      metody oraz relacje między nimi.
+    </p>
+		
+	<ul>
+      <li>Pokazuje strukturę systemu (statyczny model).</li>
+      <li>Składa się z klas, które posiadają atrybuty i metody.</li>
+      <li>Opisuje relacje między klasami (np. dziedziczenie, asocjacje).</li>
+      <li>Jest podstawą do projektowania baz danych oraz kodu.</li>
+    </ul>
+
+    <p>
+      Wprowadzenie do diagramów klas:
+      <br>
+      <a href="https://devmentor.pl/b/podstawy-uml-diagramy-klas" target="_blank" rel="noreferrer noopener">
+        https://devmentor.pl/b/podstawy-uml-diagramy-klas
+      </a>
+    </p>
+
+    <h2>Podstawowe elementy diagramu klas</h2>
+
+    <ul>
+      <li><strong>Klasa</strong> – reprezentuje obiekt w systemie (np. Użytkownik, Aukcja).</li>
+      <li><strong>Atrybuty</strong> – dane przechowywane w klasie.</li>
+      <li><strong>Metody</strong> – operacje wykonywane przez klasę.</li>
+      <li><strong>Relacje</strong>:
+        <ul>
+          <li>asocjacja (związek między klasami)</li>
+          <li>dziedziczenie (generalizacja)</li>
+          <li>agregacja / kompozycja</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h2>Zadanie główne – diagram klas dla portalu Allegro</h2>
+
+    <p>
+      Utwórz diagram klas przedstawiający strukturę systemu portalu aukcyjnego (np. Allegro).
+    </p>
+
+    <ol>
+      <li>
+        Diagram powinien zawierać co najmniej następujące klasy:
+        <ul>
+          <li>Użytkownik</li>
+          <li>Konto</li>
+          <li>Aukcja</li>
+          <li>Oferta</li>
+          <li>Produkt</li>
+          <li>Płatność</li>
+          <li>Zamówienie</li>
+        </ul>
+      </li>
+
+      <li>
+        Dla każdej klasy określ:
+        <ul>
+          <li>minimum 2–3 atrybuty</li>
+          <li>minimum 1 metodę</li>
+        </ul>
+      </li>
+
+      <li>
+        Zdefiniuj relacje między klasami, np.:
+        <ul>
+          <li>Użytkownik tworzy Aukcję</li>
+          <li>Użytkownik składa Ofertę</li>
+          <li>Aukcja dotyczy Produktu</li>
+          <li>Zamówienie zawiera Produkt</li>
+          <li>Zamówienie posiada Płatność</li>
+        </ul>
+      </li>
+
+      <li>
+        Zastosuj różne typy relacji:
+        <ul>
+          <li>asocjacja</li>
+          <li>dziedziczenie (jeśli uzasadnione)</li>
+          <li>kompozycja lub agregacja</li>
+        </ul>
+      </li>
+
+      <li>
+        Oznacz widoczność atrybutów i metod:
+        <ul>
+          <li><code>+</code> public</li>
+          <li><code>-</code> private</li>
+          <li><code>#</code> protected</li>
+        </ul>
+      </li>
+    </ol>
+
+    <h2>Do oddania</h2>
+    <ol>
+      <li>Eksport diagramu (PNG lub JPG).</li>
+      <li>(Opcjonalnie) Plik źródłowy .drawio.</li>
+    </ol>
+
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
