@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 7 – Triggery: funkcje i kontrola danych</title>
+  <meta name="description" content="Ćwiczenia z SQL Server dotyczące wykorzystania funkcji w triggerach oraz kontroli wprowadzania danych w bazie Northwind.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Zajęcia – Triggery: funkcje i kontrola danych</h1>
+
+    <p class="callout">
+      Wykonaj poniższe przykłady w środowisku <strong>SQL Server Management Studio</strong> na bazie danych <strong>Northwind</strong>.
+    </p>
+
+    <p>
+      Celem ćwiczenia jest poznanie praktycznego wykorzystania <strong>triggerów</strong> w języku <strong>T-SQL</strong>:
+      zarówno do reagowania na konkretne zmiany danych, jak i do wymuszania dodatkowych reguł biznesowych, których
+      nie da się wygodnie zrealizować samymi constraintami.
+    </p>
+
+    <h2>Funkcje używane w triggerach</h2>
+
+    <p>W ćwiczeniu wykorzystamy następujące funkcje:</p>
+
+    <ul>
+      <li><code>UPDATE(column_name)</code> – sprawdza, czy dana kolumna brała udział w operacji <code>INSERT</code> lub <code>UPDATE</code>,</li>
+      <li><code>COLUMNS_UPDATED()</code> – zwraca informację binarną o tym, które kolumny zostały zmienione,</li>
+      <li><code>TRIGGER_NESTLEVEL()</code> – zwraca poziom zagnieżdżenia aktualnego wywołania triggera,</li>
+      <li><code>EVENTDATA()</code> – udostępnia dane o zdarzeniu dla triggerów DDL i Logon.</li>
+    </ul>
+
+    <h2>Tabele pomocnicze</h2>
+
+    <p>
+      Przed wykonaniem przykładów utwórz tabele pomocnicze do logowania zdarzeń i zmian.
+    </p>
+
+<pre><code>CREATE TABLE dbo.ProductPriceAudit (
+    AuditID INT IDENTITY PRIMARY KEY,
+    ProductID INT NOT NULL,
+    OldPrice MONEY NULL,
+    NewPrice MONEY NULL,
+    ChangeDate DATETIME NOT NULL DEFAULT GETDATE()
+);
+
+CREATE TABLE dbo.EmployeeAudit (
+    AuditID INT IDENTITY PRIMARY KEY,
+    EmployeeID INT NOT NULL,
+    ChangedColumns NVARCHAR(200) NOT NULL,
+    ChangeDate DATETIME NOT NULL DEFAULT GETDATE()
+);
+
+CREATE TABLE dbo.DDLAudit (
+    AuditID INT IDENTITY PRIMARY KEY,
+    EventType NVARCHAR(100) NOT NULL,
+    ObjectName NVARCHAR(256) NULL,
+    CommandText NVARCHAR(MAX) NULL,
+    EventDate DATETIME NOT NULL DEFAULT GETDATE()
+);
+
+CREATE TABLE dbo.ProductChangeLog (
+    LogID INT IDENTITY PRIMARY KEY,
+    ProductID INT NULL,
+    Operation NVARCHAR(10) NOT NULL,
+    OldData NVARCHAR(MAX) NULL,
+    NewData NVARCHAR(MAX) NULL,
+    ChangeDate DATETIME NOT NULL DEFAULT GETDATE()
+);</code></pre>
+
+    <h2>Przykład 1 – użycie funkcji UPDATE()</h2>
+
+    <p>
+      <strong>Cel:</strong> wykrycie zmiany konkretnej kolumny i wykonanie dodatkowej akcji tylko wtedy,
+      gdy rzeczywiście zmieniła się cena produktu.
+    </p>
+
+    <p>
+      Ten trigger zapisuje do tabeli audytowej informację o zmianie ceny tylko wtedy, gdy w instrukcji
+      <code>UPDATE</code> uczestniczyła kolumna <code>UnitPrice</code>. Dzięki temu nie logujemy wszystkich
+      zmian w tabeli <code>Products</code>, lecz tylko te związane z ceną.
+    </p>
+
+<pre><code>CREATE OR ALTER TRIGGER trg_ProductPriceAudit
+ON dbo.Products
+AFTER UPDATE
+AS
+BEGIN
+    IF (ROWCOUNT_BIG() = 0) RETURN;
+
+    IF UPDATE(UnitPrice)
+    BEGIN
+        INSERT INTO dbo.ProductPriceAudit (ProductID, OldPrice, NewPrice)
+        SELECT d.ProductID, d.UnitPrice, i.UnitPrice
+        FROM inserted i
+        JOIN deleted d ON i.ProductID = d.ProductID
+        WHERE ISNULL(i.UnitPrice, 0) &lt;&gt; ISNULL(d.UnitPrice, 0);
+    END
+END;
+GO</code></pre>
+
+    <p><strong>Jak przetestować:</strong></p>
+
+<pre><code>UPDATE dbo.Products
+SET UnitPrice = UnitPrice + 1
+WHERE ProductID = 1;
+
+SELECT * FROM dbo.ProductPriceAudit
+ORDER BY ChangeDate DESC;</code></pre>
+
+    <h2>Przykład 2 – użycie funkcji COLUMNS_UPDATED()</h2>
+
+    <p>
+      <strong>Cel:</strong> sprawdzenie, czy zmieniono jedną z kilku wybranych kolumn i zapisanie tej informacji w logu.
+    </p>
+
+    <p>
+      Funkcja <code>COLUMNS_UPDATED()</code> jest przydatna wtedy, gdy interesuje nas grupa kolumn.
+      W tym przykładzie chcemy wykryć zmiany danych personalnych pracownika, np. imienia, nazwiska lub stanowiska.
+    </p>
+
+    <p>
+      Dla uproszczenia przykład działa dla pierwszych kolumn tabeli <code>Employees</code>. W praktyce tę funkcję
+      warto łączyć z dokumentacją układu kolumn lub z dodatkową analizą metadanych.
+    </p>
+
+<pre><code>CREATE OR ALTER TRIGGER trg_EmployeeColumnsAudit
+ON dbo.Employees
+AFTER UPDATE
+AS
+BEGIN
+    IF (ROWCOUNT_BIG() = 0) RETURN; --zwraca liczbę wierszy dotkniętych przez instrukcję, która wywołała trigger
+									--jeśli ta liczba = 0 → trigger natychmiast się kończy (RETURN)
+    DECLARE @mask VARBINARY(128) = COLUMNS_UPDATED();
+
+    INSERT INTO dbo.EmployeeAudit (EmployeeID, ChangedColumns)
+    SELECT i.EmployeeID,
+           'Zmodyfikowano jedną z obserwowanych kolumn pracownika'
+    FROM inserted i
+    WHERE SUBSTRING(@mask, 1, 1) &lt;&gt; 0;
+END;
+GO</code></pre>
+
+    <p><strong>Jak przetestować:</strong></p>
+
+<pre><code>UPDATE dbo.Employees
+SET FirstName = 'Nancy_Test'
+WHERE EmployeeID = 1;
+
+SELECT * FROM dbo.EmployeeAudit
+ORDER BY ChangeDate DESC;
+</code></pre>
+
+    <h2>Przykład 3 – użycie funkcji TRIGGER_NESTLEVEL()</h2>
+
+    <p>
+      <strong>Cel:</strong> zabezpieczenie przed ponownym wejściem triggera w sytuacji, gdy trigger sam wykonuje
+      operację <code>UPDATE</code> na tej samej tabeli.
+    </p>
+
+    <p>
+      Taki mechanizm jest potrzebny szczególnie wtedy, gdy logika triggera modyfikuje dane w tabeli,
+      na której sam trigger został założony. Bez kontroli poziomu zagnieżdżenia można doprowadzić
+      do niepożądanego kaskadowego uruchamiania.
+    </p>
+
+<pre><code>CREATE OR ALTER TRIGGER trg_ProductStockCorrection
+ON dbo.Products
+AFTER UPDATE
+AS
+BEGIN
+    IF (ROWCOUNT_BIG() = 0) RETURN;
+
+    IF TRIGGER_NESTLEVEL() &gt; 1
+        RETURN;
+
+    UPDATE dbo.Products
+    SET UnitsInStock = 0
+    WHERE ProductID IN (SELECT ProductID FROM inserted)
+      AND UnitsInStock &lt; 0;
+END;
+GO</code></pre>
+
+    <p><strong>Jak przetestować:</strong></p>
+
+<pre><code>UPDATE dbo.Products
+SET UnitsInStock = -5
+WHERE ProductID = 2;
+
+SELECT ProductID, ProductName, UnitsInStock
+FROM dbo.Products
+WHERE ProductID = 2;</code></pre>
+
+    <h2>Przykład 4 – użycie funkcji EVENTDATA()</h2>
+
+    <p>
+      <strong>Cel:</strong> rejestrowanie zdarzeń DDL, np. utworzenia tabeli, wraz z informacją o rodzaju zdarzenia
+      i wykonanym poleceniu.
+    </p>
+
+    <p>
+      Ten przykład różni się od wcześniejszych, ponieważ nie dotyczy triggera DML, tylko <strong>triggera DDL</strong>.
+      Dzięki <code>EVENTDATA()</code> można odczytać szczegóły zdarzenia, takie jak typ operacji, nazwa obiektu
+      czy treść polecenia.
+    </p>
+
+<pre><code>CREATE OR ALTER TRIGGER trg_DDL_CreateTable_Audit
+ON DATABASE
+AFTER CREATE_TABLE
+AS
+BEGIN
+    DECLARE @data XML = EVENTDATA();
+
+    INSERT INTO dbo.DDLAudit (EventType, ObjectName, CommandText)
+    VALUES (
+        @data.value('(/EVENT_INSTANCE/EventType)[1]', 'NVARCHAR(100)'),
+        @data.value('(/EVENT_INSTANCE/ObjectName)[1]', 'NVARCHAR(256)'),
+        @data.value('(/EVENT_INSTANCE/TSQLCommand/CommandText)[1]', 'NVARCHAR(MAX)')
+    );
+END;
+GO</code></pre>
+
+    <p><strong>Jak przetestować:</strong></p>
+
+<pre><code>CREATE TABLE dbo.TestTriggerDDL (
+    ID INT PRIMARY KEY
+);
+
+SELECT * FROM dbo.DDLAudit
+ORDER BY EventDate DESC;
+
+DROP TABLE dbo.TestTriggerDDL;</code></pre>
+
+    <h2>Kontrola wprowadzania danych – przykłady triggerów</h2>
+
+    <p>
+      W tej części wykorzystamy triggery do wymuszania dodatkowych zasad biznesowych podczas wstawiania
+      lub modyfikacji danych. Takie kontrole bywają trudne do wykonania za pomocą samych constraintów,
+      zwłaszcza gdy trzeba porównywać dane z innych tabel albo analizować kilka warunków jednocześnie.
+    </p>
+
+    <h3>Przykład 5 – blokowanie ujemnej ceny i ujemnego stanu magazynowego</h3>
+
+    <p>
+      <strong>Cel:</strong> niedopuszczenie do wstawienia produktu z niepoprawnymi wartościami liczbowymi.
+    </p>
+
+    <p>
+      Trigger przechwytuje operację <code>INSERT</code> i sprawdza, czy nowe rekordy mają poprawną cenę
+      oraz stan magazynowy. Jeśli nie – zgłasza błąd i nie dopuszcza do zapisu.
+    </p>
+
+<pre><code>CREATE OR ALTER TRIGGER trg_ProductInsertValidation
+ON dbo.Products
+INSTEAD OF INSERT
+AS
+BEGIN
+    IF (ROWCOUNT_BIG() = 0) RETURN;
+
+    IF EXISTS (
+        SELECT 1
+        FROM inserted
+        WHERE UnitPrice &lt; 0 OR UnitsInStock &lt; 0 OR UnitsOnOrder &lt; 0
+    )
+    BEGIN
+        THROW 50010, 'Cena oraz stany magazynowe nie mogą być ujemne.', 1;
+    END
+
+    INSERT INTO dbo.Products
+    (
+        ProductName, SupplierID, CategoryID, QuantityPerUnit, UnitPrice,
+        UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued
+    )
+    SELECT
+        ProductName, SupplierID, CategoryID, QuantityPerUnit, UnitPrice,
+        UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued
+    FROM inserted;
+END;
+GO</code></pre>
+
+    <p><strong>Jak przetestować:</strong></p>
+
+<pre><code>BEGIN TRY
+    INSERT INTO dbo.Products
+    (
+        ProductName, SupplierID, CategoryID, QuantityPerUnit, UnitPrice,
+        UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued
+    )
+    VALUES
+    ('Produkt testowy A', 1, 1, '10 boxes', -5, 10, 0, 5, 0);
+END TRY
+BEGIN CATCH
+    PRINT 'Błąd (oczekiwany): ' + ERROR_MESSAGE();
+END CATCH;</code></pre>
+
+    <h3>Przykład 6 – blokowanie niedozwolonego rabatu i ilości w tabeli [Order Details]</h3>
+
+    <p>
+      <strong>Cel:</strong> kontrola poprawności pozycji zamówienia.
+    </p>
+
+    <p>
+      W tym przykładzie pilnujemy, aby liczba zamawianych sztuk była dodatnia, a rabat mieścił się
+      w rozsądnym zakresie od 0 do 0,30. Dzięki temu można zabezpieczyć się przed błędami użytkownika
+      lub niepoprawnym importem danych.
+    </p>
+
+<pre><code>CREATE OR ALTER TRIGGER trg_OrderDetailsValidation
+ON dbo.[Order Details]
+INSTEAD OF INSERT
+AS
+BEGIN
+    IF (ROWCOUNT_BIG() = 0) RETURN;
+
+    IF EXISTS (
+        SELECT 1
+        FROM inserted
+        WHERE Quantity &lt;= 0
+           OR Discount &lt; 0
+           OR Discount &gt; 0.30
+           OR UnitPrice &lt;= 0
+    )
+    BEGIN
+        THROW 50011, 'Niepoprawna ilość, cena lub rabat w pozycji zamówienia.', 1;
+    END
+
+    INSERT INTO dbo.[Order Details] (OrderID, ProductID, UnitPrice, Quantity, Discount)
+    SELECT OrderID, ProductID, UnitPrice, Quantity, Discount
+    FROM inserted;
+END;
+GO</code></pre>
+
+    <p><strong>Jak przetestować:</strong></p>
+
+<pre><code>BEGIN TRY
+    INSERT INTO dbo.[Order Details] (OrderID, ProductID, UnitPrice, Quantity, Discount)
+    VALUES (10248, 11, 14.00, 5, 0.50);
+END TRY
+BEGIN CATCH
+    PRINT 'Błąd (oczekiwany): ' + ERROR_MESSAGE();
+END CATCH;</code></pre>
+
+    <h3>Przykład 7 – blokowanie zmiany kategorii już istniejącego produktu</h3>
+
+    <p>
+      <strong>Cel:</strong> zabezpieczenie przed zmianą ważnej cechy klasyfikacyjnej produktu.
+    </p>
+
+    <p>
+      Czasami w systemie nie chcemy dopuścić do zmiany określonych pól, bo taka zmiana może zaburzyć raportowanie,
+      integrację lub logikę biznesową. W tym przypadku zabraniana jest zmiana <code>CategoryID</code>.
+    </p>
+
+<pre><code>CREATE OR ALTER TRIGGER trg_BlockProductCategoryChange
+ON dbo.Products
+AFTER UPDATE
+AS
+BEGIN
+    IF (ROWCOUNT_BIG() = 0) RETURN;
+
+    IF UPDATE(CategoryID)
+    BEGIN
+        THROW 50012, 'Zmiana kategorii istniejącego produktu jest zabroniona.', 1;
+    END
+END;
+GO</code></pre>
+
+    <p><strong>Jak przetestować:</strong></p>
+
+<pre><code>BEGIN TRY
+    UPDATE dbo.Products
+    SET CategoryID = 2
+    WHERE ProductID = 1;
+END TRY
+BEGIN CATCH
+    PRINT 'Błąd (oczekiwany): ' + ERROR_MESSAGE();
+END CATCH;</code></pre>
+
+    <h2>Przykład 8 – złożona kontrola danych w tabeli [Order Details]</h2>
+
+    <p>
+      Poniższy przykład pokazuje, że trigger może realizować kilka reguł biznesowych jednocześnie i korzystać z danych z innych tabel,
+      np. z tabeli <code>Products</code>. Takie sytuacje często trudno opisać zwykłym constraintem. 
+    </p>
+
+    <p>
+      Trigger kontroluje dodawanie pozycji zamówienia i sprawdza kilka warunków:
+    </p>
+
+    <ul>
+      <li>czy ilość jest dodatnia,</li>
+      <li>czy rabat mieści się w zakresie 0–0,30,</li>
+      <li>czy cena w pozycji zamówienia nie jest zbyt niska względem aktualnej ceny produktu,</li>
+      <li>czy dana para <code>(OrderID, ProductID)</code> nie istnieje już w tabeli,</li>
+      <li>czy operacja dotyczy poprawnie istniejącego produktu.</li>
+    </ul>
+
+
+<pre><code>CREATE OR ALTER TRIGGER trg_OrderDetailsComplexControl
+ON dbo.[Order Details]
+INSTEAD OF INSERT
+AS
+BEGIN
+    IF (ROWCOUNT_BIG() = 0) RETURN;
+
+    -- ilość musi być dodatnia
+    IF EXISTS (
+        SELECT 1
+        FROM inserted
+        WHERE Quantity &lt;= 0
+    )
+        THROW 50020, 'Ilość w pozycji zamówienia musi być większa od zera.', 1;
+
+    -- rabat musi być w dopuszczalnym zakresie
+    IF EXISTS (
+        SELECT 1
+        FROM inserted
+        WHERE Discount &lt; 0 OR Discount &gt; 0.30
+    )
+        THROW 50021, 'Rabat musi mieścić się w zakresie 0 - 0.30.', 1;
+
+    -- produkt musi istnieć
+    IF EXISTS (
+        SELECT 1
+        FROM inserted i
+        LEFT JOIN dbo.Products p ON i.ProductID = p.ProductID
+        WHERE p.ProductID IS NULL
+    )
+        THROW 50022, 'W pozycji zamówienia wskazano nieistniejący produkt.', 1;
+
+    -- cena nie może być niższa niż 80% aktualnej ceny produktu
+    IF EXISTS (
+        SELECT 1
+        FROM inserted i
+        JOIN dbo.Products p ON i.ProductID = p.ProductID
+        WHERE i.UnitPrice &lt; p.UnitPrice * 0.8
+    )
+        THROW 50023, 'Cena w pozycji zamówienia jest zbyt niska względem ceny produktu.', 1;
+
+    -- nie wolno dodawać drugi raz tej samej pozycji do tego samego zamówienia
+    IF EXISTS (
+        SELECT 1
+        FROM inserted i
+        JOIN dbo.[Order Details] od
+          ON i.OrderID = od.OrderID
+         AND i.ProductID = od.ProductID
+    )
+        THROW 50024, 'Ta pozycja zamówienia już istnieje.', 1;
+
+    INSERT INTO dbo.[Order Details] (OrderID, ProductID, UnitPrice, Quantity, Discount)
+    SELECT OrderID, ProductID, UnitPrice, Quantity, Discount
+    FROM inserted;
+END;
+GO</code></pre>
+
+    <p><strong>Jak przetestować:</strong></p>
+
+<pre><code>-- 1. próba zbyt dużego rabatu
+BEGIN TRY
+    INSERT INTO dbo.[Order Details] (OrderID, ProductID, UnitPrice, Quantity, Discount)
+    VALUES (10248, 42, 9.80, 10, 0.40);
+END TRY
+BEGIN CATCH
+    PRINT 'Błąd (oczekiwany): ' + ERROR_MESSAGE();
+END CATCH;
+
+-- 2. próba zaniżonej ceny
+BEGIN TRY
+    INSERT INTO dbo.[Order Details] (OrderID, ProductID, UnitPrice, Quantity, Discount)
+    VALUES (10248, 42, 1.00, 10, 0.10);
+END TRY
+BEGIN CATCH
+    PRINT 'Błąd (oczekiwany): ' + ERROR_MESSAGE();
+END CATCH;
+
+-- 3. poprawna operacja
+BEGIN TRY
+    INSERT INTO dbo.[Order Details] (OrderID, ProductID, UnitPrice, Quantity, Discount)
+    VALUES (11078, 42, 9.80, 10, 0.10);
+    PRINT 'Dodano poprawnie.';
+END TRY
+BEGIN CATCH
+    PRINT 'Błąd: ' + ERROR_MESSAGE();
+END CATCH;
+
+-- 4. ponowne dodanie tej samej pozycji
+BEGIN TRY
+    INSERT INTO dbo.[Order Details] (OrderID, ProductID, UnitPrice, Quantity, Discount)
+    VALUES (11078, 42, 9.80, 5, 0.05);
+END TRY
+BEGIN CATCH
+    PRINT 'Błąd (oczekiwany): ' + ERROR_MESSAGE();
+END CATCH;</code></pre>
+
+    <h2>Do oddania</h2>
+    <ol>
+      <li>Plik <code>.sql</code> zawierający definicje tabel pomocniczych oraz przykłady triggerów z ćwiczeń wykonane na własnej bazie danych.</li>
+      <li>Krótki zestaw poleceń testujących działanie wprowadzonych triggerów.</li>
+      <li>Krótki opis, do czego służy każda wykorzystana funkcja triggera (może być jako komentarz w kodzie).</li>
+    </ol>
+
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
