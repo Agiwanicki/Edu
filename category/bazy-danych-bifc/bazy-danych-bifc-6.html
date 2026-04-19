@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 6 – Bazy Danych [0600-BFIF4B]</title>
+  <meta name="description" content="Ćwiczenia 7 - Systemy zarządzania bazami danych (SQL Server, SSMS): łączenia (INNER/LEFT/RIGHT/FULL/SELF JOIN), sekwencje, EXISTS, EXCEPT, INTERSECT.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny - Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Ćwiczenia 6 – Bazy Danych [0600-BFIF4B]</h1>
+    <p class="callout"><strong>Cel:</strong> przedstawienie łączeń tabel (<em>JOIN</em>) w wariantach <code>INNER</code>, <code>LEFT</code>, <code>RIGHT</code>, <code>FULL</code> i <code>SELF</code>; ćwiczenia na przykładowej bazie <strong>Northwind</strong>.</p>
+
+    <ol>
+      <li>
+        <strong>Uruchom skrypt bazy Northwind</strong> - w SSMS wykonaj plik <code>instnwnd.sql</code> (dostępny na Teams).
+      </li>
+
+      <li>
+        <strong>Lista pracowników i terytoriów</strong> - zwróć <code>FirstName</code>, <code>LastName</code> z tabeli <code>Employees</code> oraz <code>TerritoryID</code> z tabeli <code>EmployeeTerritories</code>, wykorzystując <code>INNER JOIN</code>.
+        <ul class="links">
+          <li><a href="https://www.w3schools.com/sql/sql_join.asp" target="_blank" rel="noreferrer noopener">JOIN - wprowadzenie</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Nowy klient</strong> - dodaj rekord do <code>Customers</code>, w którym <code>ContactName</code> ma wartość <code>'ABC'</code>.
+      </li>
+
+      <li>
+        <strong>Nowe zamówienie</strong> - wstaw wiersz do <code>Orders</code>, ustawiając <code>EmployeeID</code> na największą wartość istniejącą w <code>Employees</code> (użyj odpowiedniej funkcji agregującej). Pozostałe pola ustaw na <code>NULL</code>.
+      </li>
+
+      <li>
+        <strong>Klienci i ich zamówienia (LEFT JOIN)</strong> - zwróć <code>ContactName</code> z <code>Customers</code> oraz <code>OrderID</code> z <code>Orders</code>. Posortuj rosnąco po <code>CompanyName</code>. Użyj <code>LEFT JOIN</code> i przeanalizuj wyniki.
+        <ul class="links">
+          <li><a href="https://www.w3schools.com/sql/sql_join_left.asp" target="_blank" rel="noreferrer noopener">LEFT JOIN</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Wariant z RIGHT JOIN</strong> - powtórz poprzednie zapytanie z użyciem <code>RIGHT JOIN</code> i porównaj pierwszy wiersz wyników.
+        <ul class="links">
+          <li><a href="https://www.w3schools.com/sql/sql_join_right.asp" target="_blank" rel="noreferrer noopener">RIGHT JOIN</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Wariant z FULL JOIN</strong> - wykonaj analogiczne zapytanie z <code>FULL JOIN</code>. Zwróć uwagę na dwa pierwsze wiersze w wynikach.
+        <ul class="links">
+          <li><a href="https://www.w3schools.com/sql/sql_join_full.asp" target="_blank" rel="noreferrer noopener">FULL JOIN</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>SELF JOIN</strong> - wypisz pary dostawców (<code>ContactName</code> z <code>Suppliers</code>), którzy pochodzą z tego samego kraju (<code>Country</code>), używając złączenia tabeli z samą sobą.
+        <ul class="links">
+          <li><a href="https://www.w3schools.com/sql/sql_join_self.asp" target="_blank" rel="noreferrer noopener">SELF JOIN</a></li>
+        </ul>
+      </li>
+
+    </ol>
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
