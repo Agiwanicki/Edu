@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 6 – Diagramy klas (UML Class Diagram)</title>
+  <meta name="description" content="Ćwiczenia z projektowania systemów informatycznych: dwa case study do samodzielnego wykonania diagramów klas UML.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Ćwiczenia 6 – Diagramy klas (UML Class Diagram)</h1>
+
+    <p class="callout">
+      Wykonaj poniższe zadania w narzędziu
+      <a href="https://app.diagrams.net/" target="_blank" rel="noreferrer noopener">app.diagrams.net</a>.
+    </p>
+
+    <p>
+      Wprowadzenie do diagramów klas:
+      <br>
+      <a href="https://devmentor.pl/b/podstawy-uml-diagramy-klas" target="_blank" rel="noreferrer noopener">
+        https://devmentor.pl/b/podstawy-uml-diagramy-klas
+      </a>
+    </p>
+
+    <h2>Podstawowe elementy diagramu klas</h2>
+
+    <ul>
+      <li><strong>Klasa</strong> – reprezentuje byt występujący w systemie (np. Pracownik, Rezerwacja, Płatność).</li>
+      <li><strong>Atrybuty</strong> – opisują dane przechowywane przez obiekt.</li>
+      <li><strong>Metody</strong> – przedstawiają podstawowe operacje wykonywane przez obiekt.</li>
+      <li><strong>Relacje</strong> – opisują powiązania między klasami.</li>
+      <li><strong>Liczności</strong> – pokazują, ile obiektów jednej klasy może być powiązanych z obiektami drugiej klasy.</li>
+    </ul>
+
+    <h2>Case study 1: PARKING</h2>
+
+    <p>
+      Utwórz diagram klas (UML Class Diagram) dla systemu obsługi parkingu przed siedzibą korporacji międzynarodowej.
+      Diagram powinien przedstawiać strukturę systemu, a więc najważniejsze klasy, ich atrybuty, metody oraz relacje.
+    </p>
+
+    <p>
+      Zarząd korporacji międzynarodowej postanowił zakupić system informatyczny w celu zarządzania obsługą placu parkingowego przed jego główną siedzibą.
+      Pracownicy firmy posiadają karty magnetyczne z indywidualnym numerem identyfikacyjnym. Parking jest podzielony na dwie części:
+      większą – dla ogółu pracowników, oraz mniejszą – dla zarządu firmy. System po włożeniu karty do czytnika i wprowadzeniu przez pracownika kodu PIN,
+      odczytuje informacje o stanowisku i otwiera odpowiednie barierki wjazdu, a następnie wydaje kartę. System dokonuje rejestracji wjazdów oraz wyjazdów.
+      Przy obsłudze parkingu pracuje również parkingowy. Jego zadaniem jest przyjąć opłatę za czas parkowania oraz zatwierdzić ją w systemie,
+      a następnie otworzyć bramkę wyjazdową. Jeżeli pracownik będzie potrzebował potwierdzenia parkowania, parkingowy jest zobowiązany je wydrukować.
+      Z racji tego, że parking jest bardzo duży, przy wyjeździe stoi patrol policyjny, który sprawdza w swoim systemie, czy wyjeżdżający samochód nie jest
+      samochodem kradzionym. System policyjny jest zintegrowany z systemem parkingowym.
+    </p>
+
+    <ol>
+      <li>
+        Na diagramie uwzględnij najważniejsze klasy występujące w systemie, np.:
+        <ul>
+          <li>Pracownik</li>
+          <li>KartaMagnetyczna</li>
+          <li>Parking</li>
+          <li>MiejsceParkingowe</li>
+          <li>Barierka</li>
+          <li>Parkingowy</li>
+          <li>Opłata</li>
+          <li>PotwierdzenieParkowania</li>
+          <li>PatrolPolicyjny</li>
+          <li>SystemPolicyjny</li>
+        </ul>
+      </li>
+
+      <li>
+        Dla wybranych klas określ:
+        <ul>
+          <li>najważniejsze atrybuty (np. numerKarty, numerRejestracyjny, dataWjazdu, kwotaOpłaty),</li>
+          <li>podstawowe metody (np. sprawdzPIN(), otworzBarierke(), naliczOplate(), drukujPotwierdzenie()).</li>
+        </ul>
+      </li>
+
+      <li>
+        Zdefiniuj relacje między klasami, np.:
+        <ul>
+          <li>Pracownik posiada KartęMagnetyczną,</li>
+          <li>Parking składa się z MiejscParkingowych,</li>
+          <li>Wjazd i Wyjazd są rejestrowane przez system,</li>
+          <li>Parkingowy obsługuje Opłatę,</li>
+          <li>PatrolPolicyjny korzysta z SystemuPolicyjnego.</li>
+        </ul>
+      </li>
+
+      <li>
+        Określ liczności relacji tam, gdzie jest to możliwe, np.:
+        <ul>
+          <li>jeden Parking zawiera wiele MiejscParkingowych,</li>
+          <li>jeden Pracownik posiada jedną KartęMagnetyczną,</li>
+          <li>jeden Wjazd może być powiązany z jedną Opłatą.</li>
+        </ul>
+      </li>
+
+      <li>
+        Zastosuj co najmniej trzy różne typy relacji:
+        <ul>
+          <li>asocjację,</li>
+          <li>kompozycję lub agregację,</li>
+          <li>dziedziczenie</li>
+        </ul>
+      </li>
+
+      <li>
+        Oznacz widoczność atrybutów i metod:
+        <ul>
+          <li><code>+</code> public</li>
+          <li><code>-</code> private</li>
+          <li><code>#</code> protected</li>
+        </ul>
+      </li>
+    </ol>
+
+    <h2>Case study 2: KSIĘGARNIA</h2>
+
+    <p>
+      Utwórz diagram klas (UML Class Diagram) dla systemu informatycznego obsługującego księgarnię stacjonarną.
+      Diagram powinien przedstawiać strukturę systemu, klasy, ich atrybuty, metody oraz relacje.
+    </p>
+
+    <p>
+      Właściciel sieci księgarni postanowił wdrożyć system informatyczny do obsługi sprzedaży książek, rezerwacji egzemplarzy oraz kontroli stanów magazynowych
+      w swojej głównej placówce. Klienci mogą samodzielnie wyszukiwać książki w katalogu, sprawdzać ich dostępność, a następnie rezerwować wybrane pozycje
+      na określony czas. Jeżeli klient zdecyduje się na zakup, sprzedawca wyszukuje rezerwację lub skanuje wybrane książki przy stanowisku kasowym,
+      rejestruje sprzedaż w systemie, nalicza należność i przyjmuje płatność gotówką albo kartą. Po zatwierdzeniu transakcji system aktualizuje stan magazynowy
+      i drukuje paragon. Jeżeli klient poprosi o fakturę, sprzedawca wprowadza dane nabywcy, a system wystawia i drukuje fakturę do zrealizowanego zakupu.
+      W księgarni pracuje również magazynier, którego zadaniem jest przyjmowanie dostaw od dostawców, wprowadzanie nowych egzemplarzy do systemu,
+      aktualizowanie liczby dostępnych sztuk oraz oznaczanie książek uszkodzonych lub wycofanych ze sprzedaży. Kierownik księgarni korzysta z systemu
+      do przeglądania raportów sprzedaży, kontroli liczby rezerwacji oraz weryfikacji stanów magazynowych. System księgarni jest dodatkowo zintegrowany
+      z zewnętrznym systemem płatności kartą, który autoryzuje transakcje bezgotówkowe.
+    </p>
+
+    <ol>
+      <li>
+        Na diagramie uwzględnij najważniejsze klasy występujące w systemie, np.:
+        <ul>
+          <li>Klient</li>
+          <li>Książka</li>
+          <li>Rezerwacja</li>
+          <li>Sprzedaż</li>
+          <li>Sprzedawca</li>
+          <li>Płatność</li>
+          <li>Paragon</li>
+          <li>Magazynier</li>
+          <li>Dostawa</li>
+          <li>RaportSprzedaży</li>
+          <li>Kierownik</li>
+          <li>SystemPłatności</li>
+        </ul>
+      </li>
+
+      <li>
+        Dla wybranych klas określ:
+        <ul>
+          <li>najważniejsze atrybuty (np. tytuł, autor, cena, dataRezerwacji, statusPłatności),</li>
+          <li>podstawowe metody (np. zarezerwuj(), zarejestrujSprzedaz(), drukujParagon(), wystawFakture()).</li>
+        </ul>
+      </li>
+
+      <li>
+        Zdefiniuj relacje między klasami, np.:
+        <ul>
+          <li>Klient tworzy Rezerwację,</li>
+          <li>Rezerwacja dotyczy Książki,</li>
+          <li>Sprzedaż obejmuje jedną lub więcej Książek,</li>
+          <li>Sprzedaż posiada Płatność,</li>
+          <li>Sprzedaż może posiadać Paragon lub Fakturę,</li>
+          <li>Magazynier obsługuje Dostawy,</li>
+          <li>Kierownik przegląda RaportySprzedaży.</li>
+        </ul>
+      </li>
+
+      <li>
+        Określ liczności relacji tam, gdzie jest to możliwe, np.:
+        <ul>
+          <li>jeden Klient może posiadać wiele Rezerwacji,</li>
+          <li>jedna Sprzedaż może obejmować wiele Książek,</li>
+          <li>jedna Sprzedaż posiada jedną Płatność.</li>
+        </ul>
+      </li>
+
+      <li>
+        Zastosuj co najmniej trzy różne typy relacji:
+        <ul>
+          <li>asocjację,</li>
+          <li>kompozycję lub agregację,</li>
+          <li>dziedziczenie</li>
+        </ul>
+      </li>
+
+      <li>
+        Oznacz widoczność atrybutów i metod:
+        <ul>
+          <li><code>+</code> public</li>
+          <li><code>-</code> private</li>
+          <li><code>#</code> protected</li>
+        </ul>
+      </li>
+    </ol>
+
+    <h2>Do oddania</h2>
+    <ol>
+      <li>diagramy klas – dla systemu PARKING LUB dla systemu KSIĘGARNIA.</li>
+      <li>Eksport diagramów (PNG lub PDF).</li>
+      <li>(OPCJONALNIE) Pliki źródłowe (.drawio).</li>
+    </ol>
+
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
