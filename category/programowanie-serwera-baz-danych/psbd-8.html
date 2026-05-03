@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 8 – Transakcje, XML i JSON w SQL Server</title>
+  <meta name="description" content="Ćwiczenia z SQL Server dotyczące transakcji, obsługi błędów, blokad współbieżności oraz pracy z XML i JSON w bazie Northwind.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Ćwiczenia 8 – Transakcje, XML i JSON w SQL Server</h1>
+
+    <p class="callout">
+      Wykonaj poniższe przykłady w środowisku <strong>SQL Server Management Studio</strong> na bazie danych <strong>Northwind</strong>.
+    </p>
+
+    <p>
+      Celem ćwiczenia jest poznanie praktycznego wykorzystania <strong>transakcji</strong> w języku <strong>T-SQL</strong>,
+      w tym kontroli liczby aktywnych transakcji, stosowania punktów zapisu, obsługi błędów oraz obserwowania
+      blokowania danych przy pracy w dwóch sesjach. W drugiej części ćwiczenia pokazano również generowanie
+      danych w formacie <strong>XML</strong> i <strong>JSON</strong> oraz podstawową analizę dokumentu JSON.
+    </p>
+
+    <h2>Transakcje w T-SQL</h2>
+
+    <p>W ćwiczeniu wykorzystamy następujące instrukcje i funkcje:</p>
+
+    <ul>
+      <li><code>BEGIN TRAN</code> – rozpoczyna transakcję,</li>
+      <li><code>COMMIT</code> – zatwierdza wykonane operacje,</li>
+      <li><code>ROLLBACK</code> – wycofuje operacje wykonane w ramach transakcji,</li>
+      <li><code>SAVE TRAN</code> – tworzy punkt zapisu, do którego można częściowo wycofać transakcję,</li>
+      <li><code>@@TRANCOUNT</code> – zwraca liczbę aktywnych poziomów transakcji,</li>
+      <li><code>XACT_STATE()</code> – pozwala sprawdzić, czy transakcja jest aktywna i czy można ją zatwierdzić,</li>
+      <li><code>TRY...CATCH</code> – umożliwia przechwycenie i obsłużenie błędu.</li>
+    </ul>
+
+    <h2>Przykład 1 – zagnieżdżona transakcja z kontrolą @@TRANCOUNT i punktem zapisu</h2>
+
+    <p>
+      <strong>Cel:</strong> sprawdzenie, jak SQL Server interpretuje zagnieżdżone transakcje oraz jak działa punkt zapisu
+      utworzony za pomocą <code>SAVE TRAN</code>.
+    </p>
+
+    <p>
+      W przykładzie rozpoczynamy transakcję zewnętrzną, dodajemy rekord do tabeli <code>Shippers</code>, tworzymy punkt
+      zapisu, a następnie rozpoczynamy transakcję wewnętrzną. Po wykonaniu <code>ROLLBACK TRAN Punkt1</code> wycofane
+      zostaną zmiany wykonane po punkcie zapisu, natomiast sama liczba aktywnych transakcji nadal wymaga świadomego
+      zakończenia instrukcją <code>COMMIT</code> lub pełnym <code>ROLLBACK</code>.
+    </p>
+
+<pre><code>BEGIN TRAN;
+PRINT 'Po BEGIN TRAN: ' + CAST(@@TRANCOUNT AS VARCHAR);
+
+INSERT INTO Shippers (CompanyName, Phone)
+VALUES ('Test External', '111-111-111');
+
+SAVE TRAN Punkt1;
+
+BEGIN TRAN;
+PRINT 'Po BEGIN transakcji wewnętrznej: ' + CAST(@@TRANCOUNT AS VARCHAR);
+
+INSERT INTO Shippers (CompanyName, Phone)
+VALUES ('Test Internal', '222-222-222');
+
+ROLLBACK TRAN Punkt1;
+PRINT 'Po ROLLBACK TRAN Punkt1: ' + CAST(@@TRANCOUNT AS VARCHAR);
+
+SELECT *
+FROM Shippers
+WHERE CompanyName LIKE 'Test%';
+
+COMMIT;
+PRINT 'Po COMMIT: ' + CAST(@@TRANCOUNT AS VARCHAR);</code></pre>
+
+    <p>
+      <strong>Uwaga:</strong> punkt zapisu nie kończy transakcji. Pozwala jedynie cofnąć jej fragment. Dlatego po użyciu
+      <code>ROLLBACK TRAN Punkt1</code> transakcja nadal pozostaje aktywna.
+    </p>
+
+    <h2>Przykład 2 – transakcja z obsługą błędów i logowaniem błędu</h2>
+
+    <p>
+      <strong>Cel:</strong> przećwiczenie obsługi błędu w transakcji oraz zapisanie informacji o błędzie do tabeli pomocniczej.
+    </p>
+
+    <p>
+      W tym przykładzie celowo próbujemy dodać zamówienie dla nieistniejącego klienta. Naruszenie klucza obcego powinno
+      spowodować błąd, który zostanie przechwycony w bloku <code>CATCH</code>. Następnie transakcja zostanie wycofana,
+      a treść błędu zapisana w tabeli <code>ErrorLog</code>.
+    </p>
+
+<pre><code>IF OBJECT_ID('dbo.ErrorLog') IS NULL
+BEGIN
+    CREATE TABLE dbo.ErrorLog (
+        ErrorMsg NVARCHAR(MAX),
+        TranCount INT,
+        LogTime DATETIME
+    );
+END;
+
+BEGIN TRY
+    BEGIN TRAN;
+    PRINT 'START TRAN: ' + CAST(@@TRANCOUNT AS VARCHAR);
+
+    INSERT INTO Orders (CustomerID, EmployeeID, OrderDate)
+    VALUES ('XXX01', 1, GETDATE());
+
+    COMMIT;
+    PRINT 'COMMIT OK';
+END TRY
+BEGIN CATCH
+    DECLARE @ErrMsg NVARCHAR(MAX) = ERROR_MESSAGE();
+    DECLARE @ErrTranCount INT = @@TRANCOUNT;
+
+    IF XACT_STATE() &lt;&gt; 0
+        ROLLBACK;
+
+    INSERT INTO dbo.ErrorLog (ErrorMsg, TranCount, LogTime)
+    VALUES (@ErrMsg, @ErrTranCount, GETDATE());
+END CATCH;
+
+SELECT * FROM dbo.ErrorLog;</code></pre>
+
+    <p>
+      <strong>Warto zwrócić uwagę:</strong> najpierw zapamiętujemy treść błędu i wartość <code>@@TRANCOUNT</code>, a dopiero
+      potem wykonujemy <code>ROLLBACK</code>. Dzięki temu w logu można sprawdzić, w jakim stanie znajdowała się transakcja
+      w momencie wystąpienia problemu.
+    </p>
+
+    <h2>Przykład 3 – test współbieżności i blokowanie rekordu w dwóch sesjach</h2>
+
+    <p>
+      <strong>Cel:</strong> zaobserwowanie, że transakcja może zablokować rekord dla innych użytkowników do czasu jej
+      zatwierdzenia lub wycofania.
+    </p>
+
+    <p>
+      Ten przykład należy wykonać w dwóch osobnych oknach zapytań w SSMS. Pierwsza sesja zakłada blokadę wyłączną
+      na wybrany produkt. Druga sesja próbuje zmodyfikować ten sam rekord i czeka, aż pierwsza sesja zakończy transakcję.
+    </p>
+
+    <h3>Sesja 1 – pierwsze okno zapytań</h3>
+
+<pre><code>BEGIN TRAN;
+
+SELECT *
+FROM Products WITH (XLOCK, ROWLOCK)
+WHERE ProductID = 1;
+
+-- Rekord jest zablokowany do momentu wykonania COMMIT lub ROLLBACK.
+-- Nie zamykaj jeszcze tej transakcji. Przejdź do drugiego okna zapytań.</code></pre>
+
+    <h3>Sesja 2 – drugie okno zapytań</h3>
+
+<pre><code>UPDATE Products
+SET UnitPrice = UnitPrice + 1
+WHERE ProductID = 1;</code></pre>
+
+    <h3>Powrót do sesji 1</h3>
+
+<pre><code>COMMIT;</code></pre>
+
+    <p>
+      Po wykonaniu <code>COMMIT</code> w pierwszej sesji zapytanie z drugiej sesji powinno zostać odblokowane i zakończyć działanie.
+    </p>
+
+    <h2>Przykład 4 – transakcja wieloetapowa z wycofaniem wszystkich operacji</h2>
+
+    <p>
+      <strong>Cel:</strong> pokazanie, że wiele zależnych operacji może zostać potraktowanych jako jedna całość.
+      Jeżeli jeden z etapów zakończy się błędem, wszystkie wcześniejsze operacje zostaną wycofane.
+    </p>
+
+    <p>
+      W przykładzie dodawany jest klient, zamówienie oraz pozycja zamówienia. Następnie celowo generowany jest błąd
+      dzielenia przez zero. Po błędzie cała transakcja zostaje wycofana, dlatego klient i zamówienie nie powinny
+      pozostać w bazie danych.
+    </p>
+
+<pre><code>BEGIN TRY
+    BEGIN TRAN;
+
+    INSERT INTO Customers (CustomerID, CompanyName)
+    VALUES ('ZAA01', 'Zaawansowany Klient');
+
+    DECLARE @OrderID INT;
+
+    INSERT INTO Orders (CustomerID, EmployeeID, OrderDate)
+    VALUES ('ZAA01', 1, GETDATE());
+
+    SET @OrderID = SCOPE_IDENTITY();
+
+    INSERT INTO [Order Details] (OrderID, ProductID, UnitPrice, Quantity, Discount)
+    VALUES (@OrderID, 1, 10.0, 2, 0);
+
+    DECLARE @Zero INT = 0;
+    DECLARE @Test INT = 1 / @Zero;
+
+    COMMIT;
+END TRY
+BEGIN CATCH
+    IF XACT_STATE() &lt;&gt; 0
+        ROLLBACK;
+
+    PRINT 'Błąd: ' + ERROR_MESSAGE();
+END CATCH;
+
+SELECT * FROM Customers WHERE CustomerID = 'ZAA01';
+SELECT * FROM Orders WHERE CustomerID = 'ZAA01';</code></pre>
+
+    <h2>Przykład 5 – procedura składowana sterująca COMMIT lub ROLLBACK</h2>
+
+    <p>
+      <strong>Cel:</strong> pokazanie, że logika transakcyjna może zostać zamknięta w procedurze składowanej, a decyzja
+      o zatwierdzeniu lub wycofaniu zmian może zależeć od parametru.
+    </p>
+
+    <p>
+      Procedura dodaje testowego przewoźnika do tabeli <code>Shippers</code>. Jeżeli parametr ma wartość
+      <code>COMMIT</code>, zmiana zostaje zatwierdzona. W przeciwnym razie transakcja zostaje wycofana.
+    </p>
+
+<pre><code>CREATE OR ALTER PROCEDURE dbo.ProceduraTransakcyjna
+    @akcja VARCHAR(10)
+AS
+BEGIN
+    BEGIN TRY
+        BEGIN TRAN;
+
+        INSERT INTO Shippers (CompanyName, Phone)
+        VALUES ('Test Procedura', '123-456-789');
+
+        IF UPPER(@akcja) = 'COMMIT'
+            COMMIT;
+        ELSE
+            ROLLBACK;
+    END TRY
+    BEGIN CATCH
+        IF XACT_STATE() &lt;&gt; 0
+            ROLLBACK;
+
+        PRINT 'Błąd: ' + ERROR_MESSAGE();
+    END CATCH;
+END;
+GO
+
+EXEC dbo.ProceduraTransakcyjna @akcja = 'COMMIT';
+EXEC dbo.ProceduraTransakcyjna @akcja = 'ROLLBACK';
+
+SELECT *
+FROM Shippers
+WHERE CompanyName = 'Test Procedura';</code></pre>
+
+    <h2>XML i JSON w SQL Server</h2>
+
+    <p>
+      W drugiej części ćwiczenia wykorzystamy mechanizmy SQL Server pozwalające wygenerować dane w formatach
+      często używanych przy wymianie danych między systemami informatycznymi.
+    </p>
+
+    <ul>
+      <li><code>FOR XML</code> – generuje wynik zapytania w formacie XML,</li>
+      <li><code>FOR JSON</code> – generuje wynik zapytania w formacie JSON,</li>
+      <li><code>ISJSON()</code> – sprawdza, czy tekst jest poprawnym dokumentem JSON,</li>
+      <li><code>OPENJSON()</code> – pozwala odczytywać dane z dokumentu JSON,</li>
+      <li><code>JSON_VALUE()</code> – pobiera pojedynczą wartość skalarną ze wskazanej ścieżki JSON.</li>
+    </ul>
+
+    <h2>Przykład 6 – generowanie dokumentu XML na podstawie zamówień</h2>
+
+    <p>
+      <strong>Cel:</strong> wygenerowanie dokumentu XML zawierającego zamówienia i ich pozycje.
+    </p>
+
+    <p>
+      Zapytanie pobiera zamówienia z ostatnich pięciu dni oraz powiązane z nimi pozycje zamówień. Następnie wynik
+      zostaje przekształcony do dokumentu XML za pomocą <code>FOR XML AUTO</code>.
+    </p>
+
+<pre><code>SELECT 
+    o.OrderID,
+    o.OrderDate,
+    o.ShipName,
+    od.ProductID,
+    od.Quantity,
+    od.UnitPrice
+FROM Orders o
+JOIN [Order Details] od ON o.OrderID = od.OrderID
+WHERE o.OrderDate &gt;= DATEADD(DAY, -5, GETDATE())
+FOR XML AUTO, ELEMENTS, ROOT('OrdersXML');</code></pre>
+
+    <p>
+      <code>FOR XML AUTO</code> tworzy strukturę XML automatycznie na podstawie aliasów tabel. Opcja <code>ELEMENTS</code>
+      powoduje zapis danych jako elementów, a <code>ROOT('OrdersXML')</code> dodaje główny węzeł dokumentu.
+    </p>
+
+    <h2>Przykład 7 – generowanie i analiza danych JSON</h2>
+
+    <p>
+      <strong>Cel:</strong> wygenerowanie danych klientów w formacie JSON, zapisanie wyniku do zmiennej oraz odczytanie
+      wybranych wartości z dokumentu JSON.
+    </p>
+
+    <p>
+      W przykładzie pobieramy klientów z Niemiec, generujemy dokument JSON, sprawdzamy jego poprawność funkcją
+      <code>ISJSON()</code>, a następnie odczytujemy nazwy firm z tablicy <code>Customers</code> za pomocą <code>OPENJSON()</code>.
+    </p>
+
+<pre><code>DECLARE @json NVARCHAR(MAX);
+
+SELECT CustomerID, CompanyName, City
+FROM Customers
+WHERE Country = 'Germany'
+FOR JSON AUTO, ROOT('Customers');
+
+SET @json = (
+    SELECT CustomerID, CompanyName, City
+    FROM Customers
+    WHERE Country = 'Germany'
+    FOR JSON AUTO, ROOT('Customers')
+);
+
+SELECT ISJSON(@json) AS IsValidJSON;
+
+SELECT CompanyName
+FROM OPENJSON(@json, '$.Customers')
+WITH (
+    CompanyName NVARCHAR(100) '$.CompanyName'
+);</code></pre>
+
+    <p>
+      <strong>Uwaga:</strong> funkcja <code>JSON_VALUE()</code> jest wygodna, gdy chcemy odczytać pojedynczą wartość, np. nazwę
+      pierwszej firmy z tablicy:
+    </p>
+
+<pre><code>SELECT JSON_VALUE(@json, '$.Customers[0].CompanyName') AS FirstCompanyName;</code></pre>
+
+    <h2>Do oddania</h2>
+    <ol>
+      <li>Plik <code>.sql</code> zawierający przykłady transakcji wykonane na własne bazie danych</li>
+      <li>Przykłady skryptów/procedur generujących raport w formacie XML lub JSON na własnej bazie danych.</li>
+    </ol>
+
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
