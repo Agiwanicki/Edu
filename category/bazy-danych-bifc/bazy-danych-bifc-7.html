@@ -16,30 +16,142 @@
   </header>
   <main class="wrap">
     <h1>Ćwiczenia 7 – Bazy Danych [0600-BFIF4B]</h1>
-    <p class="callout">Temat: <strong>T-SQL i funkcje skalarne</strong>.</p>
-    
-<p>Pobierz z Teams skrypt <strong>instwnd.sql</strong>. Uruchom skrypt w SSMS, aby odtworzyć bazę <strong>Northwind</strong>.</p>
-<ol>
-<li>Utwórz nowy skrypt i zadeklaruj zmienne:
-<ul class="links"><li><a href="https://learn.microsoft.com/en-us/sql/t-sql/data-types/data-types-transact-sql?view=sql-server-ver16" target="_blank" rel="noreferrer noopener">Typy danych T-SQL</a></li></ul>
+    <p class="callout">Temat: <strong>T-SQL – zmienne, instrukcje sterujące, pętle oraz funkcje</strong>.</p>
+
+    <p>Pobierz z Teams skrypt <strong>instwnd.sql</strong>. Uruchom skrypt w SSMS, aby odtworzyć bazę <strong>Northwind</strong>.</p>
+
+    <ol>
+      <li><strong>Zmienne i operacje arytmetyczne</strong>
+        <ul class="links">
+          <li><a href="https://learn.microsoft.com/en-us/sql/t-sql/data-types/data-types-transact-sql?view=sql-server-ver16" target="_blank">Typy danych T-SQL</a></li>
+        </ul>
 <pre><code>DECLARE @napis varchar(50) = 'Hello World!'
-DECLARE @liczba int = 5, @liczba1 int = 10
-SELECT @napis, @liczba</code></pre></li>
-<li>Utwórz funkcję:
-<pre><code>CREATE FUNCTION dbo.Divide(@x INT, @y INT)
+DECLARE @liczba int = 5, @liczba1 float = 0.5
+SELECT @napis, @liczba
+
+DECLARE @WYNIK int;
+SET @WYNIK = @liczba + @liczba1
+SELECT @WYNIK AS WYNIK</code></pre>
+        <p>Zwróć uwagę na konwersję typów (int + float → wynik typu int).</p>
+      </li>
+
+      <li><strong>Zmienne + zapytania na bazie Northwind</strong>
+<pre><code>DECLARE @CustomerID nchar(5);
+SELECT @CustomerID = CustomerID 
+FROM Customers 
+WHERE Country = 'Poland';
+
+SELECT * FROM Orders WHERE CustomerID = @CustomerID;
+
+DECLARE @SupplierID int;
+SELECT @SupplierID = SupplierID 
+FROM Suppliers 
+WHERE Country = 'Germany';
+
+SELECT * FROM Products WHERE SupplierID = @SupplierID;</code></pre>
+        <p>Uwaga: zapytanie przypisze tylko jedną wartość (ostatnią z wyniku).</p>
+      </li>
+
+      <li><strong>Instrukcja IF</strong>
+<pre><code>IF (OBJECT_ID(N'dbo.Orders') IS NOT NULL)
+    SELECT 'Istnieje!'
+ELSE    
+    SELECT 'Nie istnieje!'</code></pre>
+
+<pre><code>IF (SELECT ProductID FROM Products WHERE ProductName = 'Chocolade') IS NOT NULL
+    UPDATE Products SET UnitPrice = 15 
+    WHERE ProductName = 'Chocolade';
+ELSE
+    SELECT 'No chocolate!'
+
+SELECT ProductName, UnitPrice 
+FROM Products 
+WHERE ProductName = 'Chocolade';</code></pre>
+      </li>
+
+      <li><strong>Pętla WHILE</strong>
+<pre><code>DECLARE @counter AS INT = 1, @lname AS NVARCHAR(20);
+
+WHILE @counter <= 5
+BEGIN
+    SELECT @lname = LastName 
+    FROM Employees 
+    WHERE EmployeeID = @counter;
+
+    PRINT @lname;
+    SET @counter += 1;
+END;</code></pre>
+
+        <p>Porównanie z zapytaniem zbiorczym:</p>
+<pre><code>SELECT LastName FROM Employees WHERE EmployeeID <= 5</code></pre>
+
+        <p>Bardziej złożony przykład:</p>
+<pre><code>DECLARE @counter INT = 1, @price float = 0, 
+        @stock INT = 0, @SUM float = 0;
+
+WHILE @counter <= IDENT_CURRENT('Products')
+BEGIN
+    IF (SELECT UnitsInStock 
+        FROM Products 
+        WHERE CategoryID = 8 AND ProductID = @counter) IS NOT NULL
+    BEGIN
+        SELECT @stock = UnitsInStock 
+        FROM Products 
+        WHERE CategoryID = 8 AND ProductID = @counter
+
+        SELECT @price = UnitPrice 
+        FROM Products 
+        WHERE CategoryID = 8 AND ProductID = @counter
+
+        SET @SUM += @stock * @price
+    END
+    SET @counter += 1;
+END;
+
+SELECT @SUM</code></pre>
+
+        <p>To samo zapytanie w wersji optymalnej:</p>
+<pre><code>SELECT SUM(UnitPrice * UnitsInStock) 
+FROM Products 
+WHERE CategoryID = 8</code></pre>
+      </li>
+
+      <li><strong>Funkcja z zabezpieczeniem przed dzieleniem przez 0</strong>
+<pre><code>CREATE FUNCTION dbo.Divide2(@x INT, @y INT)
 RETURNS INT AS
 BEGIN
-    DECLARE @RESULT INT
-    SELECT @RESULT = @x / @y
-RETURN @RESULT
+    IF (@y != 0)
+    BEGIN
+        DECLARE @RESULT INT
+        SELECT @RESULT = @x / @y
+        RETURN @RESULT
+    END
+    RETURN 0
 END</code></pre>
-Aby ją wywołać:
-<pre><code>SELECT dbo.Divide(10, 5) AS Result</code></pre></li>
-<li>Dodaj zabezpieczenie przed dzieleniem przez 0. Nazwij funkcję <strong>dbo.DivideSecure()</strong>.</li>
-<li>Utwórz funkcję, która sprawdza, czy liczba jest parzysta czy nieparzysta i zwraca komunikat <strong>'parzysta'</strong> lub <strong>'nieparzysta'</strong>.</li>
-<li>Utwórz funkcję, która wypisze n-ty wyraz ciągu Fibonacciego.
-<ul class="links"><li><a href="https://pl.wikipedia.org/wiki/Ci%C4%85g_Fibonacciego" target="_blank" rel="noreferrer noopener">Ciąg Fibonacciego</a></li></ul></li>
-</ol>
+
+<pre><code>SELECT dbo.Divide2(10, 0) AS Result</code></pre>
+      </li>
+
+      <li><strong>Funkcja sprawdzająca parzystość liczby</strong>
+<pre><code>CREATE FUNCTION dbo.CzyParzysta(@x INT)
+RETURNS VARCHAR(30) AS
+BEGIN
+    IF(@x % 2 = 0)
+        RETURN 'PARZYSTA'
+    RETURN 'NIEPARZYSTA'
+END</code></pre>
+
+<pre><code>SELECT dbo.CzyParzysta(2)</code></pre>
+      </li>
+
+      <li><strong>Funkcja – ciąg Fibonacciego</strong>
+        <ul class="links">
+          <li><a href="https://pl.wikipedia.org/wiki/Ci%C4%85g_Fibonacciego" target="_blank">Ciąg Fibonacciego</a></li>
+        </ul>
+
+<pre><code>SELECT dbo.Fibo(19)</code></pre>
+      </li>
+    </ol>
 
   </main>
   <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
