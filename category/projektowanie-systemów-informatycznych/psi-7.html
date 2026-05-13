@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zajęcia 7 – Diagram sekwencji (SD)</title>
+  <meta name="description" content="Ćwiczenia z projektowania systemów informatycznych: diagram sekwencji UML na przykładzie portalu Allegro.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Zajęcia 7 – Diagram sekwencji (SD)</h1>
+
+    <p class="callout">
+      Wykonaj poniższe zadania w narzędziu 
+      <a href="https://app.diagrams.net/" target="_blank" rel="noreferrer noopener">app.diagrams.net</a>.
+    </p>
+
+    <p>
+      Diagram sekwencji (Sequence Diagram – <strong>SD</strong>) służy do modelowania przebiegu komunikacji
+      pomiędzy elementami systemu w czasie. Pokazuje kolejność wywołań komunikatów oraz współpracę
+      pomiędzy użytkownikami, systemami i bazami danych.
+    </p>
+
+    <ul>
+      <li>Przedstawia dynamiczne zachowanie systemu.</li>
+      <li>Pokazuje kolejność komunikatów między obiektami.</li>
+      <li>Umożliwia analizę logiki działania systemu.</li>
+      <li>Pomaga projektować procesy biznesowe i przepływ danych.</li>
+    </ul>
+
+    <p>
+      Wprowadzenie do diagramów sekwencji:
+      <br>
+      <a href="https://www.uml-diagrams.org/sequence-diagrams.html" target="_blank" rel="noreferrer noopener">
+        https://www.uml-diagrams.org/sequence-diagrams.html
+      </a>
+    </p>
+
+    <h2>Podstawowe elementy diagramu sekwencji</h2>
+
+    <ul>
+      <li><strong>Aktor</strong> – użytkownik lub system zewnętrzny.</li>
+      <li><strong>Linia życia</strong> – reprezentuje istnienie obiektu w czasie.</li>
+      <li><strong>Komunikat</strong> – wywołanie operacji pomiędzy obiektami.</li>
+      <li><strong>Ośrodek sterowania</strong> – okres wykonywania operacji przez obiekt.</li>
+    </ul>
+
+    <h2>Zadanie główne – diagram sekwencji dla portalu Allegro</h2>
+
+    <p>
+      Utwórz diagram sekwencji przedstawiający proces zakupu produktu w portalu aukcyjnym
+      (np. Allegro).
+    </p>
+
+    <ol>
+      <li>
+        Diagram powinien przedstawiać przynajmniej następujące elementy:
+        <ul>
+          <li>Kupujący</li>
+          <li>Klient Allegro (WWW lub aplikacja mobilna)</li>
+          <li>Serwer Allegro</li>
+          <li>Baza danych Allegro</li>
+          <li>Operator płatności</li>
+        </ul>
+      </li>
+
+      <li>
+        Diagram powinien uwzględniać następujące etapy:
+        <ul>
+          <li>logowanie użytkownika</li>
+          <li>wyszukiwanie produktu</li>
+          <li>wyświetlenie szczegółów oferty</li>
+          <li>rozpoczęcie zakupu</li>
+          <li>realizację płatności</li>
+          <li>potwierdzenie zakupu</li>
+        </ul>
+      </li>
+
+      <li>
+        Zastosuj:
+        <ul>
+          <li>ośrodki sterowania (<code>activate</code> / <code>deactivate</code>)</li>
+          <li>blok alternatywy <code>alt</code></li>
+          <li>co najmniej jeden komunikat zwrotny na tej samej linii życia</li>
+        </ul>
+      </li>
+
+      <li>
+        Komunikaty powinny być zapisane w jednolitej formie, np.:
+        <ul>
+          <li>„Wprowadź dane logowania”</li>
+          <li>„Sprawdź poprawność hasła”</li>
+          <li>„Potwierdź płatność”</li>
+        </ul>
+      </li>
+
+    </ol>
+
+    <h2>Do oddania</h2>
+
+    <ol>
+      <li>Eksport diagramu (PNG lub JPG).</li>
+      <li>(Opcjonalnie) Plik .drawio.</li>
+    </ol>
+
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
