@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ćwiczenia 9 – Bazy Danych [0600-BFIF4B]</title>
-  <meta name="description" content="Ćwiczenia 9 – Bazy Danych [0600-BFIF4B].">
+  <meta name="description" content="Ćwiczenia 9 – Bazy Danych [0600-BFIF4B]. Loginy, użytkownicy, uprawnienia, role oraz haszowanie haseł w SQL Server.">
   <link rel="stylesheet" href="../../assets/style.css">
 </head>
 <body>
@@ -16,20 +16,108 @@
   </header>
   <main class="wrap">
     <h1>Ćwiczenia 9 – Bazy Danych [0600-BFIF4B]</h1>
-    <p class="callout">Wykonaj poniższe zadania administracyjne w SQL Server.</p>
-    
-<ol>
-<li>Utwórz 2 nowe loginy:
-<ul class="links"><li><strong>Login1</strong>, hasło: <strong>Admin</strong></li><li><strong>Login2</strong>, hasło: <strong>admin</strong> (haszowane)</li><li><a href="https://www.sqlservertutorial.net/sql-server-administration/sql-server-create-login/" target="_blank" rel="noreferrer noopener">CREATE LOGIN</a></li></ul>
-<p>Do utworzenia drugiego loginu użyj wyniku:</p>
-<pre><code>SELECT PWDENCRYPT('admin')</code></pre></li>
-<li>Wyświetl listę wszystkich istniejących loginów wraz z ich typem.
-<ul class="links"><li>Źródło: <strong>sys.server_principals sp</strong></li><li>Kolumny: <strong>sp.name AS login</strong>, <strong>sp.type_desc AS login_type</strong></li></ul></li>
-<li>Usuń <strong>Login2</strong>. Następnie przypisz osieroconego użytkownika <strong>OtherUser</strong> do <strong>Login1</strong>.
-<ul class="links"><li><a href="https://www.sqlservertutorial.net/sql-server-administration/sql-server-drop-login/" target="_blank" rel="noreferrer noopener">DROP LOGIN</a></li></ul></li>
-<li>Utwórz rolę <strong>Salesman</strong>. Nadaj jej uprawnienia do <strong>SELECT</strong> i <strong>INSERT</strong>. Przypisz rolę do użytkownika <strong>NorthwindUser</strong>. Następnie wyświetl wszystkie istniejące role serwerowe.
-<ul class="links"><li><a href="https://www.sqlservertutorial.net/sql-server-administration/sql-server-create-role/" target="_blank" rel="noreferrer noopener">CREATE ROLE</a></li></ul></li>
-</ol>
+    <p class="callout">Cel: omówienie loginów serwera, użytkowników bazy danych, uprawnień, ról oraz haszowania haseł w SQL Server.</p>
+
+    <ul class="links">
+      <li><a href="https://learn.microsoft.com/en-us/sql/t-sql/statements/create-login-transact-sql?view=sql-server-ver16" target="_blank" rel="noreferrer noopener">Dokumentacja CREATE LOGIN</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/sql/t-sql/statements/create-user-transact-sql?view=sql-server-ver16" target="_blank" rel="noreferrer noopener">Dokumentacja CREATE USER</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/sql/t-sql/statements/grant-transact-sql?view=sql-server-ver16" target="_blank" rel="noreferrer noopener">Dokumentacja GRANT</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/sql/t-sql/statements/revoke-transact-sql?view=sql-server-ver16" target="_blank" rel="noreferrer noopener">Dokumentacja REVOKE</a></li>
+    </ul>
+
+    <h2>Przykład wprowadzający</h2>
+    <p>Utwórz przykładową tabelę użytkowników aplikacji, w której hasło nie będzie przechowywane jawnie, lecz jako wartość skrótu.</p>
+
+<pre><code>CREATE TABLE users (
+    user_id INT IDENTITY(1,1) PRIMARY KEY,
+    login NVARCHAR(50) NOT NULL UNIQUE,
+    password_hash VARCHAR(64) NOT NULL,
+    email NVARCHAR(255) NOT NULL UNIQUE
+);
+
+SELECT CONVERT(VARCHAR(64), HASHBYTES('SHA2_256', 'Password1234'), 2);
+
+INSERT INTO users (login, password_hash, email)
+VALUES (
+    'jan.kowalski',
+    CONVERT(VARCHAR(64), HASHBYTES('SHA2_256', 'Password1234'), 2),
+    'jan.kowalski@example.com'
+);</code></pre>
+
+    <ol>
+      <li>Utwórz dwa loginy serwera SQL Server: <strong>Login1</strong> oraz <strong>Login2</strong>.
+        <ul class="links">
+          <li>Dla pierwszego loginu ustaw hasło jawnie podczas tworzenia.</li>
+          <li>Dla drugiego loginu wykorzystaj hasło w postaci zaszyfrowanej lub zahaszowanej.</li>
+          <li>Pomocniczo sprawdź działanie funkcji <code>PWDENCRYPT</code>.</li>
+        </ul>
+      </li>
+
+      <li>Wyświetl listę loginów serwera dostępnych w instancji SQL Server.
+        <ul class="links">
+          <li>Wykorzystaj widok systemowy <strong>sys.server_principals</strong>.</li>
+          <li>Wyświetl nazwę loginu oraz typ loginu.</li>
+        </ul>
+      </li>
+
+      <li>Utwórz użytkowników baz danych na podstawie wcześniej utworzonych loginów.
+        <ul class="links">
+          <li>W bazie <strong>Northwind</strong> utwórz użytkownika <strong>NorthwindUser</strong> dla loginu <strong>Login1</strong>.</li>
+          <li>W drugiej bazie danych, np. <strong>DOMY</strong>, utwórz użytkownika <strong>OtherUser</strong> dla loginu <strong>Login2</strong>.</li>
+          <li>Pamiętaj o przełączeniu kontekstu bazy danych poleceniem <code>USE</code>.</li>
+        </ul>
+      </li>
+
+      <li>Sprawdź działanie uprawnień użytkownika <strong>NorthwindUser</strong> w bazie <strong>Northwind</strong>.
+        <ul class="links">
+          <li>Przełącz kontekst wykonania na użytkownika <strong>NorthwindUser</strong>.</li>
+          <li>Spróbuj wykonać zapytanie odczytujące dane z tabeli <strong>Customers</strong>.</li>
+          <li>Następnie wróć do poprzedniego kontekstu i nadaj użytkownikowi uprawnienie <strong>SELECT</strong>.</li>
+          <li>Powtórz zapytanie kontrolne i porównaj wynik.</li>
+        </ul>
+      </li>
+
+      <li>Nadaj użytkownikowi <strong>NorthwindUser</strong> uprawnienia do modyfikacji danych w tabelach związanych z zamówieniami.
+        <ul class="links">
+          <li>Nadaj uprawnienia <strong>UPDATE</strong> oraz <strong>INSERT</strong> do tabeli <strong>Orders</strong>.</li>
+          <li>Nadaj uprawnienia <strong>UPDATE</strong> oraz <strong>INSERT</strong> do tabeli <strong>Order Details</strong>.</li>
+        </ul>
+      </li>
+
+      <li>Odbierz użytkownikowi <strong>NorthwindUser</strong> wybrane uprawnienia.
+        <ul class="links">
+          <li>Odbierz uprawnienie <strong>INSERT</strong> do tabeli <strong>Orders</strong>.</li>
+          <li>Odbierz uprawnienie <strong>INSERT</strong> do tabeli <strong>Order Details</strong>.</li>
+          <li>Wykorzystaj polecenie <code>REVOKE</code>.</li>
+        </ul>
+      </li>
+
+      <li>Zmodyfikuj właściwości loginów serwera.
+        <ul class="links">
+          <li>Zmień hasło loginu <strong>Login1</strong>.</li>
+          <li>Wyłącz login <strong>Login2</strong>.</li>
+          <li>Wykorzystaj polecenie <code>ALTER LOGIN</code>.</li>
+        </ul>
+      </li>
+
+      <li>Przećwicz usuwanie loginu oraz zmianę powiązania użytkownika bazy danych z loginem serwera.
+        <ul class="links">
+          <li>Usuń login <strong>Login2</strong>.</li>
+          <li>Sprawdź, co dzieje się z użytkownikiem bazy danych powiązanym z usuniętym loginem.</li>
+          <li>Zmień powiązanie użytkownika <strong>OtherUser</strong> tak, aby korzystał z loginu <strong>Login1</strong>.</li>
+          <li>Wykorzystaj polecenie <code>ALTER USER ... WITH LOGIN</code>.</li>
+        </ul>
+      </li>
+
+      <li>Utwórz rolę bazodanową i przypisz do niej użytkownika.
+        <ul class="links">
+          <li>Utwórz rolę <strong>Salesman</strong>.</li>
+          <li>Nadaj roli uprawnienia <strong>SELECT</strong> oraz <strong>INSERT</strong>.</li>
+          <li>Dodaj użytkownika <strong>NorthwindUser</strong> do roli <strong>Salesman</strong>.</li>
+          <li>Na końcu wyświetl listę principalów bazy danych z widoku <strong>sys.database_principals</strong>.</li>
+        </ul>
+      </li>
+    </ol>
 
   </main>
   <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
