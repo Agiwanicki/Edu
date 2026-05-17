@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 9 – Grupowanie danych i funkcje agregujące</title>
+  <meta name="description" content="Ćwiczenia 9 z SQL Server na bazie Northwind: GROUP BY, HAVING, GROUPING SETS, CUBE, ROLLUP oraz funkcje agregujące.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Ćwiczenia 9 – Grupowanie danych i funkcje agregujące</h1>
+
+    <p class="callout">
+      Wykonaj poniższe zadania w środowisku <strong>SQL Server Management Studio</strong> na bazie danych <strong>Northwind</strong>.
+    </p>
+
+    <p>
+      Cel: przećwiczenie agregacji danych, grupowania wyników oraz rozszerzeń składni <code>GROUP BY</code>, takich jak <code>GROUPING SETS</code>, <code>CUBE</code> i <code>ROLLUP</code>.
+    </p>
+
+    <h2>Zadania do wykonania</h2>
+
+    <ol>
+      <li>Wyświetl liczbę produktów sprzedanych przez każdego pracownika.
+      <ul class="links">
+        <li>Zapytanie powinno pobierać dane z tabel <code>Orders</code>, <code>Order Details</code> i <code>Employees</code>.</li>
+        <li>Wykorzystaj agregację <a href="https://learn.microsoft.com/en-us/sql/t-sql/functions/count-transact-sql?view=sql-server-ver17" target="_blank" rel="noreferrer noopener">COUNT</a> oraz grupowanie <a href="https://learn.microsoft.com/en-us/sql/t-sql/queries/select-group-by-transact-sql?view=sql-server-ver17" target="_blank" rel="noreferrer noopener">GROUP BY</a>.</li>
+        <li>Wynik powinien zawierać identyfikator pracownika, nazwisko oraz liczbę sprzedanych pozycji.</li>
+      </ul></li>
+      <li>Oblicz średnią wartość pozycji zamówienia dla każdego klienta, ale pokaż tylko tych klientów, których średnia przekracza 1000 USD.
+      <ul class="links">
+        <li>Połącz tabele <code>Orders</code> i <code>Order Details</code>.</li>
+        <li>Wykorzystaj funkcję agregującą <a href="https://learn.microsoft.com/en-us/sql/t-sql/functions/avg-transact-sql?view=sql-server-ver17" target="_blank" rel="noreferrer noopener">AVG</a>.</li>
+        <li>Do filtrowania wyników po agregacji użyj <a href="https://learn.microsoft.com/en-us/sql/t-sql/queries/select-having-transact-sql?view=sql-server-ver17" target="_blank" rel="noreferrer noopener">HAVING</a>.</li>
+      </ul></li>
+      <li>Oblicz łączną wartość sprzedaży w podziale na rok i miesiąc zamówienia.
+      <ul class="links">
+        <li>Zapytanie powinno korzystać z daty zamówienia oraz wartości pozycji zamówienia.</li>
+        <li>Wykorzystaj funkcję agregującą <a href="https://learn.microsoft.com/en-us/sql/t-sql/functions/sum-transact-sql?view=sql-server-ver17" target="_blank" rel="noreferrer noopener">SUM</a>.</li>
+        <li>Do wydzielenia roku i miesiąca użyj funkcji daty opisanych w dokumentacji <a href="https://learn.microsoft.com/en-us/sql/t-sql/functions/date-and-time-data-types-and-functions-transact-sql?view=sql-server-ver17" target="_blank" rel="noreferrer noopener">Date and time data types and functions</a>.</li>
+      </ul></li>
+      <li>Wyświetl liczbę zamówień pogrupowanych osobno według klienta, osobno według pracownika oraz ogółem – użyj <code>GROUPING SETS</code>.
+      <ul class="links">
+        <li>Zapytanie powinno zawierać trzy poziomy agregacji: klient, pracownik oraz suma ogólna.</li>
+        <li>Wykorzystaj składnię <a href="https://learn.microsoft.com/en-us/sql/t-sql/queries/select-group-by-transact-sql?view=sql-server-ver17#group-by-grouping-sets-" target="_blank" rel="noreferrer noopener">GROUPING SETS</a> do zdefiniowania wielu poziomów agregacji.</li>
+        <li>Zwróć uwagę, że puste nawiasy <code>()</code> oznaczają agregację całościową.</li>
+      </ul></li>
+      <li>Oblicz liczbę zamówień w podziale na kraj i miasto, uwzględniając wszystkie możliwe kombinacje – użyj <code>GROUP BY CUBE</code>. Dodatkowo pokaż kolumny <code>GROUPING</code> i <code>GROUPING_ID</code>.
+      <ul class="links">
+        <li>Wykorzystaj kolumny związane z krajem i miastem wysyłki z tabeli <code>Orders</code>.</li>
+        <li>Składnia <code>CUBE</code> jest częścią rozszerzeń <code>GROUP BY</code> opisanych w dokumentacji z pierwszego zadania.</li>
+        <li>Dodaj informację o poziomie agregacji za pomocą <a href="https://learn.microsoft.com/en-us/sql/t-sql/functions/grouping-transact-sql?view=sql-server-ver17" target="_blank" rel="noreferrer noopener">GROUPING</a> oraz <a href="https://learn.microsoft.com/en-us/sql/t-sql/functions/grouping-id-transact-sql?view=sql-server-ver17" target="_blank" rel="noreferrer noopener">GROUPING_ID</a>.</li>
+        <li>Uporządkuj wynik według poziomu agregacji, wykorzystując <a href="https://learn.microsoft.com/en-us/sql/t-sql/queries/select-order-by-clause-transact-sql?view=sql-server-ver17" target="_blank" rel="noreferrer noopener">ORDER BY</a>.</li>
+      </ul></li>
+      <li>Oblicz wartość sprzedaży według kategorii i produktu, uwzględniając również sumy częściowe i końcowe – użyj <code>GROUP BY ROLLUP</code>.
+      <ul class="links">
+        <li>Połącz tabele <code>Order Details</code>, <code>Products</code> i <code>Categories</code>.</li>
+        <li>Wykorzystaj składnię <a href="https://learn.microsoft.com/en-us/sql/t-sql/queries/select-group-by-transact-sql?view=sql-server-ver17#group-by-rollup-" target="_blank" rel="noreferrer noopener">ROLLUP</a> do generowania sum częściowych i sumy końcowej.</li>
+        <li>Zapytanie powinno pokazać poziom szczegółowy produktu, sumy dla kategorii oraz sumę ogólną.</li>
+      </ul></li>
+    </ol>
+
+    <h2>Do oddania</h2>
+    <ol>
+      <li>Plik <code>.sql</code> zawierający rozwiązania wszystkich zadań.</li>
+      <li>Przynajmniej jedno rozbudowane zapytanie analityczne na własnej bazie.</li>
+    </ol>
+
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
