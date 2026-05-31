@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zajęcia 9 – Diagram maszyny stanowej (SMD)</title>
+  <meta name="description" content="Ćwiczenia z projektowania systemów informatycznych: diagram maszyny stanowej UML na przykładzie portalu Allegro.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Zajęcia 9 – Diagram maszyny stanowej (SMD)</h1>
+
+    <p class="callout">
+      Wykonaj poniższe zadania w narzędziu
+      <a href="https://app.diagrams.net/" target="_blank" rel="noreferrer noopener">app.diagrams.net</a>.
+    </p>
+
+    <p>
+      Diagram maszyny stanowej (State Machine Diagram – <strong>SMD</strong>) służy do modelowania
+      zachowania obiektu, procesu lub systemu poprzez pokazanie jego możliwych stanów oraz zdarzeń,
+      które powodują przejścia pomiędzy tymi stanami. W tym ćwiczeniu diagram należy opracować
+      na przykładzie procesu zakupu produktu w portalu aukcyjnym, takim jak Allegro.
+    </p>
+
+    <ul>
+      <li>Przedstawia dynamiczne zachowanie systemu z perspektywy stanów.</li>
+      <li>Pokazuje zdarzenia wywołujące przejścia między stanami.</li>
+      <li>Umożliwia opisanie czynności wykonywanych wewnątrz stanu.</li>
+      <li>Pomaga analizować poprawność przebiegu procesu biznesowego.</li>
+    </ul>
+
+    <p>
+      Wprowadzenie do diagramów maszyn stanowych UML:
+      <br>
+      <a href="https://www.uml-diagrams.org/state-machine-diagrams.html" target="_blank" rel="noreferrer noopener">
+        https://www.uml-diagrams.org/state-machine-diagrams.html
+      </a>
+    </p>
+
+    <h2>Podstawowe elementy diagramu maszyny stanowej</h2>
+
+    <ul>
+      <li><strong>Stan początkowy</strong> – punkt rozpoczęcia zachowania systemu lub procesu.</li>
+      <li><strong>Stan</strong> – sytuacja, w której obiekt lub proces spełnia określone warunki.</li>
+      <li><strong>Przejście</strong> – zmiana stanu wywołana zdarzeniem.</li>
+      <li><strong>Zdarzenie</strong> – bodziec powodujący wykonanie przejścia, np. kliknięcie przycisku.</li>
+      <li><strong>Warunek strażniczy</strong> – warunek zapisany w nawiasach kwadratowych, który musi być spełniony, aby przejście nastąpiło.</li>
+      <li><strong>Stan końcowy</strong> – zakończenie modelowanego procesu.</li>
+    </ul>
+
+    <h2>Struktura stanu</h2>
+
+    <p>
+      Każdy istotny stan na diagramie powinien być przedstawiony jako prostokąt podzielony na sekcje.
+      Nie należy ograniczać się wyłącznie do samej nazwy stanu.
+    </p>
+
+    <ul>
+      <li><strong>Nazwa stanu</strong> – np. „Przeglądanie ofert”, „Logowanie”, „Finalizacja zakupu”.</li>
+      <li><strong>Czynności wewnętrzne</strong> – czynności typu <code>entry /</code>, <code>do /</code>, <code>exit /</code>.</li>
+      <li><strong>Przejścia wewnętrzne</strong> – zdarzenia obsługiwane bez opuszczania stanu.</li>
+      <li><strong>Dekompozycja</strong> – zagnieżdżone podstany, jeżeli stan składa się z kilku etapów.</li>
+    </ul>
+
+    <h2>Zadanie główne – diagram maszyny stanowej dla portalu Allegro</h2>
+
+    <p>
+      Utwórz diagram maszyny stanowej przedstawiający proces zakupu produktu w portalu aukcyjnym
+      (np. Allegro). Case study pozostaje takie samo jak w poprzednich ćwiczeniach, ale tym razem
+      należy skupić się nie na komunikatach między obiektami, lecz na stanach procesu zakupowego.
+    </p>
+
+    <ol>
+      <li>
+        Diagram może uwzględniać następujące stany:
+        <ul>
+          <li>przeglądanie ofert,</li>
+          <li>wyświetlenie szczegółów oferty,</li>
+          <li>logowanie użytkownika,</li>
+          <li>koszyk,</li>
+          <li>finalizacja zakupu,</li>
+          <li>oczekiwanie na płatność,</li>
+          <li>zamówienie opłacone,</li>
+          <li>wysłanie przesyłki,</li>
+          <li>dostarczenie zamówienia.</li>
+        </ul>
+      </li>
+
+      <li>
+        Uwzględnij fakt, że:
+        <ul>
+          <li>przeglądanie i wyszukiwanie ofert jest możliwe bez logowania,</li>
+          <li>logowanie jest wymagane dopiero przy czynnościach takich jak dodanie do koszyka, zakup lub licytacja,</li>
+        </ul>
+      </li>
+
+      <li>
+        W wybranych stanach zastosuj czynności wewnętrzne:
+        <ul>
+          <li><code>entry /</code> – czynność wykonywana przy wejściu do stanu,</li>
+          <li><code>do /</code> – czynność wykonywana podczas przebywania w stanie,</li>
+          <li><code>exit /</code> – czynność wykonywana przy opuszczaniu stanu.</li>
+        </ul>
+      </li>
+
+      <li>
+        Dodaj przejścia wewnętrzne, czyli zdarzenia obsługiwane bez opuszczania danego stanu, np.:
+        <ul>
+          <li>zmiana filtra podczas przeglądania ofert,</li>
+          <li>zmiana wariantu produktu na stronie oferty,</li>
+          <li>zmiana ilości produktu w koszyku,</li>
+          <li>zmiana adresu lub metody dostawy podczas finalizacji zakupu,</li>
+          <li>ponowienie płatności w stanie oczekiwania na płatność.</li>
+        </ul>
+      </li>
+
+      <li>
+        Zastosuj przynajmniej jedną dekompozycję stanu, np.:
+        <ul>
+          <li>stan „Finalizacja zakupu” podzielony na: dane dostawy, wybór płatności, potwierdzenie zamówienia,</li>
+          <li>stan „Licytacja” podzielony na: aukcja aktywna, aukcja wygrana, aukcja przegrana.</li>
+        </ul>
+      </li>
+
+      <li>
+        Zastosuj warunki strażnicze na przejściach, np.:
+        <ul>
+          <li><code>[użytkownik zalogowany]</code>,</li>
+          <li><code>[brak aktywnej sesji]</code>,</li>
+          <li><code>[płatność zaakceptowana]</code>,</li>
+          <li><code>[płatność odrzucona]</code>.</li>
+        </ul>
+      </li>
+
+      <li>
+        Diagram powinien zawierać:
+        <ul>
+          <li>stan początkowy,</li>
+          <li>stan końcowy,</li>
+          <li>nazwane przejścia,</li>
+          <li>czynności wewnętrzne w wybranych stanach,</li>
+        </ul>
+      </li>
+    </ol>
+
+    <h2>Do oddania</h2>
+
+    <ol>
+      <li>Eksport diagramu (PNG lub JPG).</li>
+      <li>(Opcjonalnie) Plik .drawio.</li>
+    </ol>
+
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
