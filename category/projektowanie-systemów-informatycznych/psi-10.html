@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 10 – Diagram maszyny stanowej (SMD)</title>
+  <meta name="description" content="Ćwiczenia z projektowania systemów informatycznych: dwa case study do samodzielnego wykonania diagramów maszyny stanowej UML.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Ćwiczenia 10 – Diagram maszyny stanowej (SMD)</h1>
+
+    <p class="callout">
+      Wykonaj poniższe zadania w narzędziu
+      <a href="https://app.diagrams.net/" target="_blank" rel="noreferrer noopener">app.diagrams.net</a>.
+    </p>
+
+    <p>
+      Diagram maszyny stanowej (State Machine Diagram – <strong>SMD</strong>) służy do modelowania
+      zachowania obiektu, procesu lub systemu poprzez pokazanie jego możliwych stanów oraz zdarzeń,
+      które powodują przejścia pomiędzy tymi stanami. W tym ćwiczeniu należy opracować diagram
+      nie z perspektywy komunikatów między obiektami, lecz z perspektywy stanów, w jakich może
+      znajdować się proces obsługi parkingu albo proces obsługi sprzedaży w księgarni.
+    </p>
+
+    <ul>
+      <li>Przedstawia dynamiczne zachowanie systemu z perspektywy stanów.</li>
+      <li>Pokazuje zdarzenia wywołujące przejścia między stanami.</li>
+      <li>Umożliwia opisanie czynności wykonywanych wewnątrz stanu.</li>
+      <li>Pomaga analizować poprawność przebiegu procesu biznesowego.</li>
+    </ul>
+
+    <p>
+      Wprowadzenie do diagramów maszyn stanowych UML:
+      <br>
+      <a href="https://www.uml-diagrams.org/state-machine-diagrams.html" target="_blank" rel="noreferrer noopener">
+        https://www.uml-diagrams.org/state-machine-diagrams.html
+      </a>
+    </p>
+
+    <h2>Podstawowe elementy diagramu maszyny stanowej</h2>
+
+    <ul>
+      <li><strong>Stan początkowy</strong> – punkt rozpoczęcia zachowania systemu lub procesu.</li>
+      <li><strong>Stan</strong> – sytuacja, w której obiekt, proces lub system spełnia określone warunki.</li>
+      <li><strong>Przejście</strong> – zmiana stanu wywołana zdarzeniem.</li>
+      <li><strong>Zdarzenie</strong> – bodziec powodujący wykonanie przejścia, np. włożenie karty, zatwierdzenie płatności albo wydruk dokumentu.</li>
+      <li><strong>Warunek strażniczy</strong> – warunek zapisany w nawiasach kwadratowych, który musi być spełniony, aby przejście nastąpiło.</li>
+      <li><strong>Stan końcowy</strong> – zakończenie modelowanego procesu.</li>
+    </ul>
+
+    <h2>Struktura stanu</h2>
+
+    <p>
+      Każdy istotny stan na diagramie powinien być przedstawiony jako prostokąt podzielony na sekcje.
+      Nie należy ograniczać się wyłącznie do samej nazwy stanu.
+    </p>
+
+    <ul>
+      <li><strong>Nazwa stanu</strong> – np. „Weryfikacja karty”, „Naliczanie opłaty”, „Realizacja płatności”.</li>
+      <li><strong>Czynności wewnętrzne</strong> – czynności typu <code>entry /</code>, <code>do /</code>, <code>exit /</code>.</li>
+      <li><strong>Przejścia wewnętrzne</strong> – zdarzenia obsługiwane bez opuszczania stanu.</li>
+      <li><strong>OPCJONALNIE: Dekompozycja</strong> – zagnieżdżone podstany, jeżeli stan składa się z kilku etapów.</li>
+    </ul>
+
+    <h2>Case study 1: PARKING</h2>
+
+    <p>
+      Utwórz diagram maszyny stanowej (UML State Machine Diagram) dla systemu obsługi parkingu przed siedzibą korporacji międzynarodowej.
+      Diagram powinien przedstawiać możliwe stany procesu wjazdu, parkowania, naliczania opłaty, kontroli policyjnej oraz wyjazdu z parkingu.
+    </p>
+
+    <p>
+      Zarząd korporacji międzynarodowej postanowił zakupić system informatyczny w celu zarządzania obsługą placu parkingowego przed jego główną siedzibą.
+      Pracownicy firmy posiadają karty magnetyczne z indywidualnym numerem identyfikacyjnym. Parking jest podzielony na dwie części:
+      większą – dla ogółu pracowników, oraz mniejszą – dla zarządu firmy. System po włożeniu karty do czytnika i wprowadzeniu przez pracownika kodu PIN,
+      odczytuje informacje o stanowisku i otwiera odpowiednie barierki wjazdu, a następnie wydaje kartę. System dokonuje rejestracji wjazdów oraz wyjazdów.
+      Przy obsłudze parkingu pracuje również parkingowy. Jego zadaniem jest przyjąć opłatę za czas parkowania oraz zatwierdzić ją w systemie,
+      a następnie otworzyć bramkę wyjazdową. Jeżeli pracownik będzie potrzebował potwierdzenia parkowania, parkingowy jest zobowiązany je wydrukować.
+      Z racji tego, że parking jest bardzo duży, przy wyjeździe stoi patrol policyjny, który sprawdza w swoim systemie, czy wyjeżdżający samochód nie jest
+      samochodem kradzionym. System policyjny jest zintegrowany z systemem parkingowym.
+    </p>
+
+    <ol>
+      <li>
+        Diagram może uwzględniać następujące stany:
+        <ul>
+          <li>oczekiwanie na kartę,</li>
+          <li>weryfikacja karty i kodu PIN,</li>
+          <li>identyfikacja typu pracownika,</li>
+          <li>otwarcie odpowiedniej barierki wjazdowej,</li>
+          <li>rejestracja wjazdu,</li>
+          <li>parkowanie pojazdu,</li>
+          <li>naliczanie opłaty,</li>
+          <li>zatwierdzenie opłaty przez parkingowego,</li>
+          <li>kontrola pojazdu w systemie policyjnym,</li>
+          <li>otwarcie bramki wyjazdowej,</li>
+          <li>rejestracja wyjazdu,</li>
+          <li>zakończenie obsługi pojazdu.</li>
+        </ul>
+      </li>
+
+      <li>
+        Uwzględnij fakt, że:
+        <ul>
+          <li>system powinien rozróżniać pracowników zwykłych oraz członków zarządu,</li>
+          <li>błędny kod PIN lub niepoprawna karta powinny prowadzić do odmowy wjazdu,</li>
+          <li>potwierdzenie parkowania jest drukowane tylko wtedy, gdy pracownik o nie poprosi,</li>
+          <li>otwarcie bramki wyjazdowej jest możliwe dopiero po zatwierdzeniu opłaty oraz kontroli pojazdu.</li>
+        </ul>
+      </li>
+
+      <li>
+        W wybranych stanach zastosuj czynności wewnętrzne:
+        <ul>
+          <li><code>entry /</code> – czynność wykonywana przy wejściu do stanu, np. <code>entry / pobierz dane karty</code>,</li>
+          <li><code>do /</code> – czynność wykonywana podczas przebywania w stanie, np. <code>do / weryfikuj PIN</code>,</li>
+          <li><code>exit /</code> – czynność wykonywana przy opuszczaniu stanu, np. <code>exit / zwróć kartę pracownikowi</code>.</li>
+        </ul>
+      </li>
+
+      <li>
+        Dodaj przejścia wewnętrzne, czyli zdarzenia obsługiwane bez opuszczania danego stanu, np.:
+        <ul>
+          <li>ponowne wprowadzenie kodu PIN podczas weryfikacji danych,</li>
+          <li>ponowne przeliczenie opłaty podczas naliczania należności,</li>
+          <li>wydruk potwierdzenia podczas zatwierdzania opłaty,</li>
+          <li>ponowne sprawdzenie numeru rejestracyjnego podczas kontroli policyjnej.</li>
+        </ul>
+      </li>
+
+      <li>
+        Zastosuj warunki strażnicze na przejściach, np.:
+        <ul>
+          <li><code>[karta poprawna]</code>,</li>
+          <li><code>[PIN niepoprawny]</code>,</li>
+          <li><code>[pracownik zarządu]</code>,</li>
+          <li><code>[pracownik zwykły]</code>,</li>
+          <li><code>[opłata zatwierdzona]</code>,</li>
+          <li><code>[pojazd niefiguruje jako skradziony]</code>.</li>
+        </ul>
+      </li>
+
+      <li>
+        Diagram powinien zawierać:
+        <ul>
+          <li>stan początkowy,</li>
+          <li>stan końcowy,</li>
+          <li>nazwane przejścia,</li>
+          <li>czynności wewnętrzne w wybranych stanach,</li>
+        </ul>
+      </li>
+    </ol>
+
+    <h2>Case study 2: KSIĘGARNIA</h2>
+
+    <p>
+      Utwórz diagram maszyny stanowej (UML State Machine Diagram) dla systemu informatycznego obsługującego księgarnię stacjonarną.
+      Diagram powinien przedstawiać możliwe stany procesu wyszukiwania, rezerwacji, sprzedaży, płatności, aktualizacji magazynu oraz wystawiania dokumentów.
+    </p>
+
+    <p>
+      Właściciel sieci księgarni postanowił wdrożyć system informatyczny do obsługi sprzedaży książek, rezerwacji egzemplarzy oraz kontroli stanów magazynowych
+      w swojej głównej placówce. Klienci mogą samodzielnie wyszukiwać książki w katalogu, sprawdzać ich dostępność, a następnie rezerwować wybrane pozycje
+      na określony czas. Jeżeli klient zdecyduje się na zakup, sprzedawca wyszukuje rezerwację lub skanuje wybrane książki przy stanowisku kasowym,
+      rejestruje sprzedaż w systemie, nalicza należność i przyjmuje płatność gotówką albo kartą. Po zatwierdzeniu transakcji system aktualizuje stan magazynowy
+      i drukuje paragon. Jeżeli klient poprosi o fakturę, sprzedawca wprowadza dane nabywcy, a system wystawia i drukuje fakturę do zrealizowanego zakupu.
+      W księgarni pracuje również magazynier, którego zadaniem jest przyjmowanie dostaw od dostawców, wprowadzanie nowych egzemplarzy do systemu,
+      aktualizowanie liczby dostępnych sztuk oraz oznaczanie książek uszkodzonych lub wycofanych ze sprzedaży. Kierownik księgarni korzysta z systemu
+      do przeglądania raportów sprzedaży, kontroli liczby rezerwacji oraz weryfikacji stanów magazynowych. System księgarni jest dodatkowo zintegrowany
+      z zewnętrznym systemem płatności kartą, który autoryzuje transakcje bezgotówkowe.
+    </p>
+
+    <ol>
+      <li>
+        Diagram może uwzględniać następujące stany:
+        <ul>
+          <li>oczekiwanie na rozpoczęcie obsługi klienta,</li>
+          <li>wyszukiwanie książki w katalogu,</li>
+          <li>sprawdzanie dostępności egzemplarza,</li>
+          <li>rezerwacja książki,</li>
+          <li>skanowanie książek przy kasie,</li>
+          <li>naliczanie należności,</li>
+          <li>realizacja płatności,</li>
+          <li>aktualizacja stanu magazynowego,</li>
+          <li>drukowanie paragonu,</li>
+          <li>wystawianie faktury,</li>
+          <li>obsługa dostawy magazynowej,</li>
+          <li>generowanie raportów sprzedaży,</li>
+          <li>zakończenie obsługi.</li>
+        </ul>
+      </li>
+
+      <li>
+        Uwzględnij fakt, że:
+        <ul>
+          <li>książka może zostać kupiona bez wcześniejszej rezerwacji albo na podstawie istniejącej rezerwacji,</li>
+          <li>rezerwacja jest możliwa tylko wtedy, gdy egzemplarz jest dostępny,</li>
+          <li>płatność kartą wymaga autoryzacji w zewnętrznym systemie płatności,</li>
+          <li>faktura jest wystawiana tylko wtedy, gdy klient o nią poprosi,</li>
+          <li>magazynier może aktualizować stany magazynowe niezależnie od procesu sprzedaży.</li>
+        </ul>
+      </li>
+
+      <li>
+        W wybranych stanach zastosuj czynności wewnętrzne:
+        <ul>
+          <li><code>entry /</code> – czynność wykonywana przy wejściu do stanu, np. <code>entry / wczytaj dane książki</code>,</li>
+          <li><code>do /</code> – czynność wykonywana podczas przebywania w stanie, np. <code>do / autoryzuj płatność kartą</code>,</li>
+          <li><code>exit /</code> – czynność wykonywana przy opuszczaniu stanu, np. <code>exit / zapisz wynik transakcji</code>.</li>
+        </ul>
+      </li>
+
+      <li>
+        Dodaj przejścia wewnętrzne, czyli zdarzenia obsługiwane bez opuszczania danego stanu, np.:
+        <ul>
+          <li>zmiana kryteriów wyszukiwania podczas przeglądania katalogu,</li>
+          <li>ponowne sprawdzenie dostępności egzemplarza,</li>
+          <li>zmiana liczby egzemplarzy podczas naliczania należności,</li>
+          <li>ponowienie autoryzacji płatności kartą,</li>
+          <li>wprowadzenie lub korekta danych do faktury.</li>
+        </ul>
+      </li>
+
+      <li>
+        Zastosuj warunki strażnicze na przejściach, np.:
+        <ul>
+          <li><code>[książka dostępna]</code>,</li>
+          <li><code>[brak dostępnych egzemplarzy]</code>,</li>
+          <li><code>[klient posiada rezerwację]</code>,</li>
+          <li><code>[płatność gotówką]</code>,</li>
+          <li><code>[płatność kartą zaakceptowana]</code>,</li>
+          <li><code>[klient żąda faktury]</code>.</li>
+        </ul>
+      </li>
+
+      <li>
+        Diagram powinien zawierać:
+        <ul>
+          <li>stan początkowy,</li>
+          <li>stan końcowy,</li>
+          <li>nazwane przejścia,</li>
+          <li>czynności wewnętrzne w wybranych stanach,</li>
+        </ul>
+      </li>
+    </ol>
+
+    <h2>Do oddania</h2>
+
+    <ol>
+      <li>Diagram maszyny stanowej – dla systemu PARKING LUB dla systemu KSIĘGARNIA.</li>
+      <li>Eksport diagramu (PNG lub JPG).</li>
+      <li>(Opcjonalnie) Plik .drawio.</li>
+    </ol>
+
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
