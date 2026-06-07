@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 10 – Funkcje okna w SQL Server</title>
+  <meta name="description" content="Ćwiczenia 10 z SQL Server na bazie Northwind: OVER, PARTITION BY, ROW_NUMBER, LAG, RANK, NTILE, FIRST_VALUE, LAST_VALUE i CUME_DIST.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Ćwiczenia 10 – Funkcje okna w SQL Server</h1>
+
+    <p class="callout">
+      Wykonaj poniższe zadania w środowisku <strong>SQL Server Management Studio</strong> na bazie danych <strong>Northwind</strong>.
+    </p>
+
+    <p>
+      Cel: przećwiczenie funkcji okna danych w SQL Server. Funkcje te pozwalają wykonywać obliczenia w obrębie zdefiniowanego zakresu wierszy bez zwijania wyniku tak, jak dzieje się przy klasycznym <code>GROUP BY</code>.
+    </p>
+
+    <h2>Zadania do wykonania</h2>
+
+    <ol>
+      <li>Dla każdego klienta nadaj numer każdemu zamówieniu według kolejności daty – użyj <code>ROW_NUMBER()</code>.
+      <ul class="links">
+        <li>Zapytanie powinno korzystać z klauzuli <a href="https://learn.microsoft.com/en-us/sql/t-sql/queries/select-over-clause-transact-sql?view=sql-server-ver17" target="_blank" rel="noreferrer noopener">OVER</a>.</li>
+        <li>Wykorzystaj funkcję <a href="https://learn.microsoft.com/en-us/sql/t-sql/functions/row-number-transact-sql?view=sql-server-ver17" target="_blank" rel="noreferrer noopener">ROW_NUMBER</a>.</li>
+        <li>Okno powinno być podzielone według klienta i uporządkowane według daty zamówienia.</li>
+      </ul></li>
+      <li>Wyświetl wartość bieżącego i poprzedniego zamówienia dla każdego klienta – użyj <code>LAG()</code>.
+      <ul class="links">
+        <li>Najpierw oblicz wartość każdego zamówienia w zapytaniu podrzędnym lub CTE.</li>
+        <li>Następnie użyj funkcji <a href="https://learn.microsoft.com/en-us/sql/t-sql/functions/lag-transact-sql?view=sql-server-ver17" target="_blank" rel="noreferrer noopener">LAG</a>, aby pobrać wartość z poprzedniego wiersza w obrębie klienta.</li>
+        <li>Porządek okna powinien wynikać z daty zamówienia.</li>
+      </ul></li>
+      <li>Znajdź największe zamówienie pod względem wartości dla każdego klienta – użyj <code>RANK()</code> i wybierz tylko rekordy z pierwszą rangą.
+      <ul class="links">
+        <li>Najpierw oblicz wartość zamówienia dla każdego klienta i zamówienia.</li>
+        <li>Wykorzystaj funkcję <a href="https://learn.microsoft.com/en-us/sql/t-sql/functions/rank-transact-sql?view=sql-server-ver17" target="_blank" rel="noreferrer noopener">RANK</a>.</li>
+        <li>Ranking powinien być liczony osobno dla każdego klienta i sortowany malejąco według wartości zamówienia.</li>
+        <li>Na końcu ogranicz wynik do rekordów o randze równej 1.</li>
+      </ul></li>
+      <li>Podziel zamówienia każdego klienta na kwartyle według wartości – użyj <code>NTILE(4)</code>.
+      <ul class="links">
+        <li>Przygotuj zestaw danych z wartością każdego zamówienia.</li>
+        <li>Wykorzystaj funkcję <a href="https://learn.microsoft.com/en-us/sql/t-sql/functions/ntile-transact-sql?view=sql-server-ver17" target="_blank" rel="noreferrer noopener">NTILE</a>.</li>
+        <li>Partycja powinna odpowiadać klientowi, a sortowanie powinno wynikać z wartości zamówienia.</li>
+      </ul></li>
+      <li>Dla każdego zamówienia klienta pokaż wartość pierwszego i ostatniego zamówienia – użyj <code>FIRST_VALUE()</code> i <code>LAST_VALUE()</code>.
+      <ul class="links">
+        <li>Najpierw oblicz wartość każdego zamówienia wraz z datą zamówienia.</li>
+        <li>Wykorzystaj funkcje <a href="https://learn.microsoft.com/en-us/sql/t-sql/functions/first-value-transact-sql?view=sql-server-ver17" target="_blank" rel="noreferrer noopener">FIRST_VALUE</a> oraz <a href="https://learn.microsoft.com/en-us/sql/t-sql/functions/last-value-transact-sql?view=sql-server-ver17" target="_blank" rel="noreferrer noopener">LAST_VALUE</a>.</li>
+        <li>Przy <code>LAST_VALUE()</code> pamiętaj o zdefiniowaniu zakresu okna, np. od pierwszego do ostatniego wiersza partycji.</li>
+      </ul></li>
+      <li>Wyświetl dystrybuantę skumulowaną wartości zamówień klienta – użyj <code>CUME_DIST()</code>.
+      <ul class="links">
+        <li>Przygotuj dane z wartością każdego zamówienia.</li>
+        <li>Wykorzystaj funkcję <a href="https://learn.microsoft.com/en-us/sql/t-sql/functions/cume-dist-transact-sql?view=sql-server-ver17" target="_blank" rel="noreferrer noopener">CUME_DIST</a>.</li>
+        <li>Okno powinno być podzielone według klienta i uporządkowane według wartości zamówienia.</li>
+      </ul></li>
+    </ol>
+
+    <h2>Do oddania</h2>
+    <ol>
+      <li>Plik <code>.sql</code> zawierający rozwiązania wszystkich zadań.</li>
+      <li>Przynajmniej jedno zapytanie wykorzystujące okno danych na włąsnej bazie</li>
+    </ol>
+
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>

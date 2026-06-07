@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 11 – Dokumentacja projektu</title>
+  <meta name="description" content="Ćwiczenia 11 z SQL Server: przygotowanie dokumentacji projektu rozbudowanej bazy danych oraz analiza przykładów dobrej dokumentacji projektowej i bazodanowej.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Ćwiczenia 11 – Dokumentacja projektu</h1>
+
+    <p class="callout">
+      Wykonaj poniższe zadanie w kontekście własnego projektu bazy danych przygotowywanego w środowisku
+      <strong>SQL Server Management Studio</strong>. Celem zajęć jest przygotowanie dokumentacji technicznej
+      projektu, który był rozwiajny na poprzednich ćwiczeniach. 
+    </p>
+
+    <p>
+      Dokumentacja projektu nie powinna być wyłącznie opisem „co robi system”. W przypadku projektu bazodanowego
+      powinna wyjaśniać, jaki problem rozwiązuje baza, jakie dane są przechowywane, jak zaprojektowano tabele,
+      relacje, klucze, ograniczenia, zapytania, procedury oraz elementy serwerowe. Dobra dokumentacja pozwala
+      innej osobie zrozumieć projekt, odtworzyć bazę, sprawdzić poprawność rozwiązań i dalej rozwijać system.
+    </p>
+
+    <h2>Zakres projektu bazodanowego</h2>
+    <ol>
+      <li>Skrypt odtwarzający bazę:
+        <ul class="links">
+          <li>tworzenie struktury bazy danych,</li>
+          <li>wypełnienie bazy danymi testowymi,</li>
+          <li>możliwość uruchomienia skryptu na pustej instancji SQL Server.</li>
+        </ul>
+      </li>
+      <li>Zapytania DQL i elementy T-SQL:
+        <ul class="links">
+          <li><code>SELECT</code>,</li>
+          <li><code>JOIN</code>,</li>
+          <li>agregacje,</li>
+          <li>podzapytania,</li>
+          <li>wybrane elementy T-SQL.</li>
+        </ul>
+      </li>
+      <li>Procedury składowane i funkcje:
+        <ul class="links">
+          <li>procedury realizujące operacje biznesowe,</li>
+          <li>funkcje pomocnicze,</li>
+          <li>walidacje,</li>
+          <li>podsumowania i raporty.</li>
+        </ul>
+      </li>
+      <li>Transakcje:
+        <ul class="links">
+          <li><code>BEGIN TRAN</code>,</li>
+          <li><code>COMMIT</code>,</li>
+          <li><code>ROLLBACK</code>,</li>
+          <li>opis sytuacji, w których transakcja chroni spójność danych.</li>
+        </ul>
+      </li>
+      <li>Wybrane zagadnienia serwerowe:
+        <ul class="links">
+          <li>uprawnienia i role,</li>
+          <li>widoki,</li>
+          <li>triggery,</li>
+          <li>logowanie zmian,</li>
+          <li>inne mechanizmy uzasadnione tematyką projektu.</li>
+        </ul>
+      </li>
+    </ol>
+
+    <h2>Co powinna zawierać dokumentacja projektu:</h2>
+
+    <ol>
+      <li>Stronę tytułową lub krótką metrykę projektu:
+        <ul class="links">
+          <li>nazwa projektu,</li>
+          <li>autor,</li>
+          <li>krótki opis dziedziny problemowej,</li>
+          <li>informacja o wykorzystanym systemie bazodanowym.</li>
+        </ul>
+      </li>
+      <li>Cel i zakres projektu:
+        <ul class="links">
+          <li>jaki problem rozwiązuje baza danych,</li>
+          <li>kto będzie korzystał z danych,</li>
+          <li>jakie procesy biznesowe mają być obsługiwane,</li>
+          <li>czego projekt nie obejmuje.</li>
+        </ul>
+      </li>
+      <li>Opis modelu danych:
+        <ul class="links">
+          <li>diagram ERD,</li>
+          <li>opis encji,</li>
+          <li>opis relacji i kardynalności,</li>
+          <li>uzasadnienie najważniejszych decyzji projektowych.</li>
+        </ul>
+      </li>
+      <li>Słownik danych:
+        <ul class="links">
+          <li>nazwa tabeli,</li>
+          <li>nazwa kolumny,</li>
+          <li>typ danych,</li>
+          <li>klucz główny lub obcy,</li>
+          <li>wymagalność wartości,</li>
+          <li>ograniczenia i reguły walidacji,</li>
+          <li>krótki opis znaczenia pola.</li>
+        </ul>
+      </li>
+      <li>Opis implementacji:
+        <ul class="links">
+          <li>najważniejsze fragmenty DDL,</li>
+          <li>więzy integralności,</li>
+          <li>indeksy,</li>
+          <li>przykładowe dane testowe,</li>
+          <li>kolejność uruchamiania skryptów.</li>
+        </ul>
+      </li>
+      <li>Opis zapytań, procedur i funkcji:
+        <ul class="links">
+          <li>cel zapytania lub procedury,</li>
+          <li>parametry wejściowe,</li>
+          <li>wynik działania,</li>
+          <li>przykład użycia.</li>
+        </ul>
+      </li>
+      <li>Opis mechanizmów bezpieczeństwa i administracji:
+        <ul class="links">
+          <li>role użytkowników,</li>
+          <li>uprawnienia,</li>
+          <li>widoki ograniczające dostęp do danych,</li>
+          <li>triggery i automatyzacja,</li>
+          <li>logowanie zmian.</li>
+        </ul>
+      </li>
+    </ol>
+
+    <h2>Zadanie do wykonania na dzisiejszych ćwiczeniach:</h2>
+
+    <ol>
+      <li>Przygotuj pierwszą wersję dokumentacji własnego projektu bazy danych.</li>
+      <li>Dokumentacja może mieć formę:
+        <ul class="links">
+          <li>pliku PDF,</li>
+          <li>strony HTML,</li>
+          <li>repozytorium GitHub z plikiem <code>README.md</code>,</li>
+          <li>strony GitHub Pages,</li>
+          <li>innej czytelnej formy uzgodnionej z prowadzącym.</li>
+        </ul>
+      </li>
+      <li>W pierwszej wersji dokumentacji uwzględnij:
+        <ul class="links">
+          <li>nazwę projektu,</li>
+          <li>cel i zakres projektu,</li>
+          <li>opis dziedziny problemowej,</li>
+          <li>opis użytkowników lub procesów, które baza ma obsługiwać,</li>
+          <li>diagram ERD,</li>
+          <li>opis encji i relacji,</li>
+          <li>wstępny słownik danych,</li>
+          <li>krótkie uzasadnienie najważniejszych decyzji projektowych.</li>
+        </ul>
+      </li>
+      <li>Dokumentacja powinna być przygotowana tak, aby można było ją później uzupełnić o:
+        <ul class="links">
+          <li>skrypt DDL,</li>
+          <li>skrypt DML z danymi testowymi,</li>
+          <li>zapytania DQL,</li>
+          <li>procedury i funkcje,</li>
+          <li>transakcje,</li>
+          <li>role, widoki, triggery i mechanizmy logowania zmian.</li>
+        </ul>
+      </li>
+    </ol>
+
+    <h2>Do oddania</h2>
+
+    <ol>
+      <li>Dokumentacja projektu w wybranej formie: <code>.pdf</code>, <code>.html</code>, <code>.md</code> albo link do opublikowanej strony.</li>
+      <li>Diagram ERD jako część dokumentacji lub jako osobny załącznik.</li>
+    </ol>
+
+    <h2>Przykłady dokumentacji projektowej</h2>
+
+    <p>
+      Poniższe przykłady pokazują różne sposoby przygotowania dokumentacji: klasyczny dokument PDF,
+      dokumentację architektury, stronę GitHub Pages oraz zbiór zasad dokumentowania projektu. Nie należy
+      kopiować ich układu bezrefleksyjnie, ale warto przeanalizować, jak porządkują informacje o celu,
+      zakresie, architekturze, komponentach i decyzjach technicznych.
+    </p>
+
+    <ol>  
+      <li>
+        <strong>Red Alert – Software Design Doc</strong><br>
+        <a href="https://ceias.nau.edu/capstone/projects/CS/2022/RedAlert/assets/documents/Software%20Design%20Doc.pdf" target="_blank" rel="noreferrer noopener">
+          https://ceias.nau.edu/capstone/projects/CS/2022/RedAlert/assets/documents/Software%20Design%20Doc.pdf
+        </a>
+
+        <p>
+          Dokumentacja projektu aplikacji webowej. Przykład jest przydatny, ponieważ pokazuje opis
+          technologii oraz diagram architektury systemu. W dokumencie wskazano m.in. wykorzystanie Django,
+          MongoDB, JavaScriptu, NGINX i Gunicorn, a następnie opisano, jak te elementy współpracują w aplikacji.
+        </p>
+
+      </li>
+
+      <li>
+        <strong>WiChat – dokumentacja projektu w szablonie arc42 / GitHub Pages</strong><br>
+        <a href="https://arquisoft.github.io/wichat_en1a/" target="_blank" rel="noreferrer noopener">
+          https://arquisoft.github.io/wichat_en1a/
+        </a>
+
+        <p>
+          Jest to dokumentacja projektu opublikowana jako strona internetowa. Wykorzystuje układ dokumentacji
+          architektury systemu oparty na arc42. Dokumentacja opisuje m.in. wymagania, ograniczenia, kontekst
+          systemu, komunikację z zewnętrznymi usługami, widok komponentów i elementy jakościowe.
+        </p>
+		
+		<p>
+		  <strong>arc42</strong> to szablon dokumentowania architektury oprogramowania i systemów informatycznych. 
+		  Nie jest to konkretne narzędzie, lecz uporządkowany standard opisu projektu, który podpowiada, jakie elementy 
+		  warto udokumentować: cele systemu, wymagania jakościowe, ograniczenia, kontekst biznesowy i techniczny, 
+		  strategię rozwiązania, podział na komponenty, widok uruchomieniowy, widok wdrożeniowy, decyzje architektoniczne, 
+		  ryzyka oraz słownik pojęć.
+		  Oficjalny przewodnik: 
+		<a href="https://docs.arc42.org/home/" target="_blank" rel="noreferrer noopener">arc42 Documentation Guide</a>.
+		</p>
+
+      </li>
+
+      <li>
+        <strong>Microsoft Engineering Fundamentals Playbook – Documentation</strong><br>
+        <a href="https://microsoft.github.io/code-with-engineering-playbook/documentation/" target="_blank" rel="noreferrer noopener">
+          https://microsoft.github.io/code-with-engineering-playbook/documentation/
+        </a>
+
+        <p>
+          Zbiór zasad dotyczących tworzenia dokumentacji w projektach informatycznych:
+        </p>
+
+        <ul class="links">
+          <li>ogólne zasady dokumentowania projektów,</li>
+          <li>wyjaśnienie, dlaczego dokumentacja jest potrzebna także w projektach prowadzonych zwinnie,</li>
+          <li>wskazówki dotyczące dokumentacji architektury,</li>
+          <li>wskazówki dotyczące dokumentacji kodu, wdrożenia i decyzji projektowych,</li>
+          <li>przykładowe obszary, które warto dokumentować w projekcie.</li>
+        </ul>
+
+      </li>
+    </ol>
+
+    <h2>Przykłady dokumentacji relacyjnych baz danych</h2>
+
+    <ol>  
+      <li>
+        <strong>Music Store – Documentation to the Database Project</strong><br>
+        <a href="https://www.science.uva.nl/COLNET/teaching/2007-dbp-ik/Projectmaterial/Team6_final.pdf" target="_blank" rel="noreferrer noopener">
+          https://www.science.uva.nl/COLNET/teaching/2007-dbp-ik/Projectmaterial/Team6_final.pdf
+        </a>
+
+        <p>
+          Jest to dokumentacja studenckiego projektu bazy danych „Music Store”. 
+        </p>
+
+      </li>
+
+      <li>
+        <strong>Database Project – dokumentacja projektu bazy danych o akcjach giełdowych</strong><br>
+        <a href="https://zanwarfaraj.github.io/database/" target="_blank" rel="noreferrer noopener">
+          https://zanwarfaraj.github.io/database/
+        </a>
+
+        <p>
+          Jest to przykład dokumentacji projektu bazodanowego opublikowanej jako strona internetowa.
+          Autor opisuje projekt bazy MySQL hostowanej na AWS, służącej do przechowywania danych o akcjach giełdowych,
+          oraz skrypt w Pythonie służący do czyszczenia i przenoszenia danych do bazy.
+        </p>
+    
+      </li>
+
+      <li>
+        <strong>Database Design Document – szablon dokumentacji bazy danych</strong><br>
+        <a href="https://www.sdlcforms.com/PDFClientsDownload/Database_Design_Document.pdf" target="_blank" rel="noreferrer noopener">
+          https://www.sdlcforms.com/PDFClientsDownload/Database_Design_Document.pdf
+        </a>
+
+        <p>
+          Jest to szablon dokumentu projektowego dla bazy danych. Nie jest to gotowy projekt konkretnej aplikacji,
+          ale przykład struktury, którą można wykorzystać przy tworzeniu własnej dokumentacji.
+        </p>
+
+      </li>
+    </ol>
+
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
