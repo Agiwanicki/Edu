@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ćwiczenia 5 – Systemy zarządzania bazami danych (projektowanie własnej bazy danych)</title>
+  <meta name="description" content="Ćwiczenia 5 – SZBD: projektowanie własnego schematu bazy danych, tworzenie tabel, relacji i więzów integralności, implementacja w SQL Server, dane przykładowe i zapytania DQL.">
+  <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <a href="../../index.html" class="button">← Powrót do ćwiczeń</a>
+      <span>Blog dydaktyczny – Arkadiusz Iwanicki</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Ćwiczenia 5 – Projektowanie i implementacja własnej bazy danych</h1>
+
+    <p class="callout">
+      <strong>Cel:</strong> samodzielne zaprojektowanie i implementacja relacyjnej bazy danych w środowisku
+      <strong>SQL Server</strong>. Określenie wymagań projektowych, zdefiniowanie tabel, atrybutów,
+      kluczy, relacji i więzów integralności oraz przygotowanie przykładowych zapytań DQL.
+    </p>
+
+    <h2>Zadania</h2>
+    <ol>
+      <li>
+        <strong>Zaprojektuj schemat własnej bazy danych</strong> na podstawie wybranego pomysłu na projekt
+        (np. <em>szkoła</em>, <em>szpital</em>, <em>hotel</em>, <em>wypożyczalnia</em>, <em>firma logistyczna</em>, <em>siłownia</em> itp.).
+        <ul>
+          <li>Opisz przeznaczenie systemu, najważniejsze procesy i dane, które należy przechowywać.</li>
+          <li>Wskaż obiekty występujące w systemie oraz zaproponuj odpowiadające im tabele i atrybuty.</li>
+          <li>Zespół 2-osobowy: co najmniej <strong>8 tabel</strong>. Praca solo: co najmniej <strong>5 tabel</strong>.</li>
+          <li>Dla każdej tabeli określ klucz główny (<strong>PK</strong>), potrzebne klucze obce (<strong>FK</strong>) i odpowiednie typy danych.</li>
+          <li>Przygotuj <strong>diagram relacji między tabelami</strong>, np. w narzędziu <a href="https://app.diagrams.net/" target="_blank" rel="noreferrer noopener">diagrams.net</a>. Zaznacz na nim klucze główne i obce oraz krotności relacji.</li>
+          <li>Stosuj czytelne, jednoznaczne nazwy tabel i kolumn, najlepiej bez polskich znaków.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Zdefiniuj relacje między tabelami</strong> z użyciem <strong>kluczy obcych</strong>.
+        <ul>
+          <li>Określ kierunek relacji 1:N oraz zaprojektuj relacje N:M z wykorzystaniem tabeli pośredniej.</li>
+          <li>Zadbaj o zgodność typów danych w powiązanych kolumnach oraz o sensowność relacji z punktu widzenia logiki biznesowej systemu.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Dodaj więzy integralności i dziedziny</strong>.
+        <ul>
+          <li>Zastosuj <code>UNIQUE</code> dla atrybutów wymagających unikalności (np. numery PESEL, numery dokumentów, kody zewnętrznych systemów).</li>
+          <li>Dobierz odpowiednie typy i długości danych tekstowych (<code>varchar</code>, <code>nvarchar</code>), wymuś wartości nieujemne dla pól liczbowych oraz oznacz wymagane kolumny jako <code>NOT NULL</code>.</li>
+          <li>Dodaj ograniczenia <code>CHECK</code> dla zakresów i dopuszczalnych wartości (np. status, poziom, przedział dat, zakres liczbowy).</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Wstaw przykładowe dane</strong> do każdej tabeli z użyciem poleceń <code>INSERT</code>.
+        <ul>
+          <li>Wprowadź po kilka rekordów do tabel głównych oraz po co najmniej 1–2 rekordy do tabel powiązań (np. tabel N:M).</li>
+          <li>Pilnuj zgodności relacji — rekordy z kluczami obcymi muszą wskazywać istniejące wiersze w tabelach nadrzędnych.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Przygotuj przykładowe zapytania DQL</strong> (<code>SELECT</code>).
+        <ul>
+          <li>Opracuj co najmniej 5 zapytań obejmujących:
+            <ul>
+              <li>filtrowanie danych z użyciem <code>WHERE</code>,</li>
+              <li>sortowanie wyników (<code>ORDER BY</code>),</li>
+              <li>złączenia tabel (<code>JOIN</code>),</li>
+              <li>podzapytania (w <code>WHERE</code> lub <code>FROM</code>).</li>
+            </ul>
+          </li>
+          <li>Do każdego zapytania dopisz krótki opis oczekiwanego rezultatu (np. „lista najczęściej rezerwowanych pokoi”, „liczba wizyt na lekarza”, „łączna wartość zamówień klienta”).</li>
+        </ul>
+      </li>
+    </ol>
+
+    <section class="box">
+      <h2>Materiały</h2>
+      <ul class="links">
+        <li><a href="https://app.diagrams.net/" target="_blank" rel="noreferrer noopener">diagrams.net – narzędzie do tworzenia diagramów baz danych</a></li>
+        <li><a href="http://www.informatyka.orawskie.pl/?pl_projektowanie-bazy-danych,113" target="_blank" rel="noreferrer noopener">Projektowanie baz danych – przykładowe wskazówki</a></li>
+        <li><a href="https://www.sqltutorial.org/sql-cheat-sheet/" target="_blank" rel="noreferrer noopener">SQL Cheat Sheet</a></li>
+        <li><a href="https://www.w3schools.com/mysql/default.asp" target="_blank" rel="noreferrer noopener">W3Schools – SQL (MySQL)</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>© 2025 Arkadiusz Iwanicki • Strona ćwiczeń</footer>
+</body>
+</html>
